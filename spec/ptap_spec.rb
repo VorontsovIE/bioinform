@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'bioinform/support/ptap'
 
 describe Enumerable do
-  describe 'ptap' do
+  describe '#ptap' do
     it 'should act on original object itself' do
       x = ['abc','','','def','ghi']
       x.ptap('', &:delete).should be_equal x

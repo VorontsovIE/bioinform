@@ -1,37 +1,47 @@
 require 'spec_helper'
 require 'bioinform/support/callable_symbol'
 
-class TestEnumerablePmap < Test::Unit::TestCase
-  def test_with_tap
-    assert_equal ['abc','def','ghi'], ['abc','','','def','ghi'].tap(&:delete.(''))
-    
-    x = ['abc','','','def','ghi']
-    assert_equal false, ['abc','def','ghi'].equal?(x.tap(&:delete.('')))
-    
-    x = ['abc','','','def','ghi']
-    assert_equal true, x.equal?(x.tap(&:delete.('')))
-    
-    x = ['abc','','','def','ghi']
-    assert_equal ['abc','','','def','ghi'], ['abc','','','def','ghi'].tap(&:to_s)
-  end
-  
-  def test_pmap_bang_without_parameters
-    x = [1,2,3]
-    assert_equal x.map!(&:to_s), ['1', '2', '3']
-    assert_equal x, ['1', '2', '3']
-  end
-  def test_with_map_bang_with_parameters
-    y = [1,2,3]
-    assert_equal y.map!(&:to_s.(2)), ['1', '10', '11']
-    assert_equal y, ['1', '10', '11']
-  end
-  def test_with_map_without_bang
-    x = [1,2,3]
-    assert_equal x.map(&:to_s.(2)), ['1', '10', '11']
-    assert_equal x, [1, 2, 3]
-  end
-  def test_one_more_with_map
-    assert_equal [[1,2,3],[4,5,6]].map(&:join.(' ')).join("\n"), "1 2 3\n4 5 6"
-    assert_equal [1,2,3,4,5].map(&:to_s.(2)), ['1', '10', '11', '100', '101']
+describe Symbol do
+  describe '#call' do
+    context 'returned object' do
+      it 'should have to_proc method' do
+        :to_s.().should respond_to :to_proc
+        :to_s.(2).should respond_to :to_proc
+      end
+      context 'corresponding proc' do
+        it 'should call method, corresponding to symbol, on first argument' do
+          stub_obj = double('obj')
+          stub_obj.should_receive(:to_s).exactly(:twice)
+          prc_1 = :to_s.(2).to_proc
+          prc_2 = :to_s.(2).to_proc # When used with &, to_proc can be omitted: it's implicitly casted on call (see other examples)
+          prc_1.call(stub_obj) # These forms are almost equivalent, but second is much more concise
+          stub_obj.tap(&prc_2)
+        end
+        context 'when multiple arguments of call specified' do
+          it 'should call using given arguments' do
+            stub_obj = double('obj')
+            stub_obj.should_receive(:gsub).with('before','after')
+            prc = :gsub.('before','after')
+            stub_obj.tap(&prc)
+          end
+        end
+        context 'when the only argument of call specified' do
+          it 'should call using given argument' do
+            stub_obj = double('obj')
+            stub_obj.should_receive(:to_s).with(2)
+            prc = :to_s.(2)
+            stub_obj.tap(&prc)
+          end
+        end
+        context 'when no arguments given' do
+          it 'should call without any arguments' do
+            stub_obj = double('obj')
+            stub_obj.should_receive(:to_s).with()
+            prc = :to_s.()
+            stub_obj.tap(&prc)
+          end
+        end
+      end
+    end    
   end
 end

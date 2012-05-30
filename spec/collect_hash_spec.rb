@@ -4,7 +4,7 @@ require 'bioinform/support/collect_hash'
 describe Enumerable do
   # %w{A C G T}.collect_hash{|k| [k*2, k*3] }
   # # ==> {"AA" => "AAA", "CC" => "CCC", "GG" => "GGG", "TT" => "TTT"}
-  context 'collect_hash' do
+  context '#collect_hash' do
     it 'should take a block and create a hash from collected [k,v] pairs' do
       %w{A C G T}.collect_hash{|k| [k*2, k*3] }.should == {"AA" => "AAA", "CC" => "CCC", "GG" => "GGG", "TT" => "TTT"}
     end

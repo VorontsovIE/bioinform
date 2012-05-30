@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'bioinform/support/pmap'
 
 describe Enumerable do
-  describe 'pmap!' do
+  describe '#pmap!' do
     it 'should replace object itself' do
       x = [1,2,3]
       x.pmap!(&:to_s).should be_equal x
@@ -25,7 +25,7 @@ describe Enumerable do
       end
     end
   end
-  describe 'pmap' do
+  describe '#pmap' do
     it 'should not replace original object' do
       x = [1,2,3]
       x.pmap(&:to_s).should_not be_equal x
