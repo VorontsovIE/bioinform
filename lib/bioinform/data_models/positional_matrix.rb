@@ -1,4 +1,7 @@
 require 'bioinform/support/multiline_squish'
+require 'bioinform/support/same'
+
+
 class PositionalMatrix
   module DefaultParser
     number_pat = '[+-]?\d+(\.\d+)?'
