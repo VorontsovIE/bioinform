@@ -1,9 +1,4 @@
-class String
-  def multiline_squish
-    split("\n").map(&:squish).drop_while(&:empty?).take_while{|line| !line.empty?}.join("\n")
-  end
-end
-
+require 'bioinform/support/multiline_squish'
 class PositionalMatrix
   module DefaultParser
     number_pat = '[+-]?\d+(\.\d+)?'
