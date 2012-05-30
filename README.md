@@ -1,6 +1,6 @@
 # Bioinform
 
-TODO: Write a gem description
+Bioinform is a bunch of classes extracted from daily bioinformatics work. This classes is an attempt to encapsulate loading(parsing) logic for positional matrices in different formats and common transformations. It also includes several core classes extensions which are particularly useful on Enumerables
 
 ## Installation
 
@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Usage is under construction. I don't recommend use this gem for a while: syntax is on the way to change to more simple and concise. But stay tuned
 
 ## Contributing
 
