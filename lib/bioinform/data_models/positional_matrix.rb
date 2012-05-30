@@ -1,3 +1,4 @@
+require 'active_support/core_ext/hash/with_indifferent_access'
 require 'bioinform/support/multiline_squish'
 require 'bioinform/support/same'
 require 'bioinform/support/pmap'
