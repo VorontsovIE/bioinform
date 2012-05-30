@@ -1,6 +1,6 @@
 require 'bioinform/support/multiline_squish'
 require 'bioinform/support/same'
-
+require 'bioinform/support/pmap'
 
 class PositionalMatrix
   module DefaultParser
