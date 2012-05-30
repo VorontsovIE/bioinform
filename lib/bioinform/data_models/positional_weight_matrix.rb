@@ -1,0 +1,3 @@
+class PositionalWeightMatrix < PositionalMatrix
+
+end

@@ -1,0 +1,7 @@
+require 'active_support'
+require 'bioinform/support/curry_except_self'
+require 'bioinform/support/callable_symbol'
+require 'bioinform/support/pmap'
+require 'bioinform/support/ptap'
+require 'bioinform/support/same'
+require 'bioinform/support/yaml_dump_file'
