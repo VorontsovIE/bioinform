@@ -10,7 +10,7 @@ class Iupac
       @words = [input]
     else raise ArgumentError, 'Can\'t create IUPAC Word List: unknown input type'
     end
-    raise ArgumentError, 'IUPAC words should be of the same length' unless @words.same?(&:length)
+    raise ArgumentError, 'IUPAC words should be of the same length' unless @words.same_by?(&:length)
   end
   
   def to_pcm

@@ -1,17 +1,25 @@
-require 'test/unit'
+require 'spec_helper'
 require 'bioinform/support/ptap'
 
-class TestEnumerablePmap < Test::Unit::TestCase
-  def test_ptap
-    assert_equal ['abc','def','ghi'], ['abc','','','def','ghi'].ptap('',&:delete)
-    
-    x = ['abc','','','def','ghi']
-    assert_equal false, ['abc','def','ghi'].equal?(x.ptap('',&:delete))
-    
-    x = ['abc','','','def','ghi']
-    assert_equal true, x.equal?(x.ptap('',&:delete))
-    
-    x = ['abc','','','def','ghi']
-    assert_equal ['abc','','','def','ghi'], ['abc','','','def','ghi'].ptap(&:to_s)
+describe Enumerable do
+  describe 'ptap' do
+    it 'should act on original object itself' do
+      x = ['abc','','','def','ghi']
+      x.ptap('', &:delete).should be_equal x
+    end
+    context 'without parameters' do
+      it 'should behave like usual tap' do
+        'abc'.ptap(&:upcase!).should == 'abc'.tap(&:upcase!)
+        'abc'.ptap(&:upcase!).should == 'ABC'
+        'abc'.ptap(&:upcase).should == 'abc'.tap(&:upcase)
+        'abc'.ptap(&:upcase).should == 'abc'
+      end
+    end
+    context 'without parameters' do
+      it 'should behave like if tap uses method call with given parameters' do
+        ['abc','','','def','ghi'].ptap('',&:delete).should == ['abc','','','def','ghi'].tap{|slf| slf.delete ''}
+        ['abc','','','def','ghi'].ptap('',&:delete).should == ['abc','def','ghi']
+      end
+    end
   end
 end

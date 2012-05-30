@@ -53,7 +53,7 @@ class PositionalMatrix
     else
       raise ArgumentError, 'Unknown format of input: only Strings, Arrays and hashes\'re available'
     end
-    raise ArgumentError, 'Input has the different number of columns in each row' unless @matrix.same?(&:size)
+    raise ArgumentError, 'Input has the different number of columns in each row' unless @matrix.same_by?(&:length)
     raise ArgumentError unless @matrix.size == 4 || @matrix.first.size == 4
     @matrix = @matrix.transpose if @matrix.first.size != 4
   end

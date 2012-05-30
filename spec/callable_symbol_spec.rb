@@ -1,4 +1,4 @@
-require 'test/unit'
+require 'spec_helper'
 require 'bioinform/support/callable_symbol'
 
 class TestEnumerablePmap < Test::Unit::TestCase

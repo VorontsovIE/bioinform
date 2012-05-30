@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'bioinform/support/collect_hash'
 
 describe Enumerable do
