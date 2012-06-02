@@ -5,7 +5,23 @@ require 'bioinform/support/pmap'
 class PM
   attr_reader :matrix
   attr_accessor :name
-  
+  def initialize(input = nil, parser = nil)
+    return unless input
+    if parser
+      raise ArgumentError, 'Input cannot be parsed by specified parser' unless parser.new(input).can_parse?
+    else
+      parser = PM::Parser.subclasses.find{|parser_class| parser_class.new(input).can_parse? }
+      raise ArgumentError, 'No one parser can parse specified input' unless parser
+    end
+    parse_result = parser.new(input).parse
+    raise ArgumentError, 'Used parser result has no `matrix` key'  unless parse_result.has_key? :matrix
+    raise ArgumentError, 'Parsing result is not a valid matrix'  unless self.class.valid?( parse_result[:matrix] )
+    
+    configure_from_hash(parse_result)
+  end
+  def configure_from_hash(parse_result)
+    parse_result.each{|key, value|  send "#{key}=", value  if respond_to? "#{key}="  }
+  end
   def matrix=(matrix)
     raise ArgumentError, 'Matrix has invalid format:' unless self.class.valid? matrix
     @matrix = matrix
@@ -18,8 +34,8 @@ class PM
     matrix.all?{|pos| pos.size == 4}
   end
   
-  def size;  @matrix.size;   end
-  alias_method :length, :size
+  def length;  @matrix.size;   end
+  alias_method :size, :length
   
   def to_s(with_name = true)
     matrix = @matrix.pmap("\t",&:join).join("\n")

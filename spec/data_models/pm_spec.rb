@@ -1,7 +1,28 @@
 require 'spec_helper'
 require 'bioinform/data_models/pm'
 
+class PM
+  class Parser
+    module Helpers
+      def parser_stub(class_name, can_parse, result)
+        klass = Class.new(PM::Parser) do
+          define_method :can_parse? do can_parse end
+          define_method :parse do result end
+        end
+        Object.const_set(class_name, klass)
+      end
+      def parser_subclasses_cleanup
+        PM::Parser.subclasses.each{|klass| Object.send :remove_const, klass.name}
+        PM::Parser.subclasses.clear
+      end
+    end
+  end
+end
+
+
+
 describe PM do
+  include PM::Parser::Helpers
   describe '::valid?' do
     it 'should be true iff an argument is an array of arrays of 4 numerics in a column' do
       PM.valid?( [[1,2,3,4],[1,4,5,6.5]] ).should be_true
@@ -12,12 +33,77 @@ describe PM do
       PM.valid?( [[1,2,'3','4'],[1,'4','5',6.5]] ).should be_false
     end
   end
+  
+  describe '#initialize' do
+    context 'when parser specified' do
+
+      before :each do
+        parser_stub :ParserBad, false, { matrix: [[0,0,0,0],[1,1,1,1]], name: 'Bad' }
+        parser_stub :ParserGood, true, { matrix: [[1,1,1,1],[1,1,1,1]], name: 'Good' }
+        parser_stub :ParserWithIncompleteOutput, true, { name: 'Without `matrix` key' }
+        parser_stub :ParserGoodWithoutName, true, { matrix: [[1,1,1,1],[1,1,1,1]] }
+        parser_stub :ParserWithInvalidMatrix, true, { matrix: [[1,1,1],[1,1,1]] }
+      end
+      after :each do  
+        parser_subclasses_cleanup 
+      end
+      
+      it 'should raise an ArgumentError if parser cannot parse input' do
+        expect{ PM.new('my stub input', ParserBad) }.to raise_error ArgumentError
+      end
+      
+      it 'should raise an ArgumentError if parser output doesn\'t have `matrix` key' do
+        expect{ PM.new('my stub input', ParserWithIncompleteOutput) }.to raise_error ArgumentError
+      end
+      
+      it 'should raise an ArgumentError if parser output has invalid matrix' do
+        expect{ PM.new('my stub input', ParserWithInvalidMatrix) }.to raise_error ArgumentError
+      end
+      
+      context 'when parse was successful' do
+        it 'should load matrix from parser\'s resulting hash' do
+          pm = PM.new('my stub input', ParserGoodWithoutName)
+          pm.matrix.should == [[1,1,1,1],[1,1,1,1]]
+          pm.name.should be_nil
+        end
+        it 'should set other available attributes from parse resulting hash' do
+          pm = PM.new('my stub input', ParserGood)
+          pm.matrix.should == [[1,1,1,1],[1,1,1,1]]
+          pm.name.should == 'Good'
+        end
+      end
+    end
+
+    context 'when parser not specified' do
+      after :each do
+        parser_subclasses_cleanup 
+      end
+      it 'should raise an ArgumentError if no one parser can parse input' do
+        parser_stub :ParserBad, false, { matrix: [[0,0,0,0],[1,1,1,1]], name: 'Bad' }
+        expect{ PM.new('my stub input') }.to raise_error ArgumentError
+      end
+      it 'should use first parsed which can parse input' do
+        parser_stub :ParserBad, false, { matrix: [[0,0,0,0],[1,1,1,1]], name: 'Bad' }
+        parser_stub :ParserGoodFirst, true, { matrix: [[1,1,1,1],[1,1,1,1]], name: 'GoodFirst' }
+        parser_stub :ParserGoodSecond, true, { matrix: [[1,1,1,1],[1,1,1,1]], name: 'GoodSecond' }
+        
+        pm = PM.new('my stub input')
+        pm.name.should == 'GoodFirst'
+      end
+    end
+
+  end
+  
   describe '#matrix=' do
     it 'should replace matrix if argument is a valid matrix' do
-      @pm = PM.new
+      @pm = PM.new()
       @pm.matrix.should be_nil
+      
       @pm.matrix = [[1,2,3,4],[1,4,5,6.5]]
       @pm.matrix.should == [[1,2,3,4],[1,4,5,6.5]]
+      
+      @pm.matrix = [[1,4,5,6.5], [2,2,2,2]]
+      @pm.matrix.should == [[1,4,5,6.5],[2,2,2,2]]
     end
     it 'should raise an exception if argument isn\'t valid matrix' do
       @pm = PM.new
@@ -83,5 +169,4 @@ describe PM do
       @hsh['T'].should == @hsh[:T]
     end
   end
-  
 end
