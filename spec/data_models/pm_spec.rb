@@ -1,28 +1,10 @@
 require 'spec_helper'
 require 'bioinform/data_models/pm'
 
-class PM
-  class Parser
-    module Helpers
-      def parser_stub(class_name, can_parse, result)
-        klass = Class.new(PM::Parser) do
-          define_method :can_parse? do can_parse end
-          define_method :parse do result end
-        end
-        Object.const_set(class_name, klass)
-      end
-      def parser_subclasses_cleanup
-        PM::Parser.subclasses.each{|klass| Object.send :remove_const, klass.name}
-        PM::Parser.subclasses.clear
-      end
-    end
-  end
-end
-
-
-
 describe PM do
+  
   include PM::Parser::Helpers
+  
   describe '::valid?' do
     it 'should be true iff an argument is an array of arrays of 4 numerics in a column' do
       PM.valid?( [[1,2,3,4],[1,4,5,6.5]] ).should be_true
@@ -36,7 +18,6 @@ describe PM do
   
   describe '#initialize' do
     context 'when parser specified' do
-
       before :each do
         parser_stub :ParserBad, false, { matrix: [[0,0,0,0],[1,1,1,1]], name: 'Bad' }
         parser_stub :ParserGood, true, { matrix: [[1,1,1,1],[1,1,1,1]], name: 'Good' }
@@ -51,11 +32,9 @@ describe PM do
       it 'should raise an ArgumentError if parser cannot parse input' do
         expect{ PM.new('my stub input', ParserBad) }.to raise_error ArgumentError
       end
-      
       it 'should raise an ArgumentError if parser output doesn\'t have `matrix` key' do
         expect{ PM.new('my stub input', ParserWithIncompleteOutput) }.to raise_error ArgumentError
       end
-      
       it 'should raise an ArgumentError if parser output has invalid matrix' do
         expect{ PM.new('my stub input', ParserWithInvalidMatrix) }.to raise_error ArgumentError
       end
@@ -73,7 +52,7 @@ describe PM do
         end
       end
     end
-
+    
     context 'when parser not specified' do
       after :each do
         parser_subclasses_cleanup 
@@ -91,7 +70,6 @@ describe PM do
         pm.name.should == 'GoodFirst'
       end
     end
-
   end
   
   describe '#matrix=' do
@@ -110,6 +88,7 @@ describe PM do
       expect{  @pm.matrix = [[1,2,3,4],[1,4,5]]  }.to raise_error
     end
   end
+  
   describe '#to_s' do
     before :each do
       @pm = PM.new
@@ -138,7 +117,14 @@ describe PM do
   describe '#pretty_string' do
     it 'should return a string formatted with spaces'
     it 'should contain first string of ACGT letters'
+    context 'with name specified' do
+      it 'should contain name if parameter isn\'t false'
+    end
+    context 'without name specified' do
+      it 'should not contain name'
+    end
   end
+  
   describe '#size' do
     it 'should return number of positions' do
       @pm = PM.new
@@ -146,6 +132,7 @@ describe PM do
       @pm.size.should == 2
     end
   end
+  
   describe '#to_hash' do
     before :each do
       @pm = PM.new

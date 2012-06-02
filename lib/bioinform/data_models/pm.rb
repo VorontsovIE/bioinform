@@ -16,15 +16,7 @@ class PM
     parse_result = parser.new(input).parse
     raise ArgumentError, 'Used parser result has no `matrix` key'  unless parse_result.has_key? :matrix
     raise ArgumentError, 'Parsing result is not a valid matrix'  unless self.class.valid?( parse_result[:matrix] )
-    
     configure_from_hash(parse_result)
-  end
-  def configure_from_hash(parse_result)
-    parse_result.each{|key, value|  send "#{key}=", value  if respond_to? "#{key}="  }
-  end
-  def matrix=(matrix)
-    raise ArgumentError, 'Matrix has invalid format:' unless self.class.valid? matrix
-    @matrix = matrix
   end
   
   def self.valid?(matrix)
@@ -34,11 +26,22 @@ class PM
     matrix.all?{|pos| pos.size == 4}
   end
   
-  def length;  @matrix.size;   end
+  def configure_from_hash(parse_result)
+    parse_result.each{|key, value|  send("#{key}=", value)  if respond_to? "#{key}="  }
+  end
+  
+  def matrix=(matrix)
+    raise ArgumentError, 'Matrix has invalid format:' unless self.class.valid? matrix
+    @matrix = matrix
+  end
+  
+  def length;  
+    @matrix.length;
+  end
   alias_method :size, :length
   
   def to_s(with_name = true)
-    matrix = @matrix.pmap("\t",&:join).join("\n")
+    matrix = @matrix.map(&:join.("\t")).join("\n")
     if with_name && @name 
       "#{@name}\n#{matrix}"
     else 
@@ -65,5 +68,4 @@ class PM
     end
     hsh.with_indifferent_access
   end
-  
 end
