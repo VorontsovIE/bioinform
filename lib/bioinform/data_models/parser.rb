@@ -10,7 +10,7 @@ class PM
         @subclasses
       end  
       def inherited(subclass)
-        @subclasses << subclass
+        PM::Parser.subclasses << subclass
       end
     end
     
@@ -19,11 +19,10 @@ class PM
     end
     
     def parse
-      #{matrix: [[]], name: 'Empty'}
-      raise NotImplementedError, 'PM::Parser#parse should be redefined in subclasses'
+      raise ArgumentError  unless can_parse?
     end
     
-    def can_parse?(input)
+    def can_parse?
       false
     end 
   end

@@ -3,7 +3,6 @@ require 'bioinform/data_models/parser'
 
 
 describe PM::Parser do
-
   include PM::Parser::Helpers
   
   before :each do
@@ -31,7 +30,7 @@ describe PM::Parser do
   describe '#parse' do
     it 'should raise an error unless reimplemented' do
       parser = PM::Parser.new('my stub input')
-      expect{ parser.parse }.to raise_error NotImplementedError
+      expect{ parser.parse }.to raise_error
     end
     
     context 'in a subclass' do
