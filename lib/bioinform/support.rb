@@ -1,3 +1,6 @@
+require 'active_support/core_ext/string/filters'
+require 'active_support/core_ext/hash/indifferent_access'
+
 require 'bioinform/support/callable_symbol'
 require 'bioinform/support/collect_hash'
 require 'bioinform/support/curry_except_self'
@@ -8,6 +11,3 @@ require 'bioinform/support/pmap'
 require 'bioinform/support/ptap'
 require 'bioinform/support/same_by'
 require 'bioinform/support/yaml_dump_file'
-
-require 'active_support/core_ext/string/filters'
-require 'active_support/core_ext/hash/indifferent_access'
