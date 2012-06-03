@@ -1,7 +1,5 @@
 require 'active_support/core_ext/hash/indifferent_access'
-require 'bioinform/support/multiline_squish'
-require 'bioinform/support/same_by'
-require 'bioinform/support/pmap'
+require 'bioinform/support'
 
 class PositionalMatrix
   module DefaultParser
@@ -64,7 +62,7 @@ class PositionalMatrix
   alias_method :length, :size
   
   def to_s(with_name = true)
-    mat_str = @matrix.pmap("\t",&:join).join("\n")
+    mat_str = @matrix.map(&:join.("\t")).join("\n")
     (with_name && @name) ? "#{@name}\n#{mat_str}" : mat_str
   end
   
