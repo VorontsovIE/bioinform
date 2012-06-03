@@ -1,2 +1,2 @@
-class PositionMatrixCollection
+class PMCollection
 end
