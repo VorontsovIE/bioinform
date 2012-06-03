@@ -19,8 +19,8 @@ class PM
   
   def self.valid?(matrix)
     matrix.is_a?(Array) && 
-    matrix.all?{|pos| pos.is_a? Array} &&
-    matrix.all?{|pos| pos.all?{|el| el.is_a? Numeric}} && 
+    matrix.all?(&:is_a?.(Array)) &&
+    matrix.all?(&:all?.(&:is_a?.(Numeric))) && 
     matrix.all?{|pos| pos.size == 4}
   end
   
@@ -62,7 +62,7 @@ class PM
   
   def to_hash
     hsh = %w{A C G T}.each_with_index.collect_hash do |letter, letter_index| 
-      [ letter, @matrix.map{ |position| position[letter_index] } ]
+      [ letter, @matrix.map(&:at.(letter_index)) ]
     end
     hsh.with_indifferent_access
   end

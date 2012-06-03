@@ -8,7 +8,7 @@ class HashParser < PM::Parser
     when Hash
       { matrix: input.with_indifferent_access.values_at(:A,:C,:G,:T).transpose }
     when Array
-      { matrix: input.map{|position| position.values_at(:A,:C,:G,:T)} }
+      { matrix: input.map(&:values_at.(:A,:C,:G,:T)) }
     end
   end
   
