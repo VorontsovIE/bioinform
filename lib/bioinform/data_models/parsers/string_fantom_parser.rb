@@ -1,7 +1,5 @@
-require 'bioinform/support/multiline_squish'
-require 'bioinform/data_models/pm'
+require 'bioinform/support'
 require 'bioinform/data_models/parser'
-require 'bioinform/data_models/parsers/array_parser'
 require 'bioinform/data_models/parsers/string_parser'
 
 class StringFantomParser < StringParser

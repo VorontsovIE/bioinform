@@ -1,7 +1,4 @@
-require 'active_support/core_ext/hash/indifferent_access'
-require 'bioinform/support/collect_hash'
-require 'bioinform/support/pmap'
-require 'bioinform/support/callable_symbol'
+require 'bioinform/support'
 
 class PM
   attr_reader :matrix

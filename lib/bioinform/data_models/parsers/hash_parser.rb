@@ -1,6 +1,5 @@
-require 'bioinform/data_models/pm'
+require 'bioinform/support'
 require 'bioinform/data_models/parser'
-require 'active_support/core_ext/hash/indifferent_access'
 
 class HashParser < PM::Parser
   def parse

@@ -25,7 +25,7 @@ describe Array do
   end
   describe '#delete_many' do
     it 'should delete multiple elements with specified values' do
-      @arr.delete_many('b', 'd', 'h')
+      @arr.delete_many('b', 'd', 'h', 'b')
       @arr.should == %w{a c e f g i j}
     end
   end
@@ -37,7 +37,7 @@ describe Hash do
   end
   describe '#delete_many' do
     it 'should delete specified keys' do
-      @arr.delete_many(:T, :C, :F)
+      @arr.delete_many(:T, :C, :F, :T, :T)
       @arr.should == {A: 3, G: 4}
     end
   end

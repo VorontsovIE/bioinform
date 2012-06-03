@@ -1,4 +1,4 @@
-require 'bioinform/data_models/pm'
+require 'bioinform/support'
 require 'bioinform/data_models/parser'
 
 class ArrayParser < PM::Parser
