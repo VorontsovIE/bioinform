@@ -3,11 +3,21 @@ require 'bioinform/support/callable_symbol'
 
 describe Symbol do
   describe '#call' do
+    context 'when symbol curries a block' do
+      it 'should pass a block to a corresponding proc' do
+        :map.(&:to_s).to_proc.call([1,2,3]).should == ['1','2','3']
+        [[1,2,3],[4,5,6]].map(&:map.(&:to_s)).should == [['1','2','3'],['4','5','6']]
+        [[1,2,3],[4,5,6]].map(&:map.(&:to_s.(2))).should == [['1','10','11'],['100','101','110']]
+      end
+    end
+  
     context 'returned object' do
+      
       it 'should have to_proc method' do
         :to_s.().should respond_to :to_proc
         :to_s.(2).should respond_to :to_proc
       end
+      
       context 'corresponding proc' do
         it 'should call method, corresponding to symbol, on first argument' do
           stub_obj = double('obj')
@@ -42,6 +52,7 @@ describe Symbol do
           end
         end
       end
-    end    
+      
+    end
   end
 end
