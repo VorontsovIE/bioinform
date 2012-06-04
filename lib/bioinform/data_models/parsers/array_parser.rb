@@ -6,7 +6,7 @@ class ArrayParser < PM::Parser
     super
     if input.all?{|line| line.size == 4}
       {matrix: input}
-    elsif input.size ==4
+    elsif input.size == 4
       {matrix: input.transpose}
     end
   end
