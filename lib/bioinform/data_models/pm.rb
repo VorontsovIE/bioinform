@@ -6,16 +6,26 @@ class PM
   
   def initialize(input = nil, parser = nil)
     @background = [1, 1, 1, 1]
-    return unless input
-    if parser
-      raise ArgumentError, 'Input cannot be parsed by specified parser' unless parser.new(input).can_parse?
+    @input = input
+    @parser = parser
+    return unless @input
+    parser_init
+    matrix_init
+  end
+  
+  def parser_init
+    if @parser
+      raise ArgumentError, 'Input cannot be parsed by specified parser' unless @parser.new(@input).can_parse?
     else
-      parser = PM::Parser.subclasses.find{|parser_class| parser_class.new(input).can_parse? }
-      raise ArgumentError, 'No one parser can parse specified input' unless parser
+      @parser = PM::Parser.subclasses.find{|parser_class| parser_class.new(@input).can_parse? }
+      raise ArgumentError, 'No one parser can parse specified input' unless @parser
     end
-    parse_result = parser.new(input).parse
+  end
+  
+  def matrix_init
+    parse_result = @parser.new(@input).parse
     raise ArgumentError, 'Used parser result has no `matrix` key'  unless parse_result.has_key? :matrix
-    
+   
     configure_from_hash(parse_result)
   end
   
