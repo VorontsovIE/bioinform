@@ -15,25 +15,30 @@ class PM
     end
     parse_result = parser.new(input).parse
     raise ArgumentError, 'Used parser result has no `matrix` key'  unless parse_result.has_key? :matrix
-    raise ArgumentError, 'Parsing result is not a valid matrix'  unless self.class.valid?( parse_result[:matrix] )
+    
+    #raise ArgumentError, 'Parsing result is not a valid matrix'  unless self.class.valid?(  )
+    #self.matrix = parse_result[:matrix]
     
     configure_from_hash(parse_result)
   end
   
-  def self.valid?(matrix)
-    matrix.is_a?(Array) && 
-    matrix.all?(&:is_a?.(Array)) &&
-    matrix.all?(&:all?.(&:is_a?.(Numeric))) && 
-    matrix.all?{|pos| pos.size == 4}
+  def valid?
+    @matrix.is_a?(Array) && 
+    @matrix.all?(&:is_a?.(Array)) &&
+    @matrix.all?(&:all?.(&:is_a?.(Numeric))) && 
+    @matrix.all?{|pos| pos.size == 4}
   end
   
   def configure_from_hash(parse_result)
     parse_result.each{|key, value|  send("#{key}=", value)  if respond_to? "#{key}="  }
   end
   
-  def matrix=(matrix)
-    raise ArgumentError, 'Matrix has invalid format:' unless self.class.valid? matrix
-    @matrix = matrix
+  def matrix=(new_matrix)
+    old_matrix, @matrix = matrix, new_matrix
+    raise ArgumentError, 'Matrix has invalid format:' unless valid?
+    rescue
+    @matrix = old_matrix
+    raise
   end
   
   def length;  
