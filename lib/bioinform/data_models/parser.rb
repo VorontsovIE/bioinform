@@ -19,12 +19,21 @@ class PM
       @input = input
     end
     
+    def parse_core
+      raise NotImplemented
+    end
+    
+      
     def parse
-      raise ArgumentError  unless can_parse?
+      parse_core
     end
     
     def can_parse?
+      parse_core
+      true
+    rescue
       false
-    end 
+    end
+
   end
 end

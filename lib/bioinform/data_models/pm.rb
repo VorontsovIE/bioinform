@@ -34,6 +34,8 @@ class PM
     @matrix.all?(&:is_a?.(Array)) &&
     @matrix.all?(&:all?.(&:is_a?.(Numeric))) && 
     @matrix.all?{|pos| pos.size == 4}
+  rescue 
+    false
   end
   
   def configure_from_hash(parse_result)

@@ -22,28 +22,22 @@ class StringParser < PM::Parser
     /\A#{header_pat}#{matrix_pat}\z/
   end
   
+  # when matrix is extracted from the string it should be transformed to a matrix of numerics
   def matrix_preprocess(matrix)
     matrix.split("\n").map{|line| line.split.map(&:to_f)}
   end
-  
-  # when matrix is extracted from the string it should be transformed to a matrix of numerics
-  def parse
-    super
-    match = input.multiline_squish.match(pattern)
-    matrix = matrix_preprocess( match[:matrix] )
-    result = ArrayParser.new(matrix).parse
-    match[:name]  ?  result.merge(name: match[:name])  :  result
-  end
-  
-  def can_parse?
+
+  def parse_core
     case input
     when String      
       match = input.multiline_squish.match(pattern)
-      return false  unless match
+      raise ArgumentError  unless match
       matrix = matrix_preprocess( match[:matrix] )
-      matrix && ArrayParser.new(matrix).can_parse?
+      raise ArgumentError  unless matrix
+      result = ArrayParser.new(matrix).parse
+      match[:name]  ?  result.merge(name: match[:name])  :  result
+    else
+      raise ArgumentError
     end
-  rescue 
-    false
   end
 end
