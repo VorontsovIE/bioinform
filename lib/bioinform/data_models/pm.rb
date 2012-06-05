@@ -127,6 +127,12 @@ class PM
   def vocabulary_volume
     background_sum ** length
   end
+  
+  def probability
+    sum = background_sum
+    @background.map{|element| element.to_f / sum}
+  end
+
 
   #def split(first_chunk_length)
   #  [@matrix.first(first_chunk_length), matrix.last(length - first_chunk_length)]
