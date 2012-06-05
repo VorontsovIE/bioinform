@@ -16,9 +16,6 @@ class PM
     parse_result = parser.new(input).parse
     raise ArgumentError, 'Used parser result has no `matrix` key'  unless parse_result.has_key? :matrix
     
-    #raise ArgumentError, 'Parsing result is not a valid matrix'  unless self.class.valid?(  )
-    #self.matrix = parse_result[:matrix]
-    
     configure_from_hash(parse_result)
   end
   
@@ -36,7 +33,7 @@ class PM
   def matrix=(new_matrix)
     old_matrix, @matrix = matrix, new_matrix
     raise ArgumentError, 'Matrix has invalid format:' unless valid?
-    rescue
+  rescue
     @matrix = old_matrix
     raise
   end
