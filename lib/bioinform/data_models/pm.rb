@@ -170,7 +170,7 @@ module Bioinform
     end
     
     def clear_cache
-      @best_score = @worst_score = @best_suffix = @worst_suffix = nil
+      @best_score, @worst_score, @best_suffix, @worst_suffix = nil,nil,nil,nil
     end
     
     def reverse_complement
@@ -187,6 +187,14 @@ module Bioinform
     end
     def discrete(rate)
       dup.discrete!(rate)
-    end 
+    end
+    def dup
+      obj = super
+      obj.instance_exec(@matrix,@name) do |matrix,name|
+        @matrix = matrix.dup.map(&:dup.(&:dup))
+        @name = name
+      end
+      obj
+    end
   end
 end
