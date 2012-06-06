@@ -89,12 +89,17 @@ module Bioinform
     # pm.background(new_background) - sets an attribute and returns pm itself
     # if more than one argument passed - raises an exception
     def background(*args)
-      clear_cache
       case args.size
       when 0 then @background
-      when 1 then @background = args[0]; self
+      when 1 then background!(args[0])
       else raise ArgumentError, '#background method can get 0 or 1 argument'
       end
+    end
+    
+    def background!(new_background)
+      clear_cache
+      @background = new_background
+      self
     end
     
     def self.zero_column
