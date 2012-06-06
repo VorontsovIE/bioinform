@@ -1,6 +1,7 @@
 require 'bioinform/support'
 require 'bioinform/data_models/pm'
-
-class PCM < PM
-  
+module Bioinform
+  class PCM < PM
+    
+  end
 end
