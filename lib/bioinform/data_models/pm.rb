@@ -189,12 +189,7 @@ module Bioinform
       dup.discrete!(rate)
     end
     def dup
-      obj = super
-      obj.instance_exec(@matrix,@name) do |matrix,name|
-        @matrix = matrix.dup.map(&:dup.(&:dup))
-        @name = name
-      end
-      obj
+      deep_dup
     end
   end
 end
