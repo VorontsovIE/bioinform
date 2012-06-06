@@ -89,6 +89,7 @@ module Bioinform
     # pm.background(new_background) - sets an attribute and returns pm itself
     # if more than one argument passed - raises an exception
     def background(*args)
+      clear_cache
       case args.size
       when 0 then @background
       when 1 then @background = args[0]; self
@@ -101,22 +102,27 @@ module Bioinform
     end
 
     def reverse_complement!
+      clear_cache
       @matrix.reverse!.map!(&:reverse!)
       self
     end
     def left_augment!(n)
+      clear_cache
       n.times{ @matrix.unshift(self.class.zero_column) }
       self
     end
     def right_augment!(n)
+      clear_cache
       n.times{ @matrix.push(self.class.zero_column) }
       self
     end
     def shift_to_zero! # make worst score == 0 by shifting scores of each column
+      clear_cache
       @matrix.map!{|position| min = position.min; position.map{|element| element - min}}
       self
     end
     def discrete!(rate)
+      clear_cache
       @matrix.map!{|position| position.map{|element| (element * rate).ceil}}
       self
     end
@@ -143,19 +149,23 @@ module Bioinform
     #end
 
     def best_score
-      @matrix.inject(0.0){|sum, col| sum + col.max}
+      @best_score ||= @matrix.inject(0.0){|sum, col| sum + col.max}
     end
     def worst_score
-      @matrix.inject(0.0){|sum, col| sum + col.min}
+      @worst_score ||= @matrix.inject(0.0){|sum, col| sum + col.min}
     end
     
     # best score of suffix s[i..l]
     def best_suffix
-      Array.new(length + 1) {|i| @matrix[i...length].map(&:max).inject(0.0, &:+) }
+      @best_suffix ||= Array.new(length + 1) {|i| @matrix[i...length].map(&:max).inject(0.0, &:+) }
     end
     
     def worst_suffix
-      Array.new(length + 1) {|i| @matrix[i...length].map(&:min).inject(0.0, &:+) }
+      @worst_suffix ||= Array.new(length + 1) {|i| @matrix[i...length].map(&:min).inject(0.0, &:+) }
+    end
+    
+    def clear_cache
+      @best_score = @worst_score = @best_suffix = @worst_suffix = nil
     end
     
     def reverse_complement
