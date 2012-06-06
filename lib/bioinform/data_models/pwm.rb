@@ -16,7 +16,7 @@ module Bioinform
     
     def threshold_gauss_estimation(pvalue)
       sigma = Math.sqrt(score_variance)
-      n_ = inverf(1 - 2 * pvalue) * Math.sqrt(2)
+      n_ = Math.inverf(1 - 2 * pvalue) * Math.sqrt(2)
       score_mean + n_ * sigma
     end
   end
