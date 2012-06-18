@@ -36,9 +36,7 @@ class Symbol
     def obj.==(other)
       method_missing(:==, other)
     end
-    def obj.!(other)
-      method_missing(:!, other)
-    end
+    
     obj
   end
 end
