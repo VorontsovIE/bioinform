@@ -9,28 +9,28 @@ require 'bioinform/support/curry_except_self'
 class Symbol
   def call(*args, &block)
     obj=BasicObject.new.instance_exec(self,args,block) do |sym,params,block| 
-      @sym=sym
-      @args = params
-      @block = block
-      @postprocess_meth = []
-      @postprocess_args = []
+      
+      @postprocess_meth = [sym]
+      @postprocess_args = [params]
+      @postprocess_block = [block]
       self
     end
     
     def obj.to_proc
-      res = @sym.to_proc.curry_except_self(*@args, &@block)
+      #res = @sym.to_proc.curry_except_self(*@args, &@block)
       
       # proc/lambda are methods that cannot be used in BasicObject. It's possible to use ->(slf){...} syntax since ruby-1.9.3 p194 but it's too modern and not widely spreaded yet
       ::Proc.new do |slf| 
-        @postprocess_meth.zip(@postprocess_args).inject(res.(slf)) do |result,(call_meth,call_args)| 
-          result.send(call_meth, *call_args) 
+        @postprocess_meth.zip(@postprocess_args,@postprocess_block).inject(slf) do |result,(call_meth,call_args,call_block)| 
+          result.send(call_meth, *call_args,&call_block) 
         end
       end
     end
     
-    def obj.method_missing(meth,*args)
+    def obj.method_missing(meth,*args,&block)
       @postprocess_meth << meth
       @postprocess_args << args
+      @postprocess_block << block
       self
     end
     def obj.==(other)

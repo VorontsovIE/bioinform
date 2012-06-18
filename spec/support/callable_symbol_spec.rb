@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'bioinform/support/callable_symbol'
 
+# TODO: organize and write more correct descriptions
 describe Symbol do
   describe '#call' do
     context 'when symbol curries a block' do
@@ -9,8 +10,10 @@ describe Symbol do
         [[1,2,3],[4,5,6]].map(&:map.(&:to_s)).should == [['1','2','3'],['4','5','6']]
         [[1,2,3],[4,5,6]].map(&:map.(&:to_s.(2))).should == [['1','10','11'],['100','101','110']]
         ['abc','cdef','xy','z','wwww'].select(&:size.() == 4).should == ['cdef', 'wwww']
-        ['abc','aaA','AaA','z'].count(&:upcase.().succ == 'AAB').should == 2
-        [%w{1 2 3 4 5},%w{6 7 8 9 10}].map(&:join.().length).should == [5,6]
+        
+        [%w{1 2 3 4 5},%w{6 7 8 9 10}].map(&:join.().length).should == [5,6]  # method chaining
+        ['abc','aaA','AaA','z'].count(&:upcase.().succ == 'AAB').should == 2 # method chaining with ==
+        [[1,2,3]].map(  &:map.(&:to_s.(2)).map(&:to_i)  ).should == [[1,10,11]]  # method chaining with block on initial symbol and on later symbols
       end
     end
   
