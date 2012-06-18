@@ -8,14 +8,19 @@ describe Symbol do
         :map.(&:to_s).to_proc.call([1,2,3]).should == ['1','2','3']
         [[1,2,3],[4,5,6]].map(&:map.(&:to_s)).should == [['1','2','3'],['4','5','6']]
         [[1,2,3],[4,5,6]].map(&:map.(&:to_s.(2))).should == [['1','10','11'],['100','101','110']]
+        ['abc','cdef','xy','z','wwww'].select(&:size.() == 4).should == ['cdef', 'wwww']
+        ['abc','aaA','AaA','z'].count(&:upcase.().succ == 'AAB').should == 2
+        [%w{1 2 3 4 5},%w{6 7 8 9 10}].map(&:join.().length).should == [5,6]
       end
     end
   
     context 'returned object' do
       
       it 'should have to_proc method' do
-        :to_s.().should respond_to :to_proc
-        :to_s.(2).should respond_to :to_proc
+        expect { :to_s.() }.to respond_to :to_proc
+        expect { :to_s.(2) }.to respond_to :to_proc
+        expect { :to_s.(2) == '110' }.to respond_to :to_proc
+        expect { :to_s.(2).postprocess('arg1','arg2') }.to respond_to :to_proc
       end
       
       context 'corresponding proc' do
