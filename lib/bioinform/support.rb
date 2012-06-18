@@ -11,3 +11,5 @@ require 'bioinform/support/same_by'
 require 'bioinform/support/yaml_dump_file'
 require 'bioinform/support/inverf'
 require 'bioinform/support/deep_dup'
+
+require 'bioinform/support/partial_sums'
