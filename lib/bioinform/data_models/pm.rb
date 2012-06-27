@@ -2,7 +2,7 @@ require 'bioinform/support'
 
 module Bioinform
   class PM
-    attr_reader :matrix
+    attr_reader :matrix, :background
     attr_accessor :name
     
     def initialize(input = nil, parser = nil)
@@ -12,6 +12,10 @@ module Bioinform
       return unless @input
       parser_init
       matrix_init
+    end
+    
+    def ==(other)
+      @matrix == other.matrix && @background == other.background
     end
     
     def parser_init
