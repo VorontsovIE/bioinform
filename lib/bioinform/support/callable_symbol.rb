@@ -1,5 +1,3 @@
-require 'bioinform/support/curry_except_self'
-
 # Useful extension for &:symbol - syntax to make it possible to pass arguments for method in block
 #   ['abc','','','def','ghi'].tap(&:delete.(''))             # ==> ['abc','def','ghi']
 #   [1,2,3].map(&:to_s.(2))                                  # ==> ['1','10','11']
@@ -8,7 +6,7 @@ require 'bioinform/support/curry_except_self'
 #   [%w{1 2 3 4 5},%w{6 7 8 9}].map(&:join.().length)         # ==> [5,4]
 class Symbol
   def call(*args, &block)
-    obj=BasicObject.new.instance_exec(self,args,block) do |meth,params,block| 
+    obj = BasicObject.new.instance_exec(self,args,block) do |meth,params,block| 
       @postprocess_meth = [meth]
       @postprocess_args = [params]
       @postprocess_block = [block]

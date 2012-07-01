@@ -3,7 +3,6 @@ require 'active_support/core_ext/hash/indifferent_access'
 
 require 'bioinform/support/callable_symbol'
 require 'bioinform/support/collect_hash'
-require 'bioinform/support/curry_except_self'
 require 'bioinform/support/delete_many'
 require 'bioinform/support/has_keys'
 require 'bioinform/support/multiline_squish'
