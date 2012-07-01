@@ -38,3 +38,15 @@ class Symbol
     obj
   end
 end
+
+
+=begin
+# Much simplier but ['abc','cdef','xy','z','wwww'].select(&:size.() == 4) wouldn't work
+class Symbol
+  def call(*args, &block)
+    proc do |recv|
+      recv.__send__(self, *args, &block)
+    end
+  end
+end
+=end
