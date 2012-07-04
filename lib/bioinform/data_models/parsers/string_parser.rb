@@ -5,7 +5,7 @@ require 'bioinform/data_models/parsers/array_parser'
 module Bioinform
   class StringParser < PM::Parser    
     def number_pat
-      '[+-]?\d+(\.\d+)?'
+      '[+-]?\d+(\.\d+)?([eE][+-]?\d{1,3})?'
     end
     def row_pat 
       "(#{number_pat} )*#{number_pat}"
