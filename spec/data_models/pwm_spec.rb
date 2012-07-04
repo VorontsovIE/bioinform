@@ -21,5 +21,12 @@ module Bioinform
     
     describe '#gauss_estimation' do
     end
+    
+    describe '#score' do
+      pwm = PWM.new [[1000,2000,3000,4000],[100,200,300,400],[10,20,30,40],[1,2,3,4]]
+      pwm.score('AAAA').should == 1111
+      pwm.score('gata').should == 3141
+      pwm.score('CGCT').should == 2324
+    end
   end
 end
