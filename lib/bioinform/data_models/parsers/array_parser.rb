@@ -2,7 +2,7 @@ require 'bioinform/support'
 require 'bioinform/data_models/parser'
 
 module Bioinform
-  class ArrayParser < PM::Parser
+  class ArrayParser < Parser
     def parse_core
       raise ArgumentError  unless input.is_a?(Array) && input.all?(&:is_a?.(Array)) && input.same_by?(&:length) && (input.size == 4 || input.sample.size == 4)
       if input.all?{|line| line.size == 4}

@@ -2,8 +2,8 @@ require 'spec_helper'
 require 'bioinform/data_models/parser'
 
 module Bioinform
-  describe PM::Parser do
-    include PM::Parser::Helpers
+  describe Parser do
+    include Parser::Helpers
     
     before :each do
       parser_stub :ParserBad, false, { matrix: [[0,0,0,0],[1,1,1,1]], name: 'Bad' }
@@ -14,9 +14,9 @@ module Bioinform
     end
 
     context 'when subklass created' do
-      it 'PM::Parser.subclasses should contain all subclasses' do
-        PM::Parser.subclasses.should include ParserBad
-        PM::Parser.subclasses.should include ParserGood
+      it 'Parser.subclasses should contain all subclasses' do
+        Parser.subclasses.should include ParserBad
+        Parser.subclasses.should include ParserGood
       end
     end
     
@@ -29,7 +29,7 @@ module Bioinform
     
     describe '#parse' do
       it 'should raise an error unless reimplemented' do
-        parser = PM::Parser.new('my stub input')
+        parser = Parser.new('my stub input')
         expect{ parser.parse }.to raise_error
       end
       

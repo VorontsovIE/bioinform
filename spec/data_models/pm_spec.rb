@@ -3,7 +3,7 @@ require 'bioinform/data_models/pm'
 
 module Bioinform
   describe PM do 
-    include PM::Parser::Helpers
+    include Parser::Helpers
     
     describe '#valid?' do
       it 'should be true iff an argument is an array of arrays of 4 numerics in a column' do

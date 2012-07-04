@@ -25,7 +25,7 @@ module Bioinform
       if @parser
         raise ArgumentError, 'Input cannot be parsed by specified parser' unless @parser.new(@input).can_parse?
       else
-        @parser = PM::Parser.subclasses.find{|parser_class| parser_class.new(@input).can_parse? }
+        @parser = Parser.subclasses.find{|parser_class| parser_class.new(@input).can_parse? }
         raise ArgumentError, 'No one parser can parse specified input' unless @parser
       end
     end

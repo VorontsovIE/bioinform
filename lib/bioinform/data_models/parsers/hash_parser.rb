@@ -2,7 +2,7 @@ require 'bioinform/support'
 require 'bioinform/data_models/parser'
 
 module Bioinform
-  class HashParser < PM::Parser
+  class HashParser < Parser
     def parse_core
       case input
       when Hash

@@ -3,7 +3,7 @@ require 'bioinform/data_models/parser'
 require 'bioinform/data_models/parsers/array_parser'
 
 module Bioinform
-  class StringParser < PM::Parser    
+  class StringParser < Parser
     def number_pat
       '[+-]?\d+(\.\d+)?([eE][+-]?\d{1,3})?'
     end

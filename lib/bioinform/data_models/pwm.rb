@@ -19,7 +19,10 @@ module Bioinform
     end
     
     def score(word)
-      word.upcase.each_char.map.with_index{|letter, pos| matrix[pos][IndexByLetter[letter]] }.inject(0.0, &:+)
+      word = word.upcase
+      raise ArgumentError  unless word.length == length
+      raise ArgumentError  unless word.each_char.all?{|letter| %w{A C G T}.include? letter}
+      word.each_char.map.with_index{|letter, pos| matrix[pos][IndexByLetter[letter]] }.inject(0.0, &:+)
     end
   end
 end
