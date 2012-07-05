@@ -11,7 +11,7 @@ module Bioinform
       "(#{number_pat} )*#{number_pat}"
     end
     def name_pat
-      '>? ?(?<name>[\w.+:-]+)'
+      '(>\s*)?(?<name>\S+)'
     end
     def matrix_pat 
       "(?<matrix>(#{row_pat}\n)*#{row_pat})"
