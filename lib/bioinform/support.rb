@@ -12,3 +12,6 @@ require 'bioinform/support/inverf'
 require 'bioinform/support/deep_dup'
 
 require 'bioinform/support/partial_sums'
+
+require 'bioinform/support/array_zip'
+require 'bioinform/support/array_product'
