@@ -104,7 +104,6 @@ module Bioinform
     end
     
     def background!(new_background)
-      clear_cache
       @background = new_background
       self
     end
@@ -113,28 +112,23 @@ module Bioinform
       [0.0, 0.0, 0.0, 0.0]
     end
 
-    def reverse_complement!
-      clear_cache
+    def reverse_complement!      
       @matrix.reverse!.map!(&:reverse!)
       self
     end
     def left_augment!(n)
-      clear_cache
       n.times{ @matrix.unshift(self.class.zero_column) }
       self
     end
     def right_augment!(n)
-      clear_cache
       n.times{ @matrix.push(self.class.zero_column) }
       self
     end
     def shift_to_zero! # make worst score == 0 by shifting scores of each column
-      clear_cache
       @matrix.map!{|position| min = position.min; position.map{|element| element - min}}
       self
     end
     def discrete!(rate)
-      clear_cache
       @matrix.map!{|position| position.map{|element| (element * rate).ceil}}
       self
     end
@@ -161,23 +155,19 @@ module Bioinform
     #end
 
     def best_score
-      @best_score ||= @matrix.inject(0.0){|sum, col| sum + col.max}
+      @matrix.inject(0.0){|sum, col| sum + col.max}
     end
     def worst_score
-      @worst_score ||= @matrix.inject(0.0){|sum, col| sum + col.min}
+      @matrix.inject(0.0){|sum, col| sum + col.min}
     end
     
     # best score of suffix s[i..l]
-    def best_suffix
-      @best_suffix ||= Array.new(length + 1) {|i| @matrix[i...length].map(&:max).inject(0.0, &:+) }
+    def best_suffix(i)
+      @matrix[i...length].map(&:max).inject(0.0, &:+)
     end
     
-    def worst_suffix
-      @worst_suffix ||= Array.new(length + 1) {|i| @matrix[i...length].map(&:min).inject(0.0, &:+) }
-    end
-    
-    def clear_cache
-      @best_score, @worst_score, @best_suffix, @worst_suffix = nil,nil,nil,nil
+    def worst_suffix(i)
+      @matrix[i...length].map(&:min).inject(0.0, &:+)
     end
     
     def reverse_complement

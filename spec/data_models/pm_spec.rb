@@ -318,17 +318,23 @@ module Bioinform
     end
     
     describe '#best_suffix' do
-      it 'should be an array of best suffices from start of string and to empty suffix inclusive' do
+      it 'should return maximal score of suffices from i-th position inclusively i.e. [i..end]' do
         @pm = PM.new
         @pm.matrix = [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -1.0, -1.5, -1.0]]
-        @pm.best_suffix.should == [(4.9 + 7.13 - 1.0), (7.13 - 1.0), (-1.0), (0.0) ]
+        @pm.best_suffix(0).should == (4.9 + 7.13 - 1.0)
+        @pm.best_suffix(1).should == (7.13 - 1.0)
+        @pm.best_suffix(2).should == (-1.0)
+        @pm.best_suffix(3).should == (0.0)
       end
     end
     describe '#worst_suffix' do
-      it 'should be an array of worst suffices from start of string and to empty suffix inclusive' do
+      it 'should return minimal score of suffices from i-th position inclusively i.e. [i..end]' do
         @pm = PM.new
         @pm.matrix = [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -1.0, -1.5, -1.0]]
-        @pm.worst_suffix.should == [(1.3 + 3.25 - 1.5), (3.25 - 1.5), (- 1.5), (0.0) ]
+        @pm.worst_suffix(0).should == (1.3 + 3.25 - 1.5)
+        @pm.worst_suffix(1).should == (3.25 - 1.5)
+        @pm.worst_suffix(2).should == (- 1.5)
+        @pm.worst_suffix(3).should == (0.0)
       end
     end
 
