@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'bioinform/data_models/parsers/array_parser'
+require 'bioinform/data_models/parsers'
 
 module Bioinform
   describe ArrayParser do
