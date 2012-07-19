@@ -1,3 +1,6 @@
+require 'spec_helper'
+require 'bioinform/support/partial_sums'
+
 describe 'Array#partial_sums' do
   context 'when no initial value given' do
     it 'should return an array of the same size with partial sums of elements 0..ind inclusive with float elements' do
