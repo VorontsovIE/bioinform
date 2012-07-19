@@ -109,7 +109,7 @@ module Bioinform
     end
     
     def self.zero_column
-      [0.0, 0.0, 0.0, 0.0]
+      [0, 0, 0, 0]
     end
 
     def reverse_complement!      
