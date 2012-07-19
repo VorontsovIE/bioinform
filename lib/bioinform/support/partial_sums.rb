@@ -1,3 +1,5 @@
+require 'bioinform/support/collect_hash'
+
 class Array
   def partial_sums(initial = 0.0)
     sums = initial
