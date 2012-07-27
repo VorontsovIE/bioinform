@@ -1,8 +1,6 @@
 require 'bioinform/support'
-require 'bioinform/data_models/parser'
-require 'bioinform/data_models/parsers/array_parser'
 
-module Bioinform
+module Bioinform  
   class StringParser < Parser
     def number_pat
       '[+-]?\d+(\.\d+)?([eE][+-]?\d{1,3})?'
@@ -28,18 +26,19 @@ module Bioinform
       matrix.split("\n").map{|line| line.split.map(&:to_f)}
     end
 
-    def parse_core
+    def parse
       case input
-      when String      
+      when String
         match = input.multiline_squish.match(pattern)
         raise ArgumentError  unless match
         matrix = matrix_preprocess( match[:matrix] )
         raise ArgumentError  unless matrix
-        result = ArrayParser.new(matrix).parse
-        match[:name]  ?  result.merge(name: match[:name])  :  result
+        Parser.new(matrix).parse.merge(name: match[:name])
       else
         raise ArgumentError
       end
+    rescue
+      {}
     end
   end
 end

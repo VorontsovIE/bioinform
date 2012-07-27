@@ -1,6 +1,4 @@
 require 'bioinform/support'
-require 'bioinform/data_models/parser'
-require 'bioinform/data_models/parsers/string_parser'
 
 module Bioinform
   class StringFantomParser < StringParser

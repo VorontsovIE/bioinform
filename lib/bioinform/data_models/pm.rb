@@ -1,20 +1,21 @@
+$: << File.join(File.absolute_path(__FILE__),'../../../')
 require 'bioinform/support'
+require 'bioinform/data_models/parsers/parser'
 
 module Bioinform
   IndexByLetter = {'A' => 0, 'C' => 1, 'G' => 2, 'T' => 3}
   LetterByIndex = {0 => 'A', 1 => 'C', 2 => 'G', 3 => 'T'}
 
   class PM
-    attr_reader :matrix, :background
-    attr_accessor :name
+    attr_reader :matrix
+    attr_accessor :background, :name
     
-    def initialize(input = nil, parser = nil)
+    def initialize(input, parser = Parser)
+      result = parser.new(input).parse   
+      @matrix = result[:matrix]
+      @name = result[:name]
       @background = [1, 1, 1, 1]
-      @input = input
-      @parser = parser
-      return unless @input
-      parser_init
-      matrix_init
+      raise 'matrix not valid'  unless valid?
     end
     
     def ==(other)
@@ -30,34 +31,23 @@ module Bioinform
       end
     end
     
-    def matrix_init
-      parse_result = @parser.new(@input).parse
-      raise ArgumentError, 'Used parser result has no `matrix` key'  unless parse_result.has_key? :matrix
-     
-      configure_from_hash(parse_result)
-    end
-    
     def valid?
-      @matrix.is_a?(Array) && 
+      @matrix.is_a?(Array) &&
       @matrix.all?(&:is_a?.(Array)) &&
-      @matrix.all?(&:all?.(&:is_a?.(Numeric))) && 
-      @matrix.all?{|pos| pos.size == 4}
+      @matrix.all?{|pos| pos.size == 4} &&
+      @matrix.all?(&:all?.(&:is_a?.(Numeric)))
     rescue 
       false
     end
     
-    def configure_from_hash(parse_result)
-      parse_result.each{|key, value|  send("#{key}=", value)  if respond_to? "#{key}="  }
+    def each_position
+      if block_given?
+        matrix.each{|pos| yield pos}
+      else
+        Enumerator.new(self, :each_position)
+      end
     end
-    
-    def matrix=(new_matrix)
-      old_matrix, @matrix = matrix, new_matrix
-      raise ArgumentError, 'Matrix has invalid format:' unless valid?
-    rescue
-      @matrix = old_matrix
-      raise
-    end
-    
+        
     def length;  
       @matrix.length;
     end
