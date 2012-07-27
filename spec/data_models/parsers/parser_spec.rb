@@ -52,7 +52,7 @@ module Bioinform
       
       'Excessing keys in row hashes' => {input: {:A => [0,10], :c => [1,11],'g' => [2,12], 'T' => [3,12], :X => [4,14]} }
     }
-
+    
     parser_specs(Parser, good_cases, bad_cases)
   end
 end
