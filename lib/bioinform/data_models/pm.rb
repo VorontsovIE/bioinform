@@ -1,6 +1,6 @@
-$: << File.join(File.absolute_path(__FILE__),'../../../')
+#$: << File.join(File.absolute_path(__FILE__),'../../../')
 require 'bioinform/support'
-require 'bioinform/data_models/parsers/parser'
+require 'bioinform/data_models/parsers'
 
 module Bioinform
   IndexByLetter = {'A' => 0, 'C' => 1, 'G' => 2, 'T' => 3}
