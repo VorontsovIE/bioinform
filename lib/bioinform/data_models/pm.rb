@@ -1,4 +1,3 @@
-#$: << File.join(File.absolute_path(__FILE__),'../../../')
 require 'bioinform/support'
 require 'bioinform/data_models/parsers'
 
