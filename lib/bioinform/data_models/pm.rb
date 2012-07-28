@@ -9,7 +9,12 @@ module Bioinform
     attr_reader :matrix
     attr_accessor :background, :name
     
-    def initialize(input, parser = Parser)
+    def choose_parser(input)
+      input.is_a?(String) ? StringParser : Parser
+    end
+    
+    def initialize(input, parser = nil)
+      parser ||= choose_parser(input)
       result = parser.new(input).parse   
       @matrix = result[:matrix]
       @name = result[:name]
