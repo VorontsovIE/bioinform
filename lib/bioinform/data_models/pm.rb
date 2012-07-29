@@ -11,6 +11,9 @@ module Bioinform
     
     def choose_parser(input)
       input.is_a?(String) ? StringParser : Parser
+      [Parser, StringParser, StringFantomParser].find do |parser|
+        self.class.new(input, parser) rescue nil
+      end
     end
     
     def initialize(input, parser = nil)
