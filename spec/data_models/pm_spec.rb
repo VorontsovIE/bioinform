@@ -41,13 +41,36 @@ module Bioinform
     end
     
     describe '#pretty_string' do
-      it 'should return a string formatted with spaces'
-      it 'should contain first string of ACGT letters'
+      it 'should return a string of floats formatted with spaces' do
+        PM.new( [[1,2,3,4],[5,6,7,8]] ).pretty_string.should match(/1.0 +2.0 +3.0 +4.0 *\n *5.0 +6.0 +7.0 +8.0/)
+      end
+      it 'should contain first string of ACGT letters' do
+        PM.new( [[1,2,3,4],[5,6,7,8]] ).pretty_string.lines.first.should match(/A +C +G +T/)
+      end
+      it 'should round floats upto 3 digits' do
+        PM.new( [[1.1,2.22,3.333,4.4444],[5.5,6.66,7.777,8.8888]] ).pretty_string.should match(/1.1 +2.22 +3.333 +4.444 *\n *5.5 +6.66 +7.777 +8.889/)
+      end
+      
       context 'with name specified' do
-        it 'should contain name if parameter isn\'t false'
+        before :each do
+          @pm = PM.new( [[1.1,2.22,3.333,4.4444],[5.5,6.66,7.777,8.8888]] )
+          @pm.name = 'MyName'
+        end
+        it 'should contain name if parameter `with_name` isn\'t false' do
+          @pm.pretty_string.should match(/MyName\n/)
+        end
+        it 'should not contain name if parameter `with_name` is false' do
+          @pm.pretty_string(false).should_not match(/MyName\n/)
+        end
       end
       context 'without name specified' do
-        it 'should not contain name'
+        before :each do
+          @pm = PM.new( [[1.1,2.22,3.333,4.4444],[5.5,6.66,7.777,8.8888]] )
+        end
+        it 'should not contain name whether parameter `with_name` is or isn\'t false' do
+          @pm.pretty_string.should_not match(/MyName\n/)
+          @pm.pretty_string(false).should_not match(/MyName\n/)
+        end
       end
     end
     

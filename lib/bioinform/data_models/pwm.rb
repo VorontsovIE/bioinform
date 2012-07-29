@@ -3,12 +3,12 @@ require 'bioinform/data_models/pm'
 module Bioinform
   class PWM < PM
     def score_mean
-      matrix.inject(0.0){ |mean, position| mean + position.each_index.inject(0.0){|sum, letter| sum + position[letter] * probability[letter]} }
+      each_position.inject(0){ |mean, position| mean + position.each_index.inject(0){|sum, letter| sum + position[letter] * probability[letter]} }
     end
     def score_variance
-      matrix.inject(0.0) do |variance, position|
-        variance  + position.each_index.inject(0.0) { |sum,letter| sum + position[letter]**2 * probability[letter] } -
-                    position.each_index.inject(0.0) { |sum,letter| sum + position[letter]    * probability[letter] }**2
+      each_position.inject(0) do |variance, position|
+        variance  + position.each_index.inject(0) { |sum,letter| sum + position[letter]**2 * probability[letter] } -
+                    position.each_index.inject(0) { |sum,letter| sum + position[letter]    * probability[letter] }**2
       end
     end
     
@@ -20,9 +20,9 @@ module Bioinform
     
     def score(word)
       word = word.upcase
-      raise ArgumentError  unless word.length == length
-      raise ArgumentError  unless word.each_char.all?{|letter| %w{A C G T}.include? letter}
-      word.each_char.map.with_index{|letter, pos| matrix[pos][IndexByLetter[letter]] }.inject(0.0, &:+)
+      raise ArgumentError, 'word in PWM#score(word) should have the same length as matrix'  unless word.length == length
+      raise ArgumentError, 'word in PWM#score(word) should have only ACGT-letters'  unless word.each_char.all?{|letter| %w{A C G T}.include? letter}
+      word.each_char.map.with_index{|letter, pos| matrix[pos][IndexByLetter[letter]] }.inject(&:+)
     end
   end
 end
