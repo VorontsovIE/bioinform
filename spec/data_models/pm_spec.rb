@@ -41,6 +41,9 @@ module Bioinform
     end
     
     describe '#pretty_string' do
+      it 'should format string with 7-chars fields' do
+        PM.new( [[1,2,3,4],[5,6,7,8]] ).pretty_string.should == "   A      C      G      T   \n   1.0    2.0    3.0    4.0\n   5.0    6.0    7.0    8.0"
+      end
       it 'should return a string of floats formatted with spaces' do
         PM.new( [[1,2,3,4],[5,6,7,8]] ).pretty_string.should match(/1.0 +2.0 +3.0 +4.0 *\n *5.0 +6.0 +7.0 +8.0/)
       end
