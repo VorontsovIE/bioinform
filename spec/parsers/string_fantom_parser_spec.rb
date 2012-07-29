@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'bioinform/data_models/string_fantom_parser'
+require 'bioinform/parsers/string_fantom_parser'
 
 module Bioinform    
   describe StringFantomParser do

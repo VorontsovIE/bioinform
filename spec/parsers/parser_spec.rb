@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'bioinform/data_models/parser'
+require 'bioinform/parsers/parser'
 
 module Bioinform
   describe Parser do
