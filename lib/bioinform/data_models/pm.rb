@@ -1,5 +1,5 @@
 require 'bioinform/support'
-require 'bioinform/data_models/parsers'
+require 'bioinform/parsers'
 
 module Bioinform
   IndexByLetter = {'A' => 0, 'C' => 1, 'G' => 2, 'T' => 3}

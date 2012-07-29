@@ -1,3 +1,5 @@
+require 'bioinform/parsers'
+
 require 'bioinform/data_models/pm'
 require 'bioinform/data_models/pcm'
 require 'bioinform/data_models/pwm'

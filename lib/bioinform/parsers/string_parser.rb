@@ -1,5 +1,5 @@
 require 'bioinform/support'
-require 'bioinform/data_models/parser'
+require 'bioinform/parsers/parser'
 
 module Bioinform  
   class StringParser < Parser
