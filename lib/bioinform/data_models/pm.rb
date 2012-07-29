@@ -29,15 +29,6 @@ module Bioinform
       @matrix == other.matrix && @background == other.background
     end
     
-    def parser_init
-      if @parser
-        raise ArgumentError, 'Input cannot be parsed by specified parser' unless @parser.new(@input).can_parse?
-      else
-        @parser = Parser.subclasses.find{|parser_class| parser_class.new(@input).can_parse? }
-        raise ArgumentError, 'No one parser can parse specified input' unless @parser
-      end
-    end
-    
     def valid?
       @matrix.is_a?(Array) &&
       @matrix.all?(&:is_a?.(Array)) &&
