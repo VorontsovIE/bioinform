@@ -121,17 +121,13 @@ module Bioinform
       self
     end
 
-    def background_sum
-      @background.inject(0.0, &:+)
-    end
-
     def vocabulary_volume
-      background_sum ** length
+      background.inject(&:+) ** length
     end
     
     def probability
-      sum = background_sum
-      @background.map{|element| element.to_f / sum}
+      sum = background.inject(0.0, &:+)
+      background.map{|element| element.to_f / sum}
     end
 
 

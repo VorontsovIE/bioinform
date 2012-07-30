@@ -206,21 +206,6 @@ module Bioinform
       end
     end
     
-    describe '#background_sum' do
-      before :each do
-        @pm = PM.new( [[1.3, 2.0, 3.2, 4.9], [5.0, 6.5, 3.2, 4.6]] )
-      end
-      context 'when background is [1,1,1,1]' do
-        it 'should be 4' do
-          @pm.background_sum.should == 4
-        end
-      end
-      it 'should be sum of background' do
-        @pm.background( [0.2, 0.3, 0.3, 0.2] )
-        @pm.background_sum.should == 1.0
-      end
-    end
-    
     describe '#vocabulary_volume' do
       before :each do
         @pm_2_positions = PM.new( [[1.3, 2.0, 3.2, 4.9], [5.0, 6.5, 3.2, 4.6]] )
@@ -235,10 +220,10 @@ module Bioinform
       context 'when background is normalized probabilities' do
         it 'should be 1.0' do
           @pm_2_positions.background( [0.2, 0.3, 0.3, 0.2] )
-          @pm_2_positions.background_sum.should == 1.0
+          @pm_2_positions.vocabulary_volume.should == 1.0
           
           @pm_3_positions.background( [0.2, 0.3, 0.3, 0.2] )
-          @pm_3_positions.background_sum.should == 1.0
+          @pm_3_positions.vocabulary_volume.should == 1.0
         end
       end
     end
