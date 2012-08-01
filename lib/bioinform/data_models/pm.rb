@@ -18,7 +18,8 @@ module Bioinform
     
     def initialize(input, parser = nil)
       parser ||= choose_parser(input)
-      result = parser.new(input).parse   
+      raise 'No one parser can process input'  unless parser
+      result = parser.new(input).parse
       @matrix = result[:matrix]
       @name = result[:name]
       @background = [1, 1, 1, 1]
