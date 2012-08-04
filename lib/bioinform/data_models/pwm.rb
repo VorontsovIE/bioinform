@@ -22,7 +22,8 @@ module Bioinform
       word = word.upcase
       raise ArgumentError, 'word in PWM#score(word) should have the same length as matrix'  unless word.length == length
       raise ArgumentError, 'word in PWM#score(word) should have only ACGT-letters'  unless word.each_char.all?{|letter| %w{A C G T}.include? letter}
-      word.each_char.map.with_index{|letter, pos| matrix[pos][IndexByLetter[letter]] }.inject(&:+)
+      #word.each_char.map.with_index{|letter, pos| matrix[pos][IndexByLetter[letter]] }.inject(&:+)
+      (0...length).inject(0){|sum, idx| sum + matrix[idx][IndexByLetter[word[idx]]] }
     end
   end
 end

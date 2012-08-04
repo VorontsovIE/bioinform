@@ -1,5 +1,7 @@
 require 'bioinform/support'
 require 'bioinform/data_models/pm'
+require 'bioinform/data_models/ppm'
+require 'bioinform/data_models/pwm'
 module Bioinform
   class PCM < PM
     def count
@@ -13,6 +15,11 @@ module Bioinform
         end
       end
       PWM.new(mat)
+    end
+    
+    def to_ppm
+      mat = each_position.map{|pos| pos.map{|el| el.to_f / count }}
+      PPM.new(mat)
     end
 
   end
