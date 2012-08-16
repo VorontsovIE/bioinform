@@ -25,6 +25,7 @@ module Bioinform
       (0...length).map do |pos|
         begin
         # Need support of N-letters and other IUPAC
+          letter = word[pos]
           matrix[pos][IndexByLetter[letter]]
         rescue
           raise ArgumentError, 'word in PWM#score(word) should have only ACGT-letters'
