@@ -15,5 +15,11 @@ describe String do
     it 'should preserve rows pagination' do
       "abc def ghi\njk lmn".multiline_squish.should == "abc def ghi\njk lmn"
     end
+    it 'should preserve empty lines in the middle of text' do
+      "abc def\n\nghi\n \t  \njk lmn \n\n\n zzz".multiline_squish.should == "abc def\n\nghi\n\njk lmn\n\n\nzzz"
+    end
+    it 'should drop empty lines at begin and at end of string' do
+      "\n  \t\n\nabc def\n\nghi\n \t  \njk lmn \n\n\n zzz\n\n \t  \n".multiline_squish.should == "abc def\n\nghi\n\njk lmn\n\n\nzzz"
+    end
   end
 end
