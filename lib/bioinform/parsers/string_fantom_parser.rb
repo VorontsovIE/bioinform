@@ -4,10 +4,10 @@ require 'bioinform/parsers/string_parser'
 module Bioinform
   class StringFantomParser < StringParser
     def row_pat
-      '[\w\d]+ ' + "(#{number_pat} )*#{number_pat}"
+      /[\w\d]+ (#{number_pat} )*#{number_pat}/
     end
     def name_pat
-      'NA (?<name>[\w.+:-]+)'
+      /NA (?<name>[\w.+:-]+)/
     end
     def header_pat
       /#{name_pat}\n[\w\d]+ A C G T\n/

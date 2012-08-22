@@ -5,13 +5,13 @@ require 'bioinform/parsers/parser'
 module Bioinform  
   class StringParser < Parser
     def number_pat
-      '[+-]?\d+(\.\d+)?([eE][+-]?\d{1,3})?'
+      /[+-]?\d+(\.\d+)?([eE][+-]?\d{1,3})?/
     end
     def row_pat 
-      "(#{number_pat} )*#{number_pat}"
+      /(#{number_pat} )*#{number_pat}/
     end
     def name_pat
-      '(>\s*)?(?<name>\S+)'
+      /(>\s*)?(?<name>\S+)/
     end
     def matrix_pat 
       /(?<matrix>(#{row_pat}\n)*#{row_pat})/
@@ -32,14 +32,21 @@ module Bioinform
       case input
       when String
         scanner = StringScanner.new(input.multiline_squish)
+        
         name = scanner.scan(header_pat)
         name = name.match(header_pat)[:name]
+        #unless scanner.check(number_pat)
+        #  scanner.scan(/>\s*/)
+        #  name = scanner.scan(/\S+/)
+        #  scanner.scan("\n")
+        #end
+        
         matrix = scanner.scan(matrix_pat)
         raise ArgumentError unless matrix
         matrix = matrix_preprocess( matrix )
         result = Parser.new(matrix).parse
         raise ArgumentError unless result && !result.empty?
-        result.merge(name: name).tap{|x| p x}
+        result.merge(name: name)
       else
         raise ArgumentError
       end
