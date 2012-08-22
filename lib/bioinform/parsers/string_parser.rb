@@ -16,9 +16,7 @@ module Bioinform
     def matrix_pat 
       /(?<matrix>(#{row_pat}\n)*#{row_pat})/
     end
-    def header_pat
-      /(#{name_pat}\n)?/
-    end
+    
     def pattern
       /\A#{header_pat}#{matrix_pat}\z/
     end
@@ -27,22 +25,28 @@ module Bioinform
     def matrix_preprocess(matrix)
       matrix.split("\n").map{|line| line.split.map(&:to_f)}
     end
+    
+    def parse_name(scanner)
+      unless scanner.check(number_pat)
+        scanner.scan(/>\s*/)
+        name = scanner.scan(/\S+/)
+        scanner.scan(/\n/)
+      end
+      name
+    end
 
-   def parse
+    def parse
       case input
       when String
         scanner = StringScanner.new(input.multiline_squish)
         
-        name = scanner.scan(header_pat)
-        name = name.match(header_pat)[:name]
-        #unless scanner.check(number_pat)
-        #  scanner.scan(/>\s*/)
-        #  name = scanner.scan(/\S+/)
-        #  scanner.scan("\n")
-        #end
+        #name = scanner.scan(header_pat)
+        #name = name.match(header_pat)[:name]
+        name = parse_name(scanner)
         
         matrix = scanner.scan(matrix_pat)
         raise ArgumentError unless matrix
+
         matrix = matrix_preprocess( matrix )
         result = Parser.new(matrix).parse
         raise ArgumentError unless result && !result.empty?
