@@ -10,7 +10,7 @@ module Bioinform
       'NA (?<name>[\w.+:-]+)'
     end
     def header_pat
-      "#{name_pat}\n" + '[\w\d]+ ' +"A C G T\n"
+      /#{name_pat}\n[\w\d]+ A C G T\n/
     end
     
     def matrix_preprocess(matrix)

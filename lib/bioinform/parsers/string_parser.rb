@@ -1,3 +1,4 @@
+require 'strscan'
 require 'bioinform/support'
 require 'bioinform/parsers/parser'
 
@@ -13,10 +14,10 @@ module Bioinform
       '(>\s*)?(?<name>\S+)'
     end
     def matrix_pat 
-      "(?<matrix>(#{row_pat}\n)*#{row_pat})"
+      /(?<matrix>(#{row_pat}\n)*#{row_pat})/
     end
     def header_pat
-      "(#{name_pat}\n)?"
+      /(#{name_pat}\n)?/
     end
     def pattern
       /\A#{header_pat}#{matrix_pat}\z/
@@ -27,6 +28,26 @@ module Bioinform
       matrix.split("\n").map{|line| line.split.map(&:to_f)}
     end
 
+   def parse
+      case input
+      when String
+        scanner = StringScanner.new(input.multiline_squish)
+        name = scanner.scan(header_pat)
+        name = name.match(header_pat)[:name]
+        matrix = scanner.scan(matrix_pat)
+        raise ArgumentError unless matrix
+        matrix = matrix_preprocess( matrix )
+        result = Parser.new(matrix).parse
+        raise ArgumentError unless result && !result.empty?
+        result.merge(name: name).tap{|x| p x}
+      else
+        raise ArgumentError
+      end
+    rescue
+      {}
+    end
+    
+=begin
     def parse
       case input
       when String
@@ -41,5 +62,7 @@ module Bioinform
     rescue
       {}
     end
+=end
+ 
   end
 end
