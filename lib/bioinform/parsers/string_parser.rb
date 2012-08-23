@@ -2,78 +2,70 @@ require 'strscan'
 require 'bioinform/support'
 require 'bioinform/parsers/parser'
 
+class StringScanner
+  def advanced_scan(pat)
+    result = scan(pat)
+    result && result.match(pat)
+  end
+end
+
 module Bioinform  
   class StringParser < Parser
+    attr_reader :scanner
+    def initialize(input)
+      super
+      @scanner = StringScanner.new(input.multiline_squish)
+    end
+  
     def number_pat
       /[+-]?\d+(\.\d+)?([eE][+-]?\d{1,3})?/
     end
+    
+    def header_pat
+      />?\s*(?<name>\S+)\n/
+    end
+    
     def row_pat 
-      /(#{number_pat} )*#{number_pat}/
-    end
-    def name_pat
-      /(>\s*)?(?<name>\S+)/
-    end
-    def matrix_pat 
-      /(?<matrix>(#{row_pat}\n)*#{row_pat})/
+      /(?<row>(#{number_pat} )*#{number_pat})/
     end
     
-    def pattern
-      /\A#{header_pat}#{matrix_pat}\z/
+    def parse_name
+      match = scanner.advanced_scan(header_pat)
+      match && match[:name]
     end
     
-    # when matrix is extracted from the string it should be transformed to a matrix of numerics
-    def matrix_preprocess(matrix)
-      matrix.split("\n").map{|line| line.split.map(&:to_f)}
+    def scan_number
+      scanner.scan(number_pat)
     end
     
-    def parse_name(scanner)
-      unless scanner.check(number_pat)
-        scanner.scan(/>\s*/)
-        name = scanner.scan(/\S+/)
+    def scan_row
+      match = scanner.advanced_scan(row_pat)
+      match && match[:row]
+    end
+    
+    def split_row(row_string)
+      row_string.split.map(&:to_f)
+    end
+    
+    def parse_matrix
+      matrix = []
+      while row_string = scan_row
+        matrix << split_row(row_string)
         scanner.scan(/\n/)
       end
-      name
+      matrix
     end
 
-    def parse
+    def parse!
       case input
       when String
-        scanner = StringScanner.new(input.multiline_squish)
-        
-        #name = scanner.scan(header_pat)
-        #name = name.match(header_pat)[:name]
-        name = parse_name(scanner)
-        
-        matrix = scanner.scan(matrix_pat)
-        raise ArgumentError unless matrix
+        name = parse_name
+        matrix = parse_matrix
 
-        matrix = matrix_preprocess( matrix )
-        result = Parser.new(matrix).parse
-        raise ArgumentError unless result && !result.empty?
-        result.merge(name: name)
+        Parser.new(matrix).parse! .merge(name: name)
       else
         raise ArgumentError
-      end
-    rescue
-      {}
+      end 
     end
-    
-=begin
-    def parse
-      case input
-      when String
-        match = input.multiline_squish.match(pattern)
-        raise ArgumentError  unless match
-        matrix = matrix_preprocess( match[:matrix] )
-        raise ArgumentError  unless matrix
-        Parser.new(matrix).parse.merge(name: match[:name])
-      else
-        raise ArgumentError
-      end
-    rescue
-      {}
-    end
-=end
- 
   end
 end

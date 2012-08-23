@@ -8,7 +8,7 @@ module Bioinform
       @input = input
     end
     
-    def parse
+    def parse!
       inp = input
       transpose =  inp.is_a?(Hash)
       inp = ClassMethods.try_convert_to_array(inp)
@@ -16,8 +16,10 @@ module Bioinform
       transpose = true  if (not inp.all?{|x| x.size == 4}) && inp.size == 4 && inp.same_by?(&:size)
       @matrix = transpose ? inp.transpose : inp
       result
-    rescue
-      {}
+    end
+    
+    def parse
+      parse!  rescue {}
     end
       
     def result(options={})
