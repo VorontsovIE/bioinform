@@ -2,13 +2,6 @@ require 'strscan'
 require 'bioinform/support'
 require 'bioinform/parsers/parser'
 
-class StringScanner
-  def advanced_scan(pat)
-    result = scan(pat)
-    result && result.match(pat)
-  end
-end
-
 module Bioinform  
   class StringParser < Parser
     attr_reader :scanner
@@ -34,10 +27,6 @@ module Bioinform
       match && match[:name]
     end
     
-    def scan_number
-      scanner.scan(number_pat)
-    end
-    
     def scan_row
       match = scanner.advanced_scan(row_pat)
       match && match[:row]
@@ -57,15 +46,10 @@ module Bioinform
     end
 
     def parse!
-      case input
-      when String
-        name = parse_name
-        matrix = parse_matrix
-
-        Parser.new(matrix).parse! .merge(name: name)
-      else
-        raise ArgumentError
-      end 
+      raise ArgumentError  unless input.is_a?(String)
+      name = parse_name
+      matrix = parse_matrix
+      Parser.new(matrix).parse! .merge(name: name)
     end
   end
 end

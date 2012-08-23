@@ -15,3 +15,5 @@ require 'bioinform/support/partial_sums'
 
 require 'bioinform/support/array_zip'
 require 'bioinform/support/array_product'
+
+require 'bioinform/support/advanced_scan'
