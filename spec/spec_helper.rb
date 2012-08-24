@@ -4,7 +4,6 @@ $LOAD_PATH.unshift File.dirname(__FILE__)
 require 'rspec'
 
 def parser_specs(parser_klass, good_cases, bad_cases)
-  
   context '#parse' do
     good_cases.each do |case_description, input_and_result|
       it "should be able to parse #{case_description}" do
