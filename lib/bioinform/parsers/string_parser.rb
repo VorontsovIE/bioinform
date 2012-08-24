@@ -36,17 +36,25 @@ module Bioinform
       row_string.split.map(&:to_f)
     end
     
+    def scan_any_spaces
+      scanner.scan(/\s+/)
+    end
+    def scan_newline
+      scanner.scan(/\n/)
+    end
+    
     def parse_matrix
       matrix = []
       while row_string = scan_row
         matrix << split_row(row_string)
-        scanner.scan(/\n/)
+        scan_newline
       end
       matrix
     end
 
     def parse!
       raise ArgumentError  unless input.is_a?(String)
+      scan_any_spaces
       name = parse_name
       matrix = parse_matrix
       Parser.new(matrix).parse! .merge(name: name)
