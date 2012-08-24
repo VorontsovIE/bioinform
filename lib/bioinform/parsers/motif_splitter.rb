@@ -1,4 +1,3 @@
-require 'bioinform/data_models/pm'
 require 'bioinform/parsers/string_parser'
 
 module Bioinform
