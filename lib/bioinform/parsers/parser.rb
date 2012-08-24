@@ -23,7 +23,7 @@ module Bioinform
     end
       
     def result(options={})
-      raise 'Parsing Error' unless matrix.is_a?(Array) && matrix.all?(&:is_a?.(Array)) && matrix.all?{|pos| pos.size == 4} && matrix.all?(&:all?.(&:is_a?.(Numeric)))
+      raise 'Parsing Error' unless matrix.is_a?(Array) && ! matrix.empty? && matrix.all?(&:is_a?.(Array)) && matrix.all?{|pos| pos.size == 4} && matrix.all?(&:all?.(&:is_a?.(Numeric)))
       options.merge(matrix: @matrix)
     end
     
