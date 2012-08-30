@@ -249,6 +249,12 @@ module Bioinform
         @pm.best_suffix(2).should == (-1.0)
         @pm.best_suffix(3).should == (0.0)
       end
+      it 'should give right results after left(right)_augment, discrete, reverse_complement etc' do
+        pm = PM.new([[1, 2, 3, 4], [10,10.5,11,11.5]])
+        pm.best_suffix(1).should == 11.5
+        pm.left_augment!(1)
+        pm.best_suffix(1).should == 15.5
+      end
     end
     describe '#worst_suffix' do
       it 'should return minimal score of suffices from i-th position inclusively i.e. [i..end]' do

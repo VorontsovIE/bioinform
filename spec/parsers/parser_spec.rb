@@ -3,22 +3,50 @@ require 'bioinform/parsers/parser'
 
 module Bioinform
   describe Parser do
-    context '::try_convert_to_array' do
-      context 'when array passed' do
-        [[1,2,3,4],[5,6,7,8]] }
-        
+    context '::normalize_hash_keys' do
+      it 'should convert both symbolic and string keys, in both upcase and downcase to symbolic upcases' do
+        Parser.normalize_hash_keys( {a: 1, C: 2, 'g' => 3, 'T' => 4} ).should == {A: 1, C: 2, G: 3, T: 4}
       end
-      it 'should return array of arrays' do
+    end
+    
+    context '::need_transpose?' do
+      it 'should point whether matrix have positions(need not be transposed -- false) or letters(true) as first index' do
+        Parser.need_tranpose?([[1,3,5,7], [2,4,6,8]]).should be_false
+        Parser.need_tranpose?([[1,2],[3,4],[5,6],[7,8]]).should be_true
+      end
+    end
+    context '::array_from_acgt_hash' do
+      it 'should convert hash of arrays to a transposed array of arrays' do
+        input = {A: [1,2,3], C: [2,3,4], G: [3,4,5], T: [4,5,6]}
+        Parser.array_from_acgt_hash(input).should == [[1,2,3], [2,3,4], [3,4,5], [4,5,6]].transpose
+      end
+      it 'should convert hash of numbers to an array of numbers' do
+        input = {A: 1, C: 2, G: 3, T: 4}
+        Parser.array_from_acgt_hash(input).should == [1,2,3,4]
+      end
+      it 'should process both symbolic and string keys, in both upcase and downcase' do
+        input_normal_keys = {A: 1, C: 2, G: 3, T: 4}
+        input_different_keys = {:A => 1, :c => 2, 'g' => 3, 'T' => 4}
+        Parser.array_from_acgt_hash(input_different_keys).should == Parser.array_from_acgt_hash(input_normal_keys)
+      end
+    end
+=begin
+    context '::try_convert_to_array' do
+      it 'should return array of arrays that are' do
         inputs = []
         inputs << {:A => [1,2,3], :c => [2,3,4], 'g' => [3,4,5], 'T' => [4,5,6]}
         inputs << [[1,2,3,4], [2,3,4,5], [3,4,5,6]]
+        inputs << [{A:1, C:2, G:3, T:4},{A:2, C:3, G:4, T:5},{A:3, C:4, G:5, T:6}]
         inputs.each do |input|
-          Parser.try_convert_to_array(input).should be_kind_of(Array)
-          Parser.try_convert_to_array(input).each{|el| el.should be_kind_of(Array) }
+          result = Parser.try_convert_to_array(input)
+          result.should be_kind_of(Array)
+          result.each{|el| el.should be_kind_of(Array) }
+          #Parser.try_convert_to_array(input).should == [[1,2,3,4], [2,3,4,5], [3,4,5,6]]
+          #result.each{|el| el.size.should == 4}
         end
       end
     end
-  
+=end  
   
     good_cases = {
       'Array Nx4' => {input: [[0,1,2,3],[10,11,12,13]], 

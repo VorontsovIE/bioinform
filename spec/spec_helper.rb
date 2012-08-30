@@ -17,7 +17,7 @@ def parser_specs(parser_klass, good_cases, bad_cases)
     end
     bad_cases.each do |case_description, input|
       it "should fail silently returning {} on parsing #{case_description}" do
-        parser_klass.new(input[:input]).parse.should == {}
+        parser_klass.new(input[:input]).parse.should be_nil
       end
     end
   end
