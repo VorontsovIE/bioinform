@@ -23,6 +23,8 @@ module Bioinform
       @matrix = result[:matrix]
       @name = result[:name]
       @background = [1, 1, 1, 1]
+      @best_suffix = []
+      @worst_suffix = []
       raise 'matrix not valid'  unless valid?
     end
     
@@ -55,7 +57,7 @@ module Bioinform
     def to_s(with_name = true)
       matrix_str = each_position.map(&:join.("\t")).join("\n")
       if with_name && @name 
-        "#{@name}\n#{matrix_str}"
+        @name + "\n" + matrix_str
       else 
         matrix_str
       end
@@ -148,11 +150,11 @@ module Bioinform
     
     # best score of suffix s[i..l]
     def best_suffix(i)
-      @matrix[i...length].map(&:max).inject(0.0, &:+)
+      @best_suffix[i] ||= @matrix[i...length].map(&:max).inject(0.0, &:+)
     end
     
     def worst_suffix(i)
-      @matrix[i...length].map(&:min).inject(0.0, &:+)
+      @worst_suffix[i] ||= @matrix[i...length].map(&:min).inject(0.0, &:+)
     end
     
     def reverse_complement

@@ -3,6 +3,23 @@ require 'bioinform/parsers/parser'
 
 module Bioinform
   describe Parser do
+    context '::try_convert_to_array' do
+      context 'when array passed' do
+        [[1,2,3,4],[5,6,7,8]] }
+        
+      end
+      it 'should return array of arrays' do
+        inputs = []
+        inputs << {:A => [1,2,3], :c => [2,3,4], 'g' => [3,4,5], 'T' => [4,5,6]}
+        inputs << [[1,2,3,4], [2,3,4,5], [3,4,5,6]]
+        inputs.each do |input|
+          Parser.try_convert_to_array(input).should be_kind_of(Array)
+          Parser.try_convert_to_array(input).each{|el| el.should be_kind_of(Array) }
+        end
+      end
+    end
+  
+  
     good_cases = {
       'Array Nx4' => {input: [[0,1,2,3],[10,11,12,13]], 
                         matrix: [[0,1,2,3],[10,11,12,13]] },
