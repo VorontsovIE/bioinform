@@ -10,7 +10,6 @@ module Bioinform
     attr_accessor :background, :name
     
     def choose_parser(input)
-      input.is_a?(String) ? StringParser : Parser
       [Parser, StringParser, StringFantomParser].find do |parser|
         self.class.new(input, parser) rescue nil
       end
@@ -30,13 +29,17 @@ module Bioinform
       @matrix == other.matrix && @background == other.background
     end
     
-    def valid?
-      @matrix.is_a?(Array) &&
-      @matrix.all?(&:is_a?.(Array)) &&
-      @matrix.all?{|pos| pos.size == 4} &&
-      @matrix.all?(&:all?.(&:is_a?.(Numeric)))
+    def self.valid?(matrix)
+      matrix.is_a?(Array) &&
+      matrix.all?(&:is_a?.(Array)) &&
+      matrix.all?{|pos| pos.size == 4} &&
+      matrix.all?(&:all?.(&:is_a?.(Numeric)))
     rescue 
       false
+    end
+    
+    def valid?
+      self.class.valid?(@matrix)
     end
     
     def each_position

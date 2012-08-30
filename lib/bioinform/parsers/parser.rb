@@ -1,4 +1,5 @@
 require 'bioinform/support'
+require 'bioinform/data_models/pm'
 
 module Bioinform
   class Parser
@@ -19,7 +20,7 @@ module Bioinform
     end
 
     def self.valid_matrix?(matrix)
-      matrix.is_a?(Array) && ! matrix.empty? && matrix.all?(&:is_a?.(Array)) && matrix.all?{|pos| pos.size == 4} && matrix.all?(&:all?.(&:is_a?.(Numeric)))
+      PM.valid?(matrix)
     end
     
     # {A: 1, C: 2, G: 3, T: 4}  -->  [1,2,3,4]
