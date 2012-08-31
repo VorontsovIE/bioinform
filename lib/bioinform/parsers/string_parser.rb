@@ -55,5 +55,22 @@ module Bioinform
       matrix = parse_matrix
       Parser.parse!(matrix).merge(name: name)
     end
+    
+    def scanner_reset
+      scanner.reset
+    end
+    
+    def each
+      if block_given?
+        scanner_reset
+        while result = parse
+          yield result
+        end
+      else
+        Enumerator.new(self, :each)
+      end
+    end
+    include Enumerable
+
   end
 end

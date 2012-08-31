@@ -10,6 +10,9 @@ module Bioinform
       it 'should treat several arguments as an array composed of them' do
         Parser.new([1,2,3,4],[5,6,7,8]).parse.should == Parser.new([[1,2,3,4],[5,6,7,8]]).parse
       end
+      it 'should treat one Array of numbers as an Array(with 1 element) of Arrays' do
+        Parser.new([1,2,3,4]).parse.should == Parser.new([[1,2,3,4]]).parse
+      end
     end
     
     context '::parse!' do
@@ -107,6 +110,10 @@ module Bioinform
     }
     
     bad_cases = {
+      'Nil object on input' => {input: nil},
+      
+      'Empty array on input' => {input: []},
+    
       'Different sizes of row arrays' => {input: [[1,2,3,4],[5,6,7,8,9]] },
       
       'Different sizes of column arrays' => {input: [[0,10],[1,11],[2,12],[3]] },
@@ -131,5 +138,10 @@ module Bioinform
     }
     
     parser_specs(Parser, good_cases, bad_cases)
+    context '#parser!' do
+      it "should raise an exception on parsing empty list to parser" do
+        expect{ Parser.new().parse! }.to raise_error
+      end
+    end
   end
 end

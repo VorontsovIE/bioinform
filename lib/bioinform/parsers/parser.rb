@@ -6,12 +6,20 @@ module Bioinform
     attr_reader :input
     
     def initialize(*input)
-        @input = (input.size == 1) ? input.first : input
+      if input.size == 1  # [ [1,2,3,4] ],  [  [[1,2,3,4],[5,6,7,8]] ]
+        if input.first.is_a?(Array) && input.first.all?{|el| el.is_a? Numeric}  # [ [1,2,3,4] ]
+          @input = input
+        else  # [  [[1,2,3,4],[5,6,7,8]] ]
+          @input = input.first
+        end
+      else #[ [1,2,3,4], [5,6,7,8] ], [   ]
+        @input = input
+      end
     end
     
     def parse!
       matrix = self.class.transform_input(input)
-      raise 'Parsing Error' unless self.class.valid_matrix?(matrix)
+      raise 'Parsing error' unless self.class.valid_matrix?(matrix)
       {matrix: matrix}
     end
     
