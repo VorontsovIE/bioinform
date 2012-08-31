@@ -6,6 +6,7 @@ module Bioinform
   class StringParser < Parser
     attr_reader :scanner
     def initialize(input)
+      raise ArgumentError  unless input.is_a?(String)
       super
       @scanner = StringScanner.new(input.multiline_squish)
     end
@@ -19,12 +20,7 @@ module Bioinform
     end
     
     def row_pat 
-      /(?<row>(#{number_pat} )*#{number_pat})/
-    end
-    
-    def parse_name
-      match = scanner.advanced_scan(header_pat)
-      match && match[:name]
+      /(?<row>(#{number_pat} )*#{number_pat})\n?/
     end
     
     def scan_row
@@ -39,25 +35,25 @@ module Bioinform
     def scan_any_spaces
       scanner.scan(/\s+/)
     end
-    def scan_newline
-      scanner.scan(/\n/)
+    
+    def parse_name
+      match = scanner.advanced_scan(header_pat)
+      match && match[:name]
     end
     
     def parse_matrix
       matrix = []
       while row_string = scan_row
         matrix << split_row(row_string)
-        scan_newline
       end
       matrix
     end
 
     def parse!
-      raise ArgumentError  unless input.is_a?(String)
       scan_any_spaces
       name = parse_name
       matrix = parse_matrix
-      Parser.new(matrix).parse! .merge(name: name)
+      Parser.parse!(matrix).merge(name: name)
     end
   end
 end

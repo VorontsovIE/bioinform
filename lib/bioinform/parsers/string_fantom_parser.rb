@@ -8,7 +8,7 @@ module Bioinform
     end
     
     def row_pat
-      /[\w\d]+ (?<row>(#{number_pat} )*#{number_pat})/
+      /[\w\d]+ (?<row>(#{number_pat} )*#{number_pat})\n?/
     end
   end
 end
