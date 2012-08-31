@@ -3,18 +3,17 @@ require 'bioinform/data_models/pm'
 
 module Bioinform
   describe PM do 
-    describe '#valid?' do
+    
+    describe '::valid_matrix?' do
       it 'should be true iff an argument is an array of arrays of 4 numerics in a column' do
-
-        PM.new([[0,0,0,0]]).instance_eval{@matrix = [[1,2,3,4],[1,4,5,6.5]]; self }.valid?.should be_true
-        PM.new([[0,0,0,0]]).instance_eval{@matrix = {A: [1,1], C: [2,4], G: [3,5], T: [4, 6.5]}; self }.valid?.should be_false
-        PM.new([[0,0,0,0]]).instance_eval{@matrix = [{A:1,C:2,G:3,T:4},{A:1,C:4,G:5,T: 6.5}]; self }.valid?.should be_false
-        PM.new([[0,0,0,0]]).instance_eval{@matrix = [[1,2,3,4],[1,4,6.5]]; self }.valid?.should be_false
-        PM.new([[0,0,0,0]]).instance_eval{@matrix = [[1,2,3],[1,4,6.5]]; self }.valid?.should be_false
-        PM.new([[0,0,0,0]]).instance_eval{@matrix = [[1,2,'3','4'],[1,'4','5',6.5]]; self }.valid?.should be_false
-
+        PM.valid_matrix?( [[1,2,3,4],[1,4,5,6.5]] ).should be_true
+        PM.valid_matrix?( {A: [1,1], C: [2,4], G: [3,5], T: [4, 6.5]} ).should be_false
+        PM.valid_matrix?( [{A:1,C:2,G:3,T:4},{A:1,C:4,G:5,T: 6.5}] ).should be_false
+        PM.valid_matrix?( [[1,2,3,4],[1,4,6.5]] ).should be_false
+        PM.valid_matrix?( [[1,2,3],[1,4,6.5]] ).should be_false
+        PM.valid_matrix?( [[1,2,'3','4'],[1,'4','5',6.5]] ).should be_false
       end
-    end        
+    end
     
     describe '#to_s' do
       before :each do

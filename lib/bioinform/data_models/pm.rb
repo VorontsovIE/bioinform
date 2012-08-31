@@ -2,9 +2,9 @@ require 'bioinform/support'
 require 'bioinform/parsers'
 
 module Bioinform
-  IndexByLetter = {'A' => 0, 'C' => 1, 'G' => 2, 'T' => 3}
-  LetterByIndex = {0 => 'A', 1 => 'C', 2 => 'G', 3 => 'T'}
-
+  IndexByLetter = {'A' => 0, 'C' => 1, 'G' => 2, 'T' => 3, A: 0, C: 1, G: 2, T: 3}
+  LetterByIndex = {0 => :A, 1 => :C, 2 => :G, 3 => :T}
+  
   class PM
     attr_reader :matrix
     attr_accessor :background, :name
@@ -29,7 +29,7 @@ module Bioinform
       @matrix == other.matrix && @background == other.background
     end
     
-    def self.valid?(matrix)
+    def self.valid_matrix?(matrix)
       matrix.is_a?(Array) &&
       matrix.all?(&:is_a?.(Array)) &&
       matrix.all?{|pos| pos.size == 4} &&
@@ -39,7 +39,7 @@ module Bioinform
     end
     
     def valid?
-      self.class.valid?(@matrix)
+      self.class.valid_matrix?(@matrix)
     end
     
     def each_position

@@ -3,14 +3,14 @@ require 'bioinform/data_models/pm'
 
 module Bioinform
   class Parser
-    attr_reader :input, :matrix
+    attr_reader :input
     
-    def initialize(input)
-      @input = input
+    def initialize(*input)
+        @input = (input.size == 1) ? input.first : input
     end
     
     def parse!
-      @matrix = self.class.transform_input(input)
+      matrix = self.class.transform_input(input)
       raise 'Parsing Error' unless self.class.valid_matrix?(matrix)
       {matrix: matrix}
     end
@@ -18,9 +18,16 @@ module Bioinform
     def parse
       parse! rescue nil
     end
+    
+    def self.parse!(*input)
+      self.new(*input).parse!
+    end
+    def self.parse(*input)
+      self.new(*input).parse
+    end
 
     def self.valid_matrix?(matrix)
-      PM.valid?(matrix)
+      PM.valid_matrix?(matrix)
     end
     
     # {A: 1, C: 2, G: 3, T: 4}  -->  [1,2,3,4]
@@ -37,6 +44,9 @@ module Bioinform
       hsh.collect_hash{|key,value| [key.to_s.upcase.to_sym, value] }
     end
     
+    # [[1,2,3,4], [2,3,4,5]] --> [[1,2,3,4], [2,3,4,5]]
+    # [{A:1, C:2, G:3, T:4}, {A:2, C:3, G:4, T:5}] --> [{A:1, C:2, G:3, T:4}, {A:2, C:3, G:4, T:5}]
+    # {:A => [1,2,3], :c => [2,3,4], 'g' => [3,4,5], 'T' => [4,5,6]} --> [[1,2,3],[2,3,4],[3,4,5],[4,5,6]].transpose
     def self.try_convert_to_array(input)
       case input
       when Array then input
@@ -50,7 +60,7 @@ module Bioinform
       need_tranpose?(result) ? result.transpose : result
     end
     
-    # point whether matrix have positions(need not be transposed -- false) or letters(need -- true) as first index
+    # point whether matrix input positions(need not be transposed -- false) or letters(need -- true) as first index
     # [[1,3,5,7], [2,4,6,8]] --> false
     # [[1,2],[3,4],[5,6],[7,8]] --> true
     def self.need_tranpose?(input)
