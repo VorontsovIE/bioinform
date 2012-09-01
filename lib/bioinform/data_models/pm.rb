@@ -9,14 +9,14 @@ module Bioinform
     attr_reader :matrix
     attr_accessor :background, :name
     
-    def choose_parser(input)
+    def self.choose_parser(input)
       [TrivialParser, Parser, StringParser, StringFantomParser].find do |parser|
-        self.class.new(input, parser) rescue nil
+        self.new(input, parser) rescue nil
       end
     end
     
     def initialize(input, parser = nil)
-      parser ||= choose_parser(input)
+      parser ||= self.class.choose_parser(input)
       raise 'No one parser can process input'  unless parser
       result = parser.new(input).parse
       @matrix = result[:matrix]
