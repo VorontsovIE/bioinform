@@ -21,6 +21,10 @@ module Bioinform
       it 'should use default pseudocount equal to log(count)' do
         PCM.new([[1, 2, 3, 1],[4, 0, 1, 2]]).to_pwm.should == PCM.new([[1, 2, 3, 1],[4, 0, 1, 2]]).to_pwm(Math.log(7))
       end
+      it 'should preserve name' do
+        PCM.new(matrix: [[1, 2, 3, 1],[4, 0, 1, 2]], name: nil).to_pwm.name.should be_nil
+        PCM.new(matrix: [[1, 2, 3, 1],[4, 0, 1, 2]], name: 'Stub name').to_pwm.name.should == 'Stub name'
+      end
     end
     
     describe '#to_ppm' do
@@ -29,6 +33,10 @@ module Bioinform
       end
       it 'should make transformation el --> el / count' do
         PCM.new([[1, 2, 3, 1],[4, 0, 1, 2]]).to_ppm.should == PPM.new([[1.0/7, 2.0/7, 3.0/7, 1.0/7],[4.0/7, 0.0/7, 1.0/7, 2.0/7]])
+      end
+      it 'should preserve name' do
+        PCM.new(matrix: [[1, 2, 3, 1],[4, 0, 1, 2]], name: nil).to_ppm.name.should be_nil
+        PCM.new(matrix: [[1, 2, 3, 1],[4, 0, 1, 2]], name: 'Stub name').to_ppm.name.should == 'Stub name'
       end
     end
 
