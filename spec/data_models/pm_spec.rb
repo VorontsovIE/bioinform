@@ -34,7 +34,12 @@ module Bioinform
           @pm.to_s.should == "Stub name\n1\t2\t3\t4\n1\t4\t5\t6.5"
         end
         it 'should not return a name if argument is set to false' do
-          @pm.to_s(false).should == "1\t2\t3\t4\n1\t4\t5\t6.5"
+          @pm.to_s(with_name: false).should == "1\t2\t3\t4\n1\t4\t5\t6.5"
+        end
+      end
+      context 'in letters_as_rows mode' do
+        it 'should print matrix with row-markers' do
+          @pm.to_s(letters_as_rows: true).should == "A|1\t1\nC|2\t4\nG|3\t5\nT|4\t6.5"
         end
       end
     end
@@ -62,7 +67,7 @@ module Bioinform
           @pm.pretty_string.should match(/MyName\n/)
         end
         it 'should not contain name if parameter `with_name` is false' do
-          @pm.pretty_string(false).should_not match(/MyName\n/)
+          @pm.pretty_string(with_name: false).should_not match(/MyName\n/)
         end
       end
       context 'without name specified' do
@@ -71,7 +76,13 @@ module Bioinform
         end
         it 'should not contain name whether parameter `with_name` is or isn\'t false' do
           @pm.pretty_string.should_not match(/MyName\n/)
-          @pm.pretty_string(false).should_not match(/MyName\n/)
+          @pm.pretty_string(with_name: false).should_not match(/MyName\n/)
+        end
+      end
+      context 'in letters_as_rows mode' do
+        it 'should print matrix with row-markers as to_s do' do
+          @pm = PM.new( [[1.1,2.22,3.333,4.4444],[5.5,6.66,7.777,8.8888]] )
+          @pm.pretty_string(letters_as_rows: true).should == @pm.to_s(letters_as_rows: true)
         end
       end
     end

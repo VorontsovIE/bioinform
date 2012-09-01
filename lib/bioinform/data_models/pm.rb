@@ -56,22 +56,37 @@ module Bioinform
     end
     alias_method :size, :length
     
-    def to_s(with_name = true)
-      matrix_str = each_position.map(&:join.("\t")).join("\n")
-      if with_name && @name 
+    def to_s(options = {})
+      default_options = {with_name: true, letters_as_rows: false}
+      options = default_options.merge(options)
+      if options[:letters_as_rows]
+        hsh = to_hash
+        matrix_str = [:A,:C,:G,:T].collect{|letter| "#{letter}|" + hsh[letter].join("\t")}.join("\n")
+      else
+        matrix_str = each_position.map(&:join.("\t")).join("\n")
+      end
+      
+      if options[:with_name] && @name 
         @name + "\n" + matrix_str
       else 
         matrix_str
       end
     end
     
-    def pretty_string(with_name = true)
+    def pretty_string(options = {})
+      default_options = {with_name: true, letters_as_rows: false}
+      
+      return to_s(options)  if options[:letters_as_rows]
+      
+      options = default_options.merge(options)
       header = %w{A C G T}.map{|el| el.rjust(4).ljust(7)}.join + "\n"
       matrix_rows = each_position.map do |position|
         position.map{|el| el.round(3).to_s.rjust(6)}.join(' ')
       end
+      
       matrix_str = matrix_rows.join("\n")
-      if with_name && @name
+      
+      if options[:with_name] && @name
         @name + "\n" + header + matrix_str
       else
         header + matrix_str

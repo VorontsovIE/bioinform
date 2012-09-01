@@ -10,8 +10,6 @@ Create CLI-apps:
 
 Make Parsers to be switcheable in runtime so that one could parse string composed of two motifs in different formats.
 
-Make output to letters-as-rows format. Make sure that in normally parses 4x4 matrices dependent on ACGT in rows or in columns
-
 Decide:
 -- Whether PPM should have `words_count`/`weight`?
    PPM format such that parser got both matrix and count (if PPM have `word_count`)
