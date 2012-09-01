@@ -1,46 +1,42 @@
-сделать парсеры переключаемыми в рантайме - так чтобы из одной строки можно было распарсить два мотива разных форматов.
-Сделать человеческое лицо созданию парсера для неизвестного формата -- то что сейчас выглядит как PM.choose_parser(input).new(input).parse
+Create Collection class. Rewrite MACRO-APE to use this class.
 
-сделать так, чтобы матрица в которой есть строка/столбец заголовок `A С G T` тоже читалась парсером
-сделать читаемым pretty_print-формат
-сделать читаемым транспонированный pretty-print
-
-Должен ли класс PPM содержать words_count (или weight)?
-
-исправить спеки под *nix-ом
-
-сделать cleanup переменной @input парсера
-
-!!! добавить тесты оператора PM#==
-
-Подумать о формате для PPM, чтобы был парсер принимал матрицу и каунт.
+Create CLI-apps:
+-- to split file on motifs to save them in separate files
+-- to merge many files(or whole folder) to a Collection
+-- to transform pcm --> pwm for a single file 
+    pcm2pwm in.pcm out.pwm
+    pcm2pwm in_folder out_folder
+    pcm2pwm in1.pcm in2.pcm in3.pcm  (will automatically create files with *.pwm extension in the same folder)
 
 
-описать спеками поведение has_one_key? в случае, когда ключи повторяются. Что в этом случае правильно делать true или false?
+Make Parsers to be switcheable in runtime so that one could parse string composed of two motifs in different formats.
 
-спеки для YAML.dump_file. Должен ли он работать только с filename или с IO тоже
-А быть может YAML.dump должен принимать строку?
+Simplify   PM.choose_parser(input).new(input) --> Parser.choose(input [, PM] )
 
+Make parser to parse strings:
+-- with `A C G T` header (such as pretty_print makes)
+-- with A, C, G, T  row-names (transposed pretty_print)
 
+Make output to letters-as-rows format. Make sure that in normally parses 4x4 matrices dependent on ACGT in rows or in columns
 
-возможно так:
+Decide:
+-- Whether PPM should have `words_count`/`weight`?
+   PPM format such that parser got both matrix and count (if PPM have `word_count`)
+-- shall one redo has_all_keys? with use of Set#&
+-- can_parse?
+-- Whether to cache suffices:  cache :best_suffix, obsolete: [:discrete!, :background!, ...]
 
-Переделать lines.map{|line| line.split.map(&:to_f)} --> lines.map(&:split | &:map.(&:to_f))  -- вообще, стоит посмотреть, как оно в книге Матца сделано
-Переделать
+Specs
+-- PM#==  (!)
+-- Hash#has_one_key?  in case when argument have repeating keys. Should has_one_key? return true or false?
+-- PWM#probabilities, #score_variance, #gauss_estimation
 
-matrix.all?{|line| line.size == 4}  ==>   matrix.all?(&:size | :== 4)  ==> matrix.all? (&:size | :eq.(4) )
-или просто matrix.all?(&:size.() == 4) т.к. :size().() - это объект, и ему можно определить method_missing proxy
+May be:
 
-попробовать унести callable_symbol в библиотеку функциональных расширений руби
+Transform
+-- lines.map{|line| line.split.map(&:to_f)} --> lines.map(&:split | &:map.(&:to_f))  -- one should review Matz examples in Programming Ruby book
+-- matrix.all?{|line| line.size == 4}  -->   matrix.all?(&:size | :== 4)  --> matrix.all? (&:size | :eq.(4) )
+    or simply matrix.all?(&:size.() == 4)  i.e. :size().() - is an object and one can define method_missing-proxy on it
 
-def itself;self;end
-
-стоит ли переделать has_all_keys? через Set#&
-
-can_parse? и parse дублируют код. can_parse? переписать через `parse rescue false` и сделать кэширование рез-та парсинга
-
-Сделать спеки на probabilities, а также score_variance и gauss_estimation
-
-???!!! КЭШИРОВАНИЕ СУФФИКСОВ итп
-проверить кэширование. Отрефакторить в rails-style: 
-cache :worst_suffix, obsolete: [:discrete!, :background!, :]
+gemify callable_symbol in a library of functional extensions
+  (?) def itself;self;end

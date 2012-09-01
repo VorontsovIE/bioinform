@@ -7,7 +7,6 @@ require 'bioinform/support/delete_many'
 require 'bioinform/support/has_keys'
 require 'bioinform/support/multiline_squish'
 require 'bioinform/support/same_by'
-require 'bioinform/support/yaml_dump_file'
 require 'bioinform/support/inverf'
 require 'bioinform/support/deep_dup'
 
