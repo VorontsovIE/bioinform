@@ -28,6 +28,19 @@ module Bioinform
       end
     end
     
+    context '::choose' do
+      it 'should create parser of appropriate type' do
+        Parser.choose([[1,2,3,4],[5,6,7,8]]).should be_kind_of(Parser)
+        Parser.choose([[1,2,3,4],[5,6,7,8]]).input.should == [[1,2,3,4],[5,6,7,8]]
+        Parser.choose(matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name').should be_kind_of(TrivialParser)
+        Parser.choose(matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name').input.should == {matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name'}
+        Parser.choose("1 2 3 4\n5 6 7 8").should be_kind_of(StringParser)
+        Parser.choose("1 2 3 4\n5 6 7 8").input.should == "1 2 3 4\n5 6 7 8"
+      end
+      
+    end
+
+    
     context '::normalize_hash_keys' do
       it 'should convert both symbolic and string keys, in both upcase and downcase to symbolic upcases' do
         Parser.normalize_hash_keys( {a: 1, C: 2, 'g' => 3, 'T' => 4} ).should == {A: 1, C: 2, G: 3, T: 4}

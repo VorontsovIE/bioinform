@@ -10,8 +10,6 @@ Create CLI-apps:
 
 Make Parsers to be switcheable in runtime so that one could parse string composed of two motifs in different formats.
 
-Simplify   PM.choose_parser(input).new(input) --> Parser.choose(input [, PM] )
-
 Make parser to parse strings:
 -- with `A C G T` header (such as pretty_print makes)
 -- with A, C, G, T  row-names (transposed pretty_print)

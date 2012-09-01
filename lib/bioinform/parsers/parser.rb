@@ -27,6 +27,10 @@ module Bioinform
       parse! rescue nil
     end
     
+    def self.choose(input, data_model = PM)
+      data_model.choose_parser(input).new(input)
+    end
+    
     def self.parse!(*input)
       self.new(*input).parse!
     end
