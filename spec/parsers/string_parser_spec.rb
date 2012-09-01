@@ -79,7 +79,25 @@ module Bioinform
                       matrix: [[1,2,3,4],[5,6,7,8]] },
       
       'string with windows crlf' => {input: "1 2 3 4\r\n5 6 7 8",
-                      matrix: [[1,2,3,4],[5,6,7,8]] }      
+                      matrix: [[1,2,3,4],[5,6,7,8]] },
+                      
+      'Nx4 string with acgt-header' => {input: "A C G T\n1 2 3 4\n5 6 7 8", 
+                      matrix: [[1,2,3,4],[5,6,7,8]] },
+                      
+      'Nx4 string with name and acgt-header' => {input: "Name\nA C G T\n1 2 3 4\n5 6 7 8", 
+                      matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name'},
+      
+      'Nx4 string with acgt-row-markers' => {input: "A 1 5\nC : 2 6\nG3 7\nT |4 8", 
+                      matrix: [[1,2,3,4],[5,6,7,8]] },
+      
+      '4x4 string with acgt-header' => {input: "A C G T\n1 2 3 4\n5 6 7 8\n0 0 0 0\n2 2 2 2", 
+                      matrix: [[1,2,3,4],[5,6,7,8],[0,0,0,0],[2,2,2,2]] },
+      
+      '4x4 string with acgt-row-markers' => {input: "A|1 2 3 4\nC|5 6 7 8\nG|0 0 0 0\nT|2 2 2 2", 
+                      matrix: [[1,5,0,2],[2,6,0,2],[3,7,0,2],[4,8,0,2]] },
+                      
+      '4x4 string with name and acgt-row-markers' => {input: "Name\nA:1 2 3 4\nC:5 6 7 8\nG:0 0 0 0\nT:2 2 2 2", 
+                      matrix: [[1,5,0,2],[2,6,0,2],[3,7,0,2],[4,8,0,2]], name: 'Name' }
     }
     
     bad_cases = {

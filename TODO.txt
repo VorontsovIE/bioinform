@@ -10,10 +10,6 @@ Create CLI-apps:
 
 Make Parsers to be switcheable in runtime so that one could parse string composed of two motifs in different formats.
 
-Make parser to parse strings:
--- with `A C G T` header (such as pretty_print makes)
--- with A, C, G, T  row-names (transposed pretty_print)
-
 Make output to letters-as-rows format. Make sure that in normally parses 4x4 matrices dependent on ACGT in rows or in columns
 
 Decide:
