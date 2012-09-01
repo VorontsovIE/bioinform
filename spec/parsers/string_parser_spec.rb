@@ -9,6 +9,12 @@ module Bioinform
         parser = StringParser.new("1 2 3 4\n5 6 7 8\n\n1 2 3 4\n1 2 3 4\nName\n4 3 2 1\n1 1 1 1\n0 0 0 0")
         expect{|b| parser.each(&b)}.to yield_successive_args({matrix:[[1,2,3,4],[5,6,7,8]], name:nil}, {matrix:[[1,2,3,4],[1,2,3,4]], name:nil}, {matrix:[[4,3,2,1],[1,1,1,1],[0,0,0,0]], name:'Name'} )
       end
+      it 'should restart parser from the beginning each time' do
+        parser = StringParser.new("1 2 3 4\n5 6 7 8\n\n1 2 3 4\n1 2 3 4\nName\n4 3 2 1\n1 1 1 1\n0 0 0 0")
+        3.times do
+          expect{|b| parser.each(&b)}.to yield_successive_args({matrix:[[1,2,3,4],[5,6,7,8]], name:nil}, {matrix:[[1,2,3,4],[1,2,3,4]], name:nil}, {matrix:[[4,3,2,1],[1,1,1,1],[0,0,0,0]], name:'Name'} )
+        end
+      end
     end
     
     context '::split' do
