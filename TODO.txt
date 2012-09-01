@@ -8,7 +8,6 @@ Create CLI-apps:
     pcm2pwm in_folder out_folder
     pcm2pwm in1.pcm in2.pcm in3.pcm  (will automatically create files with *.pwm extension in the same folder)
 
-
 Make Parsers to be switcheable in runtime so that one could parse string composed of two motifs in different formats.
 
 Simplify   PM.choose_parser(input).new(input) --> Parser.choose(input [, PM] )
