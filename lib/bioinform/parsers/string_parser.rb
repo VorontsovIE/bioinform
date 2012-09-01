@@ -71,6 +71,15 @@ module Bioinform
       end
     end
     include Enumerable
+    
+    alias_method :split, :to_a
+    def self.split(input)
+      self.new(input).split
+    end
+    
+    def self.split_on_motifs(input, pm_klass = PM)
+      split(input).map{|el| pm_klass.new(el)}
+    end
 
   end
 end
