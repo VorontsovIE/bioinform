@@ -13,7 +13,6 @@ Decide:
 
 Specs
 -- PM#==  (!)
--- Hash#has_one_key?  in case when argument have repeating keys. Should has_one_key? return true or false?
 -- PWM#probabilities, #score_variance, #gauss_estimation
 -- pcm2pwm
 -- split_motifs
