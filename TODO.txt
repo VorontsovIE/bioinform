@@ -8,7 +8,6 @@ Make Parsers to be switcheable in runtime so that one could parse string compose
 Decide:
 -- Whether PPM should have `words_count`/`weight`?
    PPM format such that parser got both matrix and count (if PPM have `word_count`)
--- shall one redo has_all_keys? with use of Set#&
 -- can_parse?
 -- Whether to cache suffices:  cache :best_suffix, obsolete: [:discrete!, :background!, ...]
 
