@@ -33,7 +33,7 @@ Options:
         
         filelist.each do |pcm_filename|
           pwm = Bioinform::PCM.new( File.read(pcm_filename) ).to_pwm
-          File.open(output_filename(pcm_filename, options['--extension'], folder), 'w') do |f|
+          File.open(Bioinform::CLI.output_filename(pcm_filename, options['--extension'], folder), 'w') do |f|
             f.puts pwm
           end
         end
