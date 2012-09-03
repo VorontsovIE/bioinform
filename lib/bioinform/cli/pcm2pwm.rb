@@ -5,7 +5,10 @@ require 'shellwords'
 module Bioinform
   module CLI
     module PCM2PWM
-    
+      def self.output_filename(input_filename, extension, folder)
+        File.join(folder, File.basename(input_filename, File.extname(input_filename)) + ".#{extension}")
+      end
+      
       def self.main(argv)
         doc = <<-DOCOPT
 PCM to PWM converter.
@@ -26,13 +29,16 @@ Options:
         if options['<pcm-files>'].empty?
           filelist = $stdin.read.shellsplit
         else
-          filelist = options['pcm-files']
+          filelist = options['<pcm-files>']
         end
         
-        filelist.each do |filename|
-          output_filename = File.join(options['--folder'], File.basename(filename, File.extname(filename)) + ".#{options['--extension']}")
-          pwm = Bioinform::PCM.new( File.read(filename) ).to_pwm
-          File.open(output_filename, 'w'){|f| f.puts pwm}
+        Dir.mkdir(folder)  unless Dir.exist?(folder)
+        
+        filelist.each do |pcm_filename|
+          pwm = Bioinform::PCM.new( File.read(pcm_filename) ).to_pwm
+          File.open(output_filename(pcm_filename, options['--extension'], options['--folder']), 'w') do |f|
+            f.puts pwm
+          end
         end
         
       rescue Docopt::Exit => e

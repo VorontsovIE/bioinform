@@ -1,0 +1,1 @@
+require 'bioinform/cli/pcm2pwm'
