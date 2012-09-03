@@ -63,7 +63,7 @@ module Bioinform
         hsh = to_hash
         matrix_str = [:A,:C,:G,:T].collect{|letter| "#{letter}|" + hsh[letter].join("\t")}.join("\n")
       else
-        matrix_str = each_position.map(&:join.("\t")).join("\n")
+        matrix_str = each_position.map{|pos| pos.join("\t")}.join("\n")
       end
       
       if options[:with_name] && @name 
@@ -95,7 +95,7 @@ module Bioinform
     
     def to_hash
       hsh = %w{A C G T}.each_with_index.collect_hash do |letter, letter_index| 
-        [ letter, @matrix.map(&:at.(letter_index)) ]
+        [ letter, @matrix.map{|pos| pos[letter_index]} ]
       end
       hsh.with_indifferent_access
     end
