@@ -1,7 +1,6 @@
 require 'active_support/core_ext/string/filters'
 require 'active_support/core_ext/hash/indifferent_access'
 
-require 'bioinform/support/callable_symbol'
 require 'bioinform/support/collect_hash'
 require 'bioinform/support/delete_many'
 require 'bioinform/support/multiline_squish'

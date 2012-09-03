@@ -9,7 +9,7 @@ module Bioinform
         doc = <<-DOCOPT
 PCM to PWM converter.
 It transforms files with PCMs into files with PWMs. Folder for resulting files to save files can be specified. Resulting PWM files have the same name as original file but have another extension (.pwm by default).
-When filelist is empty, it's obtained from STDIN. One can use it: `ls -b *.pcm | pcm2pwm` (ls -b option escape spaces in filenames)
+When filelist is empty, it's obtained from STDIN. One can use it: `ls -b pcm_folder/*.pcm | pcm2pwm` (ls -b option escape spaces in filenames)
 
 Usage:
   #{__FILE__} [options] [<pcm-files>...]

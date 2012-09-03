@@ -32,9 +32,9 @@ module Bioinform
     def self.valid_matrix?(matrix)
       matrix.is_a?(Array) &&
       ! matrix.empty? &&
-      matrix.all?(&:is_a?.(Array)) &&
+      matrix.all?{|pos| pos.is_a?(Array)} &&
       matrix.all?{|pos| pos.size == 4} &&
-      matrix.all?(&:all?.(&:is_a?.(Numeric)))
+      matrix.all?{|pos| pos.all?{|el| el.is_a?(Numeric)}}
     rescue 
       false
     end
