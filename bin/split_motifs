@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require 'bioinform/cli/split_motifs'
+Bioinform::CLI::SplitMotifs.main(ARGV)
