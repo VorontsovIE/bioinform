@@ -5,10 +5,6 @@ require 'shellwords'
 module Bioinform
   module CLI
     module PCM2PWM
-      def self.output_filename(input_filename, extension, folder)
-        File.join(folder, File.basename(input_filename, File.extname(input_filename)) + ".#{extension}")
-      end
-      
       def self.main(argv)
         doc = <<-DOCOPT
 PCM to PWM converter.
@@ -20,7 +16,7 @@ Usage:
   
 Options:
   -h --help           Show this screen.
-  -e --extension EXT  Set extension of output files [default: pwm]
+  -e --extension EXT  Extension of output files [default: pwm]
   -f --folder FOLDER  Where to save output files [default: .]
         DOCOPT
 
@@ -32,11 +28,12 @@ Options:
           filelist = options['<pcm-files>']
         end
         
+        folder = options['--folder']
         Dir.mkdir(folder)  unless Dir.exist?(folder)
         
         filelist.each do |pcm_filename|
           pwm = Bioinform::PCM.new( File.read(pcm_filename) ).to_pwm
-          File.open(output_filename(pcm_filename, options['--extension'], options['--folder']), 'w') do |f|
+          File.open(output_filename(pcm_filename, options['--extension'], folder), 'w') do |f|
             f.puts pwm
           end
         end

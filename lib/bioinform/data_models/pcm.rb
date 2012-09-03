@@ -1,7 +1,6 @@
 require 'bioinform/support'
-require 'bioinform/data_models/pm'
-require 'bioinform/data_models/ppm'
-require 'bioinform/data_models/pwm'
+require 'bioinform/data_models'
+
 module Bioinform
   class PCM < PM
     def count

@@ -1,12 +1,7 @@
 Create Collection class. Rewrite MACRO-APE to use this class.
 
 Create CLI-apps:
--- to split file on motifs to save them in separate files
 -- to merge many files(or whole folder) to a Collection
--- to transform pcm --> pwm for a single file 
-    pcm2pwm in.pcm out.pwm
-    pcm2pwm in_folder out_folder
-    pcm2pwm in1.pcm in2.pcm in3.pcm  (will automatically create files with *.pwm extension in the same folder)
 
 Make Parsers to be switcheable in runtime so that one could parse string composed of two motifs in different formats.
 
@@ -21,6 +16,8 @@ Specs
 -- PM#==  (!)
 -- Hash#has_one_key?  in case when argument have repeating keys. Should has_one_key? return true or false?
 -- PWM#probabilities, #score_variance, #gauss_estimation
+-- pcm2pwm
+-- split_motifs
 
 May be:
 
