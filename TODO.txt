@@ -1,5 +1,3 @@
-Make able:
-  Fantom-parser to parse collection of motifs separated with '//' and be sure that broken matrices with more than 4 columns are processed normally
 Make parser exception print out text where parsing was broken (processing line +- 2 nearest lines and command and line numbers)
 
 Create Collection class. Rewrite MACRO-APE to use this class.
