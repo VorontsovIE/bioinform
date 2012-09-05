@@ -17,5 +17,4 @@ Decide:
 Specs
 -- PM#==  (!)
 -- PWM#probabilities, #score_variance, #gauss_estimation
--- pcm2pwm
 -- split_motifs
