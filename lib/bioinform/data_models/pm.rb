@@ -26,7 +26,7 @@ module Bioinform
     end
     
     def ==(other)
-      @matrix == other.matrix && @background == other.background
+      @matrix == other.matrix && @background == other.background && @name == other.name
     end
     
     def self.valid_matrix?(matrix)
@@ -132,10 +132,7 @@ module Bioinform
       n.times{ @matrix.push(self.class.zero_column) }
       self
     end
-    def shift_to_zero! # make worst score == 0 by shifting scores of each column
-      @matrix.map!{|position| min = position.min; position.map{|element| element - min}}
-      self
-    end
+    
     def discrete!(rate)
       @matrix.map!{|position| position.map{|element| (element * rate).ceil}}
       self
@@ -182,9 +179,6 @@ module Bioinform
     end
     def right_augment(n)
       dup.right_augment!(n)
-    end
-    def shift_to_zero
-      dup.shift_to_zero!
     end
     def discrete(rate)
       dup.discrete!(rate)

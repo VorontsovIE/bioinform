@@ -15,6 +15,5 @@ Decide:
 -- Whether to cache suffices:  cache :best_suffix, obsolete: [:discrete!, :background!, ...]
 
 Specs
--- PM#==  (!)
 -- PWM#probabilities, #score_variance, #gauss_estimation
 -- split_motifs

@@ -3,7 +3,20 @@ require 'bioinform/data_models/pm'
 
 module Bioinform
   describe PM do 
-    
+    describe '#==' do
+      it 'should be true iff motifs have the same matrix, background and name' do
+      pm = PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'First motif')
+      pm_eq = PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'First motif')
+      pm_neq_matrix = PM.new(matrix: [[1,2,3,4],[15,16,17,18]], name: 'First motif')
+      pm_neq_name = PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'Second motif')
+      pm_neq_background = PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'First motif').background!([1,2,2,1])
+      
+      pm.should_not == pm_neq_matrix
+      pm.should_not == pm_neq_name
+      pm.should_not == pm_neq_background
+      pm.should == pm_eq
+      end
+    end
     describe '::valid_matrix?' do
       it 'should be true iff an argument is an array of arrays of 4 numerics in a column' do
         PM.valid_matrix?( [[1,2,3,4],[1,4,5,6.5]] ).should be_true
@@ -184,19 +197,6 @@ module Bioinform
       end
     end
     
-    describe '#shift_to_zero!' do
-      before :each do
-        @pm = PM.new( [[1, 2, 3, 4], [5, 6.5, 3, 4]] )
-      end
-      it 'should return pm object itself' do
-        @pm.shift_to_zero!.should be_equal(@pm)
-      end
-      it 'should make shift each column' do
-        @pm.shift_to_zero!
-        @pm.matrix.should == [[0, 1, 2, 3], [2, 3.5, 0, 1]]
-      end
-    end
-    
     describe '#discrete!' do
       before :each do
         @pm = PM.new( [[1.3, 2.0, 3.2, 4.9], [6.51, 6.5, 3.25, 4.633]] )
@@ -276,7 +276,7 @@ module Bioinform
       end
     end
 
-    [:shift_to_zero, :reverse_complement].each do |meth|
+    [:reverse_complement].each do |meth|
       describe "nonbang method #{meth}" do
         before :each do
           @pm = PM.new( [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -1.0, -1.5, -1.0]] )
