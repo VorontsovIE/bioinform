@@ -1,4 +1,5 @@
 Make parser exception print out text where parsing was broken (processing line +- 2 nearest lines and command and line numbers)
+Prevent parser going into infinity loop
 
 Create Collection class. Rewrite MACRO-APE to use this class.
 
