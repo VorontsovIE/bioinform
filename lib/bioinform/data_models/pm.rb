@@ -31,6 +31,7 @@ module Bioinform
       result = parser.new(input).parse
       @matrix = result[:matrix]
       @name = result[:name]
+      @tags = result[:tags]
       @background = [1, 1, 1, 1]
       raise 'matrix not valid'  unless valid?
     end
