@@ -8,7 +8,7 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Classes for work with different input formats of positional matrices and IUPAC-words and making simple transform and statistics with them. Also module includes several useful extensions for Enumerable module like parametric map and callable symbols }
   gem.homepage      = ""
 
-  gem.files         = `git ls-files`.split($\)
+  gem.files         = `git ls-files`.split("\n")
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "bioinform"
