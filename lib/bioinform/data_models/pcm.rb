@@ -7,18 +7,22 @@ module Bioinform
       matrix.first.inject(&:+)
     end
 
+    def to_pcm
+      self
+    end
+
     def to_pwm(pseudocount = Math.log(count))
       mat = each_position.map do |pos|
         pos.each_index.map do |ind|
           Math.log((pos[ind] + probability[ind] * pseudocount) / (probability[ind]*(count + pseudocount)) )
         end
       end
-      PWM.new(matrix: mat, name: name)
+      PWM.new(matrix: mat, name: name, tags: tags)
     end
 
     def to_ppm
       mat = each_position.map{|pos| pos.map{|el| el.to_f / count }}
-      PPM.new(matrix: mat, name: name)
+      PPM.new(matrix: mat, name: name, tags: tags)
     end
   end
 end

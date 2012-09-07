@@ -9,6 +9,16 @@ module Bioinform
     attr_reader :matrix
     attr_accessor :background, :name
 
+    def tags
+      @tags ||= []
+    end
+    def mark(tag)
+      tags << tag
+    end
+    def tagged?(tag)
+      tags.include?(tag)
+    end
+
     def self.choose_parser(input)
       [TrivialParser, Parser, StringParser, StringFantomParser].find do |parser|
         self.new(input, parser) rescue nil
