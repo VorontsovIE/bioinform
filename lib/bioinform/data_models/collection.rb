@@ -9,7 +9,9 @@ module Bioinform
 
     def +(other)
       resulting_collection = self.class.new
-      each{|pm| resulting_collection << pm }
+      collection.each do |pm|
+        resulting_collection << pm
+      end
       other.each{|pm| resulting_collection << pm }
       resulting_collection
     end
@@ -17,6 +19,14 @@ module Bioinform
     def <<(pm)
       pm.mark(collection_name)
       collection << pm
+    end
+    
+    def select_tagged(tag)
+      resulting_collection = self.class.new
+      collection.each do |pm|
+        resulting_collection << pm  if pm.tagged?(tag)
+      end
+      resulting_collection
     end
 
     def each
