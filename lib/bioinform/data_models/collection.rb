@@ -1,9 +1,11 @@
 module Bioinform
   class Collection
-    attr_reader :collection, :collection_name
+    attr_reader :collection
+    attr_accessor :collection_name
 
     # collection name is a tag name for each motif in a collection. But motif can be included in several collections so have several tags
-    def initialize(name)
+    def initialize(name = nil)
+      @collection = []
       @collection_name = name
     end
 
