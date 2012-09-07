@@ -6,7 +6,7 @@ module Bioinform
     def count
       matrix.first.inject(&:+)
     end
-    
+
     def to_pwm(pseudocount = Math.log(count))
       mat = each_position.map do |pos|
         pos.each_index.map do |ind|
@@ -15,11 +15,10 @@ module Bioinform
       end
       PWM.new(matrix: mat, name: name)
     end
-    
+
     def to_ppm
       mat = each_position.map{|pos| pos.map{|el| el.to_f / count }}
       PPM.new(matrix: mat, name: name)
     end
-
   end
 end
