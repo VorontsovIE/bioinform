@@ -16,4 +16,3 @@ Decide:
 
 Specs
 -- PWM#probabilities, #score_variance, #gauss_estimation
--- split_motifs
