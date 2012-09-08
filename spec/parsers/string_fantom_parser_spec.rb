@@ -8,19 +8,19 @@ module Bioinform
         input = <<-EOS
 //
 NA  motif_1
-P0	A	C	G	T	
-P1	0	1	2	3	
+P0	A	C	G	T
+P1	0	1	2	3
 P2	4	5	6	7
 //
 //
 NA  motif_2
-P0	A	C	G	T	
+P0	A	C	G	T
 P1  1 2 3 4
 P2  5 6 7 8
 P3  9 10 11 12
 //
 NA  motif_3
-P0	A	C	G	T	
+P0	A	C	G	T
 P1	2 3	4 5
 P2	6 7 8 9
         EOS
@@ -43,12 +43,12 @@ P2	4 5 6 7 5 11
     good_cases = {
       'string in Fantom-format' => {input: "
         NA  motif_CTNCAG
-        P0	A	C	G	T	
-        P1	0	1878368	0	0	
-        P2	0	0	0	1878368	
-        P3	469592	469592	469592	469592	
-        P4	0	1878368	0	0	
-        P5	1878368	0	0	0	
+        P0	A	C	G	T
+        P1	0	1878368	0	0
+        P2	0	0	0	1878368
+        P3	469592	469592	469592	469592
+        P4	0	1878368	0	0
+        P5	1878368	0	0	0
         P6	0	0	1878368	0",
         matrix: [ [0.0, 1878368.0, 0.0, 0.0],
                   [0.0, 0.0, 0.0, 1878368.0],

@@ -3,7 +3,7 @@ module Bioinform
     attr_reader :collection
     attr_accessor :name
 
-    #  name is a tag name for each motif in a . But motif can be included in several s so have several tags
+    # collection name is a tag name for each motif in a collection. But motif can be included in several collections so have several tags
     def initialize(name = nil)
       @collection = []
       @name = name
