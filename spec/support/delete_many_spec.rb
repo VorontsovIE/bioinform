@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'bioinform/support/delete_many'
 
 describe Array do
-  before :each do 
+  before :each do
     @arr = %w{a b c d e f g h i j b b}
   end
   describe '#delete_at_many' do
@@ -32,7 +32,7 @@ describe Array do
 end
 
 describe Hash do
-  before :each do 
+  before :each do
     @arr = {A: 3, T: 6, G: 4, C: 5}
   end
   describe '#delete_many' do

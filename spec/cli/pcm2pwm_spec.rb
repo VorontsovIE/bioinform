@@ -20,29 +20,29 @@ describe Bioinform::CLI::PCM2PWM do
     FileUtils.rm_rf('pwm_folder')  if Dir.exist?('pwm_folder')
     Dir.chdir(@start_dir)
   end
-  
+
   it 'should transform single PCM to PWM' do
     run_pcm2pwm('KLF4_f2.pcm')
     File.exist?('KLF4_f2.pwm').should be_true
     File.read('KLF4_f2.pwm').should == File.read('KLF4_f2.pwm.result')
   end
-  
+
   it 'should transform multiple PCMs to PWMs' do
     run_pcm2pwm('KLF4_f2.pcm SP1_f1.pcm')
-    
+
     File.exist?('KLF4_f2.pwm').should be_true
     File.read('KLF4_f2.pwm').should == File.read('KLF4_f2.pwm.result')
-    
+
     File.exist?('SP1_f1.pwm').should be_true
     File.read('SP1_f1.pwm').should == File.read('SP1_f1.pwm.result')
   end
-  
+
   it 'should transform extension to specified with --extension option' do
     run_pcm2pwm('KLF4_f2.pcm --extension=pat')
     File.exist?('KLF4_f2.pat').should be_true
     File.read('KLF4_f2.pat').should == File.read('KLF4_f2.pwm.result')
   end
-  
+
   it 'should save PWMs into folder specified with --folder option when folder exists' do
     Dir.mkdir('pwm_folder')  unless Dir.exist?('pwm_folder')
     run_pcm2pwm('KLF4_f2.pcm --folder=pwm_folder')
@@ -55,22 +55,22 @@ describe Bioinform::CLI::PCM2PWM do
     File.exist?('pwm_folder/KLF4_f2.pwm').should be_true
     File.read('pwm_folder/KLF4_f2.pwm').should == File.read('KLF4_f2.pwm.result')
   end
-  
+
   it 'should process PCMs with names obtained from STDIN' do
     provide_stdin('KLF4_f2.pcm SP1_f1.pcm') { run_pcm2pwm('') }
     File.exist?('KLF4_f2.pwm').should be_true
     File.read('KLF4_f2.pwm').should == File.read('KLF4_f2.pwm.result')
-    
+
     File.exist?('SP1_f1.pwm').should be_true
     File.read('SP1_f1.pwm').should == File.read('SP1_f1.pwm.result')
   end
-  
+
   it 'should process PCMs with names obtained from STDIN when there are some options' do
     provide_stdin('KLF4_f2.pcm') { run_pcm2pwm('-e pat') }
     File.exist?('KLF4_f2.pat').should be_true
     File.read('KLF4_f2.pat').should == File.read('KLF4_f2.pwm.result')
   end
-  
+
   it 'should process PCMs having filename with spaces' do
     run_pcm2pwm('"KLF4 f2 spaced name.pcm"')
     File.exist?('KLF4 f2 spaced name.pwm').should be_true

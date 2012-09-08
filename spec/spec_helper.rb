@@ -42,7 +42,7 @@ def parser_specs(parser_klass, good_cases, bad_cases)
         result[:matrix].should == input_and_result[:matrix]
         if input_and_result.has_key?(:name)
           result[:name].should == input_and_result[:name]
-        else 
+        else
           result[:name].should be_nil
         end
       end

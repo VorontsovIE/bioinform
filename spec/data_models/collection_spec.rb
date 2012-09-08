@@ -41,7 +41,7 @@ module Bioinform
         @pm_2.should be_tagged(@)
       end
     end
-    
+
     describe '#each' do
       before :each do
         @ << @pm_1 << @pm_2 << @pm_3
@@ -57,7 +57,7 @@ module Bioinform
         end
       end
     end
-    
+
     describe '#+' do
       before :each do
         @ << @pm_1 << @pm_2 << @pm_3

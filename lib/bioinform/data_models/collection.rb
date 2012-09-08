@@ -8,11 +8,11 @@ module Bioinform
       @ = []
       @name = name
     end
-    
+
     def size
       .size
     end
-    
+
     def to_s
       "<Collection '#{name}'>"
     end
@@ -33,7 +33,7 @@ module Bioinform
        << pm
       self
     end
-    
+
     def select_tagged(tag)
       resulting_ = self.class.new
       each do |pm|
@@ -49,7 +49,7 @@ module Bioinform
         Enumerator.new(self, :each)
       end
     end
-    
+
     include Enumerable
 
     def each_pcm

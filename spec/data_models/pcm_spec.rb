@@ -9,10 +9,10 @@ module Bioinform
         PCM.new([[1, 2.3, 3.2, 1],[4.4, 0.1, 1, 2]]).count.should == 7.5
       end
     end
-    
+
     describe '#to_pwm' do
       it 'should return PWM' do
-        PCM.new([[1, 2, 3, 1],[4, 0, 1, 2]]).to_pwm.should be_kind_of(PWM) 
+        PCM.new([[1, 2, 3, 1],[4, 0, 1, 2]]).to_pwm.should be_kind_of(PWM)
       end
       it 'should make transformation: el --> log( (el + p_i*pseudocount) / (p_i*(count + pseudocount)) )' do
         PCM.new([[1, 2, 3, 1],[4, 0, 1, 2]]).to_pwm(1).matrix.map{|line|line.map{|el| el.round(3)}}.should  == [[-0.47, 0.118, 0.486, -0.47],[0.754, -2.079, -0.47, 0.118]]
@@ -26,10 +26,10 @@ module Bioinform
         PCM.new(matrix: [[1, 2, 3, 1],[4, 0, 1, 2]], name: 'Stub name').to_pwm.name.should == 'Stub name'
       end
     end
-    
+
     describe '#to_ppm' do
       it 'should return PPM' do
-        PCM.new([[1, 2, 3, 1],[4, 0, 1, 2]]).to_ppm.should be_kind_of(PPM) 
+        PCM.new([[1, 2, 3, 1],[4, 0, 1, 2]]).to_ppm.should be_kind_of(PPM)
       end
       it 'should make transformation el --> el / count' do
         PCM.new([[1, 2, 3, 1],[4, 0, 1, 2]]).to_ppm.should == PPM.new([[1.0/7, 2.0/7, 3.0/7, 1.0/7],[4.0/7, 0.0/7, 1.0/7, 2.0/7]])
@@ -40,6 +40,6 @@ module Bioinform
       end
     end
 
-    
+
   end
 end

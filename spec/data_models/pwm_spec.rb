@@ -13,10 +13,10 @@ module Bioinform
         pwm.score_mean.should == ((0.2*1+0.3*2+0.3*1+0.2*2) + (0.2*4+0.3*6+0.3*8+0.2*6) + (0.2*2+0.3*2+0.3*2+0.2*2)) / (0.2+0.3+0.3+0.2)
       end
     end
-    
+
     describe '#score_variance' do
     end
-    
+
     describe '#gauss_estimation' do
     end
 
