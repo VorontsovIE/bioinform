@@ -6,17 +6,15 @@ module Bioinform
   LetterByIndex = {0 => :A, 1 => :C, 2 => :G, 3 => :T}
 
   class PM
-    attr_reader :matrix
+    attr_reader :matrix, :tags
     attr_accessor :background, :name
 
-    def tags
-      @tags ||= []
-    end
     def mark(tag)
       tags << tag
     end
+
     def tagged?(tag)
-      tags.include?(tag)
+      tags.any?{|t| (t == tag) || (t.respond_to?(:name) && t.name && (t.name == tag)) }
     end
 
     def self.choose_parser(input)
@@ -31,8 +29,8 @@ module Bioinform
       result = parser.new(input).parse
       @matrix = result[:matrix]
       @name = result[:name]
-      @tags = result[:tags]
-      @background = [1, 1, 1, 1]
+      @tags = result[:tags] || []
+      @background = result[:background] || [1, 1, 1, 1]
       raise 'matrix not valid'  unless valid?
     end
 
@@ -158,7 +156,6 @@ module Bioinform
       background.map{|element| element.to_f / sum}
     end
 
-
     #def split(first_chunk_length)
     #  [@matrix.first(first_chunk_length), matrix.last(length - first_chunk_length)]
     #end
@@ -197,5 +194,16 @@ module Bioinform
     def dup
       deep_dup
     end
+
+    def to_pcm
+      PCM.new(matrix: matrix, name: name, tags: tags, background: background)
+    end
+    def to_ppm
+      PPM.new(matrix: matrix, name: name, tags: tags, background: background)
+    end
+    def to_pwm
+      PWM.new(matrix: matrix, name: name, tags: tags, background: background)
+    end
+
   end
 end

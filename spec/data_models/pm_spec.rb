@@ -2,7 +2,90 @@ require 'spec_helper'
 require 'bioinform/data_models/pm'
 
 module Bioinform
-  describe PM do 
+  describe PM do
+    describe '#tagged?' do
+      context 'when PM marked with Collection object' do
+        context 'without collection-name' do
+          before :each do
+            @marking_collection = Collection.new(nil)
+            @nonmarking_collection = Collection.new(nil)
+            @pm = PM.new(matrix:[[1,1,1,1]], name:'Motif name')
+            @pm.mark(@marking_collection)
+          end
+          it 'should be true for marking collection' do
+            @pm.should be_tagged(@marking_collection)
+          end
+          it 'should be false for nonmarking collection' do
+            @pm.should_not be_tagged(@nonmarking_collection)
+          end
+          it 'should be false for nil-name' do
+            @pm.should_not be_tagged(nil)
+          end
+          it 'should be false for any string' do
+            @pm.should_not be_tagged('Another name')
+          end
+        end
+        context 'with collection-name' do
+          before :each do
+            @marking_collection = Collection.new('Collection name')
+            @nonmarking_collection = Collection.new('Another name')
+            @pm = PM.new(matrix:[[1,1,1,1]], name:'Motif name')
+            @pm.mark(@marking_collection)
+          end
+          it 'should be true for marking collection' do
+            @pm.should be_tagged(@marking_collection)
+          end
+          it 'should be false for nonmarking collection' do
+            @pm.should_not be_tagged(@nonmarking_collection)
+          end
+          it 'should be true for name of marking collection' do
+            @pm.should be_tagged('Collection name')
+          end
+          it 'should be false for string that is not name of marking collection' do
+            @pm.should_not be_tagged('Another name')
+          end
+        end
+      end
+
+      context 'when PM marked with name' do
+        before :each do
+          @nonmarking_collection = Collection.new('Another name')
+          @pm = PM.new(matrix:[[1,1,1,1]], name:'Motif name')
+          @pm.mark('Mark name')
+        end
+        it 'should be true for marking name' do
+          @pm.should be_tagged('Mark name')
+        end
+        it 'should be false for string that is not marking name' do
+          @pm.should_not be_tagged('Another name')
+        end
+        it 'should be false for nonmarking collection' do
+          @pm.should_not be_tagged(@nonmarking_collection)
+        end
+      end
+
+      context 'when PM marked with several marks' do
+        before :each do
+          @collection_1 = Collection.new('First name')
+          @collection_2 = Collection.new('Second name')
+          @collection_3 = Collection.new('Nonmarking collection')
+          @pm = PM.new(matrix:[[1,1,1,1]], name:'Motif name')
+          @pm.mark(@collection_1)
+          @pm.mark(@collection_2)
+          @pm.mark('Stringy-name')
+        end
+        it 'should be true for each mark' do
+          @pm.should be_tagged(@collection_1)
+          @pm.should be_tagged(@collection_2)
+          @pm.should be_tagged('Stringy-name')
+        end
+        it 'should be false for not presented marks' do
+          @pm.should_not be_tagged(@collection_3)
+          @pm.should_not be_tagged('Bad stringy-name')
+        end
+      end
+    end
+
     describe '#==' do
       it 'should be true iff motifs have the same matrix, background and name' do
       pm = PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'First motif')
@@ -10,7 +93,7 @@ module Bioinform
       pm_neq_matrix = PM.new(matrix: [[1,2,3,4],[15,16,17,18]], name: 'First motif')
       pm_neq_name = PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'Second motif')
       pm_neq_background = PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'First motif').background!([1,2,2,1])
-      
+
       pm.should_not == pm_neq_matrix
       pm.should_not == pm_neq_name
       pm.should_not == pm_neq_background
@@ -27,7 +110,7 @@ module Bioinform
         PM.valid_matrix?( [[1,2,'3','4'],[1,'4','5',6.5]] ).should be_false
       end
     end
-    
+
     describe '#to_s' do
       before :each do
         @pm = PM.new( [[1,2,3,4],[1,4,5,6.5]] )
@@ -56,7 +139,7 @@ module Bioinform
         end
       end
     end
-    
+
     describe '#pretty_string' do
       it 'should format string with 7-chars fields' do
         PM.new( [[1,2,3,4],[5,6,7,8]] ).pretty_string.should == "   A      C      G      T   \n   1.0    2.0    3.0    4.0\n   5.0    6.0    7.0    8.0"
@@ -70,7 +153,7 @@ module Bioinform
       it 'should round floats upto 3 digits' do
         PM.new( [[1.1,2.22,3.333,4.4444],[5.5,6.66,7.777,8.8888]] ).pretty_string.should match(/1.1 +2.22 +3.333 +4.444 *\n *5.5 +6.66 +7.777 +8.889/)
       end
-      
+
       context 'with name specified' do
         before :each do
           @pm = PM.new( [[1.1,2.22,3.333,4.4444],[5.5,6.66,7.777,8.8888]] )
@@ -99,14 +182,14 @@ module Bioinform
         end
       end
     end
-    
+
     describe '#size' do
       it 'should return number of positions' do
         @pm = PM.new( [[1,2,3,4],[1,4,5,6.5]] )
         @pm.size.should == 2
       end
     end
-    
+
     describe '#to_hash' do
       before :each do
         @pm = PM.new( [[1,2,3,4],[1,4,5,6.5]] )
@@ -129,7 +212,7 @@ module Bioinform
         @hsh['T'].should == @hsh[:T]
       end
     end
-    
+
     describe '#background' do
       before :each do
         @pm = PM.new( [[1,2,3,4],[1,4,5,6.5]] )
@@ -157,7 +240,7 @@ module Bioinform
         end
       end
     end
-    
+
     describe '#reverse_complement!' do
       before :each do
         @pm = PM.new( [[1, 2, 3, 4], [1, 4, 5, 6.5]] )
@@ -170,7 +253,7 @@ module Bioinform
         @pm.matrix.should == [[6.5, 5, 4, 1], [4, 3, 2, 1]]
       end
     end
-    
+
     describe '#left_augment!' do
       before :each do
         @pm = PM.new( [[1, 2, 3, 4], [1, 4, 5, 6.5]] )
@@ -183,7 +266,7 @@ module Bioinform
         @pm.matrix.should == [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [1, 2, 3, 4], [1, 4, 5, 6.5]]
       end
     end
-    
+
     describe '#right_augment!' do
       before :each do
         @pm = PM.new( [[1, 2, 3, 4], [1, 4, 5, 6.5]] )
@@ -196,7 +279,7 @@ module Bioinform
         @pm.matrix.should == [[1, 2, 3, 4], [1, 4, 5, 6.5], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]]
       end
     end
-    
+
     describe '#discrete!' do
       before :each do
         @pm = PM.new( [[1.3, 2.0, 3.2, 4.9], [6.51, 6.5, 3.25, 4.633]] )
@@ -215,7 +298,7 @@ module Bioinform
         @pm.matrix.should == [[13, 20, 32, 49], [66, 65, 33, 47]]
       end
     end
-    
+
     describe '#vocabulary_volume' do
       before :each do
         @pm_2_positions = PM.new( [[1.3, 2.0, 3.2, 4.9], [5.0, 6.5, 3.2, 4.6]] )
@@ -231,13 +314,13 @@ module Bioinform
         it 'should be 1.0' do
           @pm_2_positions.background( [0.2, 0.3, 0.3, 0.2] )
           @pm_2_positions.vocabulary_volume.should == 1.0
-          
+
           @pm_3_positions.background( [0.2, 0.3, 0.3, 0.2] )
           @pm_3_positions.vocabulary_volume.should == 1.0
         end
       end
     end
-    
+
     describe '#best_score' do
       it 'should be equal to best score' do
         @pm = PM.new( [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -1.0, -1.5, -1.0]] )
@@ -250,7 +333,7 @@ module Bioinform
         @pm.worst_score.should == 1.3 + 3.25 + (-1.5)
       end
     end
-    
+
     describe '#best_suffix' do
       it 'should return maximal score of suffices from i-th position inclusively i.e. [i..end]' do
         @pm = PM.new( [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -1.0, -1.5, -1.0]] )
@@ -290,7 +373,7 @@ module Bioinform
         end
       end
     end
-    
+
     [:discrete , :left_augment, :right_augment].each do |meth|
       describe "nonbang method #{meth}" do
         before :each do
