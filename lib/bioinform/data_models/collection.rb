@@ -1,16 +1,16 @@
 module Bioinform
   class Collection
-    attr_reader :
+    attr_reader :collection
     attr_accessor :name
 
     #  name is a tag name for each motif in a . But motif can be included in several s so have several tags
     def initialize(name = nil)
-      @ = []
+      @collection = []
       @name = name
     end
 
     def size
-      .size
+      collection.size
     end
 
     def to_s
@@ -18,33 +18,33 @@ module Bioinform
     end
 
     def +(other)
-      resulting_ = self.class.new
+      result = self.class.new
       each do |pm|
-        resulting_ << pm
+        result << pm
       end
       other.each do |pm|
-        resulting_ << pm
+        result << pm
       end
-      resulting_
+      result
     end
 
     def <<(pm)
       pm.mark(self)
-       << pm
+      collection << pm
       self
     end
 
     def select_tagged(tag)
-      resulting_ = self.class.new
+      result = self.class.new
       each do |pm|
-        resulting_ << pm  if pm.tagged?(tag)
+        result << pm  if pm.tagged?(tag)
       end
-      resulting_
+      result
     end
 
     def each
       if block_given?
-        .each{|pm| yield pm}
+        collection.each{|pm| yield pm}
       else
         Enumerator.new(self, :each)
       end
