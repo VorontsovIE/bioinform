@@ -8,24 +8,31 @@ module Bioinform
       @collection = []
       @collection_name = name
     end
+    
+    def size
+      collection.size
+    end
 
     def +(other)
       resulting_collection = self.class.new
-      collection.each do |pm|
+      each do |pm|
         resulting_collection << pm
       end
-      other.each{|pm| resulting_collection << pm }
+      other.each do |pm|
+        resulting_collection << pm
+      end
       resulting_collection
     end
 
     def <<(pm)
       pm.mark(collection_name)
       collection << pm
+      self
     end
     
     def select_tagged(tag)
       resulting_collection = self.class.new
-      collection.each do |pm|
+      each do |pm|
         resulting_collection << pm  if pm.tagged?(tag)
       end
       resulting_collection
@@ -38,6 +45,8 @@ module Bioinform
         Enumerator.new(self, :each)
       end
     end
+    
+    include Enumerable
 
     def each_pcm
       if block_given?
