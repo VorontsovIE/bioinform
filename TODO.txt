@@ -1,7 +1,7 @@
 Make parser exception print out text where parsing was broken (processing line +- 2 nearest lines and command and line numbers)
 Prevent parser going into infinity loop
 
-Create Collection class. Rewrite MACRO-APE to use this class.
+Rewrite MACRO-APE to use Collection class. Make colleñtion able to store motif-specific and collection-specific information
 
 Create CLI-apps:
 -- to merge many files(or whole folder) to a Collection
@@ -13,6 +13,10 @@ Decide:
    PPM format such that parser got both matrix and count (if PPM have `word_count`)
 -- can_parse?
 -- Whether to cache suffices:  cache :best_suffix, obsolete: [:discrete!, :background!, ...]
+-- behaviour of PM#== for PMs with different tags
+-- should background be in PM by default?
+-- refactor PM.new #== and so on to make possible consistently introduce or remove a variable at a single line
+-- Make PCM#valid? and PPM#valid? more specific. This shouldn't destroy functionality to load arbitrary data as matrix, but only in force mode (I don't understand yet where should it be: in a constructor or where? And which validation-"severity" levels should be? Strong validation - size-only-validation - size-and-type-validation - no validation ???  or may be  options: valid_strictness: 'strict', 'usual', 'strict_with_name' ??? It should be considered)
 
 Specs
 -- PWM#probabilities, #score_variance, #gauss_estimation
