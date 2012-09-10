@@ -3,6 +3,29 @@ require 'bioinform/data_models/pm'
 
 module Bioinform
   describe PM do
+    {:to_pcm => PCM, :to_pwm => PWM, :to_ppm => PPM}.each do |converter_method, result_klass|
+      describe "##{converter_method}" do
+        before :each do
+          @collection = Collection.new('Collection 1')
+          @matrix = [[1,2,3,4],[5,6,7,8]]
+          @name = 'Motif name'
+          @background = [0.2,0.3,0.3,0.2]
+          @tags = [@collection, 'Collection 2']
+          @pm = PM.new(matrix: @matrix, name: @name, background: @background, tags: @tags)
+          @conv_motif = @pm.send converter_method
+        end
+        it "should return an instance of #{result_klass}" do
+          @conv_motif.should be_kind_of(result_klass)
+        end
+        it 'should return have the same matrix, name, background and tags' do
+          @conv_motif.matrix.should == @matrix
+          @conv_motif.name.should == @name
+          @conv_motif.background.should == @background
+          @conv_motif.tags.should == @tags
+        end
+      end
+    end
+    
     describe '#tagged?' do
       context 'when PM marked with Collection object' do
         context 'without collection-name' do
