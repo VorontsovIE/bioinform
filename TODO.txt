@@ -4,8 +4,6 @@ ToDo:
 Make parser exception print out text where parsing was broken (processing line +- 2 nearest lines and command and line numbers)
 Prevent parser going into infinity loop
 
-Rewrite MACRO-APE to use Collection class. Make colleñtion able to store motif-specific and collection-specific information
-
 Create CLI-apps:
 -- to merge many files(or whole folder) to a Collection
 
