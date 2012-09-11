@@ -2,15 +2,15 @@ require 'ostruct'
 
 module Bioinform
   class Collection
-    attr_reader :collection, :configuration
+    attr_reader :collection, :parameters
     attr_accessor :name
 
     # collection name is a tag name for each motif in a collection. But motif can be included in several collections so have several tags
     def initialize(name = nil)
       @collection = {}
       @name = name
-      @configuration = OpenStruct.new
-      yield @configuration  if block_given?
+      @parameters = OpenStruct.new
+      yield @parameters  if block_given?
     end
 
     def size
@@ -85,5 +85,11 @@ module Bioinform
       end                                             # end
     end
     
+    #def ==(other)
+    #  (collection == other.collection) && (parameters == other.parameters) && (name == other.name)
+    #rescue
+    #  false
+    #end
+    #alias_method :add_pwm, :'[]='
   end
 end

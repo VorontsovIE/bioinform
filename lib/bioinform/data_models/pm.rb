@@ -14,7 +14,7 @@ module Bioinform
     end
 
     def tagged?(tag)
-      tags.any?{|t| (t == tag) || (t.respond_to?(:name) && t.name && (t.name == tag)) }
+      tags.any?{|t| (t.eql? tag) || (t.respond_to?(:name) && t.name && (t.name == tag)) }
     end
 
     def self.choose_parser(input)
@@ -36,6 +36,8 @@ module Bioinform
 
     def ==(other)
       @matrix == other.matrix && @background == other.background && @name == other.name
+    rescue
+      false
     end
 
     def self.valid_matrix?(matrix)
