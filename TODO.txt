@@ -1,3 +1,6 @@
+ToDo:
+  how to make PM#equal? and PM#hash so that using PMs in Sets wouldn't destroy comparability of Sets and two sets with the same PMs(but different objects) would be equal. (also using pm as a hash-key)
+  
 Make parser exception print out text where parsing was broken (processing line +- 2 nearest lines and command and line numbers)
 Prevent parser going into infinity loop
 

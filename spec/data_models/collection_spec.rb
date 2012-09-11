@@ -20,11 +20,11 @@ module Bioinform
         @collection << @pm_1
         @collection << @pm_2
         @collection << @pm_3
-        @collection.collection.should include(@pm_1, @pm_2, @pm_3)
+        @collection.collection.map(&:first).should include(@pm_1, @pm_2, @pm_3)
       end
       it 'should be chainable' do
         @collection << @pm_1 << @pm_2 << @pm_3
-        @collection.collection.should include(@pm_1, @pm_2, @pm_3)
+        @collection.collection.map(&:first).should include(@pm_1, @pm_2, @pm_3)
       end
       it 'should mark motif with name' do
         @collection << @pm_1 << @pm_2
@@ -81,7 +81,7 @@ module Bioinform
       it 'should create a collection consisting of all elements of both collections' do
         @summary_collection.should be_kind_of(Collection)
         @summary_collection.size.should == (@collection.size + @secondary_collection.size)
-        @summary_collection.collection.should include(@pm_1, @pm_2, @pm_3, @pm_sec_1, @pm_sec_2)
+        @summary_collection.collection.map(&:first).should include(@pm_1, @pm_2, @pm_3, @pm_sec_1, @pm_sec_2)
       end
       it 'should leave marks on motifs' do
         @pm_1.should be_tagged('Main collection')

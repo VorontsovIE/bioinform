@@ -7,7 +7,7 @@ module Bioinform
 
     # collection name is a tag name for each motif in a collection. But motif can be included in several collections so have several tags
     def initialize(name = nil)
-      @collection = {}
+      @collection = []
       @name = name
       @parameters = OpenStruct.new
       yield @parameters  if block_given?
@@ -20,37 +20,26 @@ module Bioinform
     def to_s
       "<Collection '#{name}'>"
     end
-
-    def [](pm)
-      collection[pm]
-    end
-    def []=(pm, infos)
-      collection[pm] = infos
-    end
     
     def +(other)
       result = self.class.new
       each do |pm, infos|
-        result[pm] = infos
+        result.add_pm(pm, infos)
       end
       other.each do |pm, infos|
-        result[pm] = infos
+        result.add_pm(pm, infos)
       end
       result
     end
 
-    def <<(pm)
+    def add_pm(pm, info)
       pm.mark(self)
-      collection[pm] = OpenStruct.new
+      collection << [pm, info]
       self
     end
-
-    def select_tagged(tag)
-      result = self.class.new
-      each do |pm, infos|
-        result[pm] = infos  if pm.tagged?(tag)
-      end
-      result
+    
+    def <<(pm)
+      add_pm(pm, OpenStruct.new)
     end
 
     def each
@@ -63,7 +52,7 @@ module Bioinform
     
     def each_pm
       if block_given?
-        collection.each_key{|pm| yield pm}
+        each{|pm, infos| yield pm}
       else
         Enumerator.new(self, :each_pm)
       end
