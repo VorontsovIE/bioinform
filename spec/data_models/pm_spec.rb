@@ -6,7 +6,7 @@ module Bioinform
     {:to_pcm => PCM, :to_pwm => PWM, :to_ppm => PPM}.each do |converter_method, result_klass|
       describe "##{converter_method}" do
         before :each do
-          @collection = Collection.new('Collection 1')
+          @collection = Collection.new(name: 'Collection 1')
           @matrix = [[1,2,3,4],[5,6,7,8]]
           @name = 'Motif name'
           @background = [0.2,0.3,0.3,0.2]
@@ -30,8 +30,8 @@ module Bioinform
       context 'when PM marked with Collection object' do
         context 'without collection-name' do
           before :each do
-            @marking_collection = Collection.new(nil)
-            @nonmarking_collection = Collection.new(nil)
+            @marking_collection = Collection.new
+            @nonmarking_collection = Collection.new
             @pm = PM.new(matrix:[[1,1,1,1]], name:'Motif name')
             @pm.mark(@marking_collection)
           end
@@ -50,8 +50,8 @@ module Bioinform
         end
         context 'with collection-name' do
           before :each do
-            @marking_collection = Collection.new('Collection name')
-            @nonmarking_collection = Collection.new('Another name')
+            @marking_collection = Collection.new(name: 'Collection name')
+            @nonmarking_collection = Collection.new(name: 'Another name')
             @pm = PM.new(matrix:[[1,1,1,1]], name:'Motif name')
             @pm.mark(@marking_collection)
           end
@@ -72,7 +72,7 @@ module Bioinform
 
       context 'when PM marked with name' do
         before :each do
-          @nonmarking_collection = Collection.new('Another name')
+          @nonmarking_collection = Collection.new(name: 'Another name')
           @pm = PM.new(matrix:[[1,1,1,1]], name:'Motif name')
           @pm.mark('Mark name')
         end
@@ -89,9 +89,9 @@ module Bioinform
 
       context 'when PM marked with several marks' do
         before :each do
-          @collection_1 = Collection.new('First name')
-          @collection_2 = Collection.new('Second name')
-          @collection_3 = Collection.new('Nonmarking collection')
+          @collection_1 = Collection.new(name: 'First name')
+          @collection_2 = Collection.new(name: 'Second name')
+          @collection_3 = Collection.new(name: 'Nonmarking collection')
           @pm = PM.new(matrix:[[1,1,1,1]], name:'Motif name')
           @pm.mark(@collection_1)
           @pm.mark(@collection_2)
