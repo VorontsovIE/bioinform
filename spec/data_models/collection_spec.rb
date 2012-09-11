@@ -20,15 +20,11 @@ module Bioinform
         @collection << @pm_1
         @collection << @pm_2
         @collection << @pm_3
-        @collection.collection[0].should be_eql(@pm_1)
-        @collection.collection[1].should be_eql(@pm_2)
-        @collection.collection[2].should be_eql(@pm_3)
+        @collection.collection.should include(@pm_1, @pm_2, @pm_3)
       end
       it 'should be chainable' do
         @collection << @pm_1 << @pm_2 << @pm_3
-        @collection.collection[0].should be_eql(@pm_1)
-        @collection.collection[1].should be_eql(@pm_2)
-        @collection.collection[2].should be_eql(@pm_3)
+        @collection.collection.should include(@pm_1, @pm_2, @pm_3)
       end
       it 'should mark motif with name' do
         @collection << @pm_1 << @pm_2
@@ -42,18 +38,33 @@ module Bioinform
       end
     end
 
-    describe '#each' do
+    describe '#each_pm' do
       before :each do
         @collection << @pm_1 << @pm_2 << @pm_3
       end
       context 'with block given' do
         it 'should yield elements of collecton' do
-          expect{|b| @collection.each(&b)}.to yield_successive_args(@pm_1, @pm_2, @pm_3)
+          expect{|b| @collection.each_pm(&b)}.to yield_successive_args(@pm_1, @pm_2, @pm_3)
         end
       end
       context 'with block given' do
         it 'return an Enumerator' do
-          @collection.each.should be_kind_of(Enumerator)
+          @collection.each_pm.should be_kind_of(Enumerator)
+        end
+      end
+    end
+    describe '#each_pcm' do
+      before :each do
+        @collection << @pm_1 << @pm_2 << @pm_3
+      end
+      context 'with block given' do
+        it 'should yield elements of collecton converted to pcm' do
+          expect{|b| @collection.each_pcm(&b)}.to yield_successive_args(PCM, PCM, PCM)
+        end
+      end
+      context 'with block given' do
+        it 'return an Enumerator' do
+          @collection.each_pcm.should be_kind_of(Enumerator)
         end
       end
     end
