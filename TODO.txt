@@ -5,7 +5,7 @@ Make parser exception print out text where parsing was broken (processing line +
 Prevent parser going into infinity loop
 
 Create CLI-apps:
--- to merge many files(or whole folder) to a Collection
+-- to merge many files(or whole folder) to a Collection (in a way that makes able to give collection a name)
 
 Make Parsers to be switcheable in runtime so that one could parse string composed of two motifs in different formats.
 
