@@ -16,6 +16,7 @@ Gem::Specification.new do |gem|
   gem.version       = Bioinform::VERSION
   
   gem.add_dependency('activesupport', '>= 3.0.0')
+  gem.add_dependency('docopt', '>= 0.5.0')
   
   gem.add_development_dependency "rspec", ">= 2.0"
 end
