@@ -10,16 +10,16 @@ module Bioinform
       @input = YAML.load(input)
     end
     def parse!
-      raise 'All object already obtained from YAMLParser' if @finished
-      case input
-      when PM 
-        @finished = true
-        input
-      when Collection
-        result = input.collection.shift.first
-        @finished = input.collection.empty?
-        result
-      end
+      input
+    end
+  end
+  class YAMLCollectionParser < Parser
+    include MultipleMotifsParser
+    def initialize(input)
+      @input = YAML.load(input)
+    end
+    def parse!
+      input.collection.shift.first
     end
   end
 end

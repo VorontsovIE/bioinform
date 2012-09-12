@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/bioinform/cli/merge_into_collection'
+Bioinform::CLI::MergeIntoCollection.main(ARGV)

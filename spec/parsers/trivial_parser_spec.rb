@@ -27,12 +27,14 @@ module Bioinform
       pm_copy = PM.new(pm, TrivialParser)
       pm_copy.should == pm
     end
+  end
+  describe TrivialCollectionParser do
     it 'can be used to obtain PMs from Collection' do
       pm_1 = PM.new(matrix:[[1,2,3,4],[5,6,7,8]], name:'Matrix-1 name')
       pm_2 = PM.new(matrix:[[15,16,17,18],[11,12,13,14]], name:'Matrix-2 name')
       collection = Collection.new
       collection << pm_1 << pm_2
-      parser = TrivialParser.new(collection)
+      parser = TrivialCollectionParser.new(collection)
       parser.parse!.should == pm_1
       parser.parse!.should == pm_2
       expect{ parser.parse! }.to raise_error

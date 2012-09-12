@@ -9,18 +9,23 @@ module Bioinform
   class TrivialParser < Parser
     def initialize(input)
       @input = input
-      @size = input.is_a?(Collection) ? input.size : 1
     end
     def parse!
-      raise 'All object already obtained from YAMLParser' if @size.zero?
-      result = case input
-      when Collection then input.collection.shift.first
+      case input
       when PM then input
       when OpenStruct then input
       when Hash then OpenStruct.new(input)
       end
-      @size -=1
-      result
+    end
+  end
+
+  class TrivialCollectionParser < Parser
+    include MultipleMotifsParser
+    def initialize(input)
+      @input = input
+    end
+    def parse!
+      input.collection.shift.first
     end
   end
 end

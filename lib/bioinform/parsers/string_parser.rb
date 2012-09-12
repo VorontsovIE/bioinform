@@ -4,7 +4,9 @@ require 'bioinform/parsers/parser'
 
 module Bioinform
   class StringParser < Parser
+    include MultipleMotifsParser
     attr_reader :scanner, :row_acgt_markers
+
     def initialize(input)
       raise ArgumentError  unless input.is_a?(String)
       super
@@ -65,27 +67,6 @@ module Bioinform
 
     def scanner_reset
       scanner.reset
-    end
-
-    def each
-      if block_given?
-        scanner_reset
-        while result = parse
-          yield result
-        end
-      else
-        Enumerator.new(self, :each)
-      end
-    end
-    include Enumerable
-
-    alias_method :split, :to_a
-    def self.split(input)
-      self.new(input).split
-    end
-
-    def self.split_on_motifs(input, pm_klass = PM)
-      split(input).map{|el| pm_klass.new(el)}
     end
   end
 end

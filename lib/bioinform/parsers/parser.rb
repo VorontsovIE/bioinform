@@ -80,5 +80,36 @@ module Bioinform
       (input.size == 4) && input.any?{|x| x.size != 4}
     end
 
+###########################################
+    module MultipleMotifsParser
+      def self.included(base)
+        base.class_eval { extend ClassMethods }
+        include Enumerable
+        alias_method :split, :to_a
+      end
+      module ClassMethods
+        def split_on_motifs(input, pm_klass = PM)
+          split(input).map{|el| pm_klass.new(el)}
+        end
+        def split(input)
+          self.new(input).split
+        end
+      end
+
+      def scanner_reset
+      end
+
+      def each
+        if block_given?
+          scanner_reset
+          while result = parse
+            yield result
+          end
+        else
+          Enumerator.new(self, :each)
+        end
+      end
+    end
+
   end
 end
