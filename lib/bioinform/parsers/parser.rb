@@ -110,6 +110,8 @@ module Bioinform
           Enumerator.new(self, :each)
         end
       end
+
+      private :scanner_reset
     end
 
   end

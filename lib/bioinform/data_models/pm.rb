@@ -18,10 +18,11 @@ module Bioinform
     end
 
     def self.choose_parser(input)
-      [TrivialParser, YAMLParser, Parser, StringParser, StringFantomParser].find do |parser|
+      [TrivialParser, YAMLParser, Parser, StringParser, StringFantomParser, TrivialCollectionParser, YAMLCollectionParser].find do |parser|
         self.new(input, parser) rescue nil
       end
     end
+    # TODO: refactor code data_model.choose_parser(input).split_on_motifs(input)
 
     def initialize(input, parser = nil)
       parser ||= self.class.choose_parser(input)

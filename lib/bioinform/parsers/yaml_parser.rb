@@ -7,20 +7,23 @@ module Bioinform
   # PM.new(yaml_dump_of_pm, YAMLParser)
   class YAMLParser < Parser
     def initialize(input)
-      @input = YAML.load(input)
+      @input = input
     end
     def parse!
-      input
+      YAML.load(input)
     end
   end
   
   class YAMLCollectionParser < Parser
     include MultipleMotifsParser
     def initialize(input)
-      @input = YAML.load(input)
+      @input = input
+    end
+    def collection
+      @collection ||= YAML.load(input)
     end
     def parse!
-      input.collection.shift.first
+      collection.collection.shift.first
     end
   end
 end
