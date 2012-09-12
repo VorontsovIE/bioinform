@@ -11,6 +11,8 @@ module Bioinform
     end
     def parse!
       YAML.load(input)
+    rescue Psych::SyntaxError
+      raise 'parsing error'
     end
   end
   
@@ -24,6 +26,8 @@ module Bioinform
     end
     def parse!
       collection.collection.shift.first
+    rescue Psych::SyntaxError
+      raise 'parsing error'
     end
   end
 end
