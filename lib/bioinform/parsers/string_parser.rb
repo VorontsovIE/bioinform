@@ -60,7 +60,7 @@ module Bioinform
       parse_acgt_header
       matrix = parse_matrix
       matrix = matrix.transpose if row_acgt_markers
-      Parser.parse!(matrix).merge(name: name)
+      Parser.parse!(matrix).tap{|result| result.name = name}
     end
 
     def scanner_reset

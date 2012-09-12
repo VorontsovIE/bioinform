@@ -1,5 +1,6 @@
 require 'bioinform/support'
 require 'bioinform/data_models/pm'
+require 'ostruct'
 
 module Bioinform
   class Parser
@@ -20,7 +21,7 @@ module Bioinform
     def parse!
       matrix = self.class.transform_input(input)
       raise 'Parsing error' unless self.class.valid_matrix?(matrix)
-      {matrix: matrix}
+      OpenStruct.new(matrix: matrix)
     end
 
     def parse

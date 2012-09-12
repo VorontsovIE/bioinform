@@ -5,7 +5,7 @@ module Bioinform
   describe Parser do
     context '#initialize' do
       it 'should accept an array correctly' do
-        Parser.new([[1,2,3,4],[5,6,7,8]]).parse[:matrix].should == [[1,2,3,4],[5,6,7,8]]
+        Parser.new([[1,2,3,4],[5,6,7,8]]).parse.matrix.should == [[1,2,3,4],[5,6,7,8]]
       end
       it 'should treat several arguments as an array composed of them' do
         Parser.new([1,2,3,4],[5,6,7,8]).parse.should == Parser.new([[1,2,3,4],[5,6,7,8]]).parse

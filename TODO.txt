@@ -18,6 +18,7 @@ Decide:
 -- should background be in PM by default?
 -- refactor PM.new #== and so on to make possible consistently introduce or remove a variable at a single line
 -- Make PCM#valid? and PPM#valid? more specific. This shouldn't destroy functionality to load arbitrary data as matrix, but only in force mode (I don't understand yet where should it be: in a constructor or where? And which validation-"severity" levels should be? Strong validation - size-only-validation - size-and-type-validation - no validation ???  or may be  options: valid_strictness: 'strict', 'usual', 'strict_with_name' ??? It should be considered)
+-- PM#to_pcm and friends have unintuitive behavior. E.g. pm.to_pcm.to_pwm != pm.to_pwm  First is matrix treated as pcm and then converted, while second is matrix treated as pwm from start
 
 Specs
 -- PWM#probabilities, #score_variance, #gauss_estimation

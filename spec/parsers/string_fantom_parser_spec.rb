@@ -24,9 +24,9 @@ P0	A	C	G	T
 P1	2 3	4 5
 P2	6 7 8 9
         EOS
-        StringFantomParser.split(input).should == [ {matrix: [[0,1,2,3],[4,5,6,7]], name: 'motif_1'},
-                                                    {matrix: [[1,2,3,4],[5,6,7,8],[9,10,11,12]], name: 'motif_2'},
-                                                    {matrix: [[2,3,4,5],[6,7,8,9]], name: 'motif_3'} ]
+        StringFantomParser.split(input).should == [ OpenStruct.new(matrix: [[0,1,2,3],[4,5,6,7]], name: 'motif_1'),
+                                                    OpenStruct.new(matrix: [[1,2,3,4],[5,6,7,8],[9,10,11,12]], name: 'motif_2'),
+                                                    OpenStruct.new(matrix: [[2,3,4,5],[6,7,8,9]], name: 'motif_3') ]
       end
 
       it 'should be able to parse motif with additional rows' do
@@ -36,7 +36,7 @@ P0	A C G T S P
 P1	0 1 2 3 5 10
 P2	4 5 6 7 5 11
         EOS
-        StringFantomParser.split(input).should == [ {matrix: [[0,1,2,3],[4,5,6,7]], name: 'motif_1'} ]
+        StringFantomParser.split(input).should == [ OpenStruct.new(matrix: [[0,1,2,3],[4,5,6,7]], name: 'motif_1') ]
       end
     end
 
