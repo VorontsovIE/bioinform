@@ -19,8 +19,16 @@ module Bioinform
       parameters.name
     end
 
-    def to_s
+    def inspect
       "<Collection '#{name}'>"
+    end
+    
+    def to_s
+      result = ''
+      each do |pm, infos|
+        result << pm.to_s << "\n"
+      end
+      result
     end
     
     def +(other)
