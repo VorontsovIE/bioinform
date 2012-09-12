@@ -94,6 +94,7 @@ module Bioinform
         def split(input)
           self.new(input).split
         end
+        private :split
       end
 
       def scanner_reset

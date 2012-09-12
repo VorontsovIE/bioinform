@@ -3,7 +3,7 @@ require 'bioinform/parsers/string_fantom_parser'
 
 module Bioinform
   describe StringFantomParser do
-    describe '#parse' do
+    describe '#split_on_motifs' do
       it 'should be able to parse several motifs' do
         input = <<-EOS
 //
@@ -24,19 +24,9 @@ P0	A	C	G	T
 P1	2 3	4 5
 P2	6 7 8 9
         EOS
-        StringFantomParser.split(input).should == [ OpenStruct.new(matrix: [[0,1,2,3],[4,5,6,7]], name: 'motif_1'),
-                                                    OpenStruct.new(matrix: [[1,2,3,4],[5,6,7,8],[9,10,11,12]], name: 'motif_2'),
-                                                    OpenStruct.new(matrix: [[2,3,4,5],[6,7,8,9]], name: 'motif_3') ]
-      end
-
-      it 'should be able to parse motif with additional rows' do
-        input = <<-EOS
-NA  motif_1
-P0	A C G T S P
-P1	0 1 2 3 5 10
-P2	4 5 6 7 5 11
-        EOS
-        StringFantomParser.split(input).should == [ OpenStruct.new(matrix: [[0,1,2,3],[4,5,6,7]], name: 'motif_1') ]
+        StringFantomParser.split_on_motifs(input).should == [ PM.new(matrix: [[0,1,2,3],[4,5,6,7]], name: 'motif_1'),
+                                                    PM.new(matrix: [[1,2,3,4],[5,6,7,8],[9,10,11,12]], name: 'motif_2'),
+                                                    PM.new(matrix: [[2,3,4,5],[6,7,8,9]], name: 'motif_3') ]
       end
     end
 
@@ -57,7 +47,15 @@ P2	4 5 6 7 5 11
                   [1878368.0, 0.0, 0.0, 0.0],
                   [0.0, 0.0, 1878368.0, 0.0]],
         name: 'motif_CTNCAG'
-      }
+      },
+      
+      'motif with additional rows' => {input: "
+      NA  motif_1
+      P0	A C G T S P
+      P1	0 1 2 3 5 10
+      P2	4 5 6 7 5 11",
+      matrix: [[0,1,2,3],[4,5,6,7]],
+      name: 'motif_1'}
     }
 
     bad_cases = { }
