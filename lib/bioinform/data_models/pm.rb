@@ -23,6 +23,9 @@ module Bioinform
       end
     end
     # TODO: refactor code data_model.choose_parser(input).split_on_motifs(input)
+    def self.split_on_motifs(input)
+      choose_parser(input).split_on_motifs(input, self)
+    end
 
     def initialize(input, parser = nil)
       parser ||= self.class.choose_parser(input)

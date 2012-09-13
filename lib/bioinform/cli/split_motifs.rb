@@ -32,7 +32,7 @@ Options:
         raise "File #{collection_filename} not exist"  unless File.exist? collection_filename
         input = File.read(collection_filename)
 
-        data_model.choose_parser(input).split_on_motifs(input, data_model).each do |motif|
+        data_model.split_on_motifs(input).each do |motif|
           File.open(File.join(folder, "#{motif.name}.#{extension}"), 'w') do |f|
             f.puts motif
           end
