@@ -79,6 +79,19 @@ module Bioinform
     def self.need_tranpose?(input)
       (input.size == 4) && input.any?{|x| x.size != 4}
     end
+    module SingleMotifParser
+      def self.included(base)
+        base.class_eval { extend ClassMethods }
+        include Enumerable
+        alias_method :split, :to_a
+      end
+      module ClassMethods
+        def split_on_motifs(input, pm_klass = PM)
+          [ pm_klass.new(input, self) ]
+        end
+      end
+    end
+    include SingleMotifParser
 
 ###########################################
     module MultipleMotifsParser

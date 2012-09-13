@@ -28,7 +28,7 @@ Options:
         plain_text = options['--plain-text']
         output_file = options['--output-file']
         data_model = Bioinform.const_get(options['--data-model'].upcase)
-        
+
         if options['<pm-files>'].empty?
           filelist = $stdin.read.shellsplit
         else
@@ -36,20 +36,20 @@ Options:
         end
 
         collection = Collection.new
-                
-        filelist.each do |pm_filename|          
+
+        filelist.each do |pm_filename|
           input = File.read(pm_filename)
           data_model.choose_parser(input).split_on_motifs(input, data_model).each do |pm|
             collection << pm
           end
         end
-        
+
         if plain_text
           File.open(output_file, 'w'){|f| YAML.dump(collection, f) }
         else
           File.open(output_file, 'w'){|f| f.puts(collection.to_s) }
         end
-=end        
+=end
       rescue Docopt::Exit => e
         puts e.message
       end

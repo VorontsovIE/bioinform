@@ -15,7 +15,7 @@ module Bioinform
       raise 'parsing error'
     end
   end
-  
+
   class YAMLCollectionParser < Parser
     include MultipleMotifsParser
     def initialize(input)

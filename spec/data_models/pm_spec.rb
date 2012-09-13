@@ -25,7 +25,7 @@ module Bioinform
         end
       end
     end
-    
+
     describe '#tagged?' do
       context 'when PM marked with Collection object' do
         context 'without collection-name' do

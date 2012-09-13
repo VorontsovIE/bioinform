@@ -8,7 +8,7 @@ module Bioinform
       it 'should yield consequent results of #parse! while it returns result' do
         parser = StringParser.new("1 2 3 4\n5 6 7 8\n\n1 2 3 4\n1 2 3 4\nName\n4 3 2 1\n1 1 1 1\n0 0 0 0")
         expect{|b| parser.each(&b)}.to yield_successive_args(OpenStruct.new(matrix:[[1,2,3,4],[5,6,7,8]], name:nil),
-                                                             OpenStruct.new(matrix:[[1,2,3,4],[1,2,3,4]], name:nil), 
+                                                             OpenStruct.new(matrix:[[1,2,3,4],[1,2,3,4]], name:nil),
                                                              OpenStruct.new(matrix:[[4,3,2,1],[1,1,1,1],[0,0,0,0]], name:'Name') )
       end
       it 'should restart parser from the beginning each time' do
@@ -26,17 +26,17 @@ module Bioinform
         StringParser.split_on_motifs("1 2 3 4 \n 5 6 7 8 \n 9 10 11 12").should == [ PM.new(matrix: [[1,2,3,4],[5,6,7,8],[9,10,11,12]], name:nil) ]
       end
       it 'should be able to split several PMs separated with an empty line' do
-        StringParser.split_on_motifs("1 2 3 4 \n 5 6 7 8 \n 9 10 11 12 \n\n 9 10 11 12 \n 1 2 3 4 \n 5 6 7 8").should == 
+        StringParser.split_on_motifs("1 2 3 4 \n 5 6 7 8 \n 9 10 11 12 \n\n 9 10 11 12 \n 1 2 3 4 \n 5 6 7 8").should ==
                                                                 [ PM.new(matrix:[[1,2,3,4],[5,6,7,8],[9,10,11,12]],name:nil),
                                                                   PM.new(matrix:[[9,10,11,12],[1,2,3,4],[5,6,7,8]],name:nil) ]
       end
       it 'should be able to split several PMs separated with name' do
-        StringParser.split_on_motifs("1 2 3 4 \n 5 6 7 8 \n 9 10 11 12 \nName\n 9 10 11 12 \n 1 2 3 4 \n 5 6 7 8").should == 
+        StringParser.split_on_motifs("1 2 3 4 \n 5 6 7 8 \n 9 10 11 12 \nName\n 9 10 11 12 \n 1 2 3 4 \n 5 6 7 8").should ==
                                                                 [ PM.new(matrix:[[1,2,3,4],[5,6,7,8],[9,10,11,12]],name:nil),
                                                                   PM.new(matrix:[[9,10,11,12],[1,2,3,4],[5,6,7,8]],name:'Name') ]
       end
       it 'should be able to split several PMs separated with both name and empty line' do
-        StringParser.split_on_motifs("1 2 3 4 \n 5 6 7 8 \n 9 10 11 12 \n\nName\n 9 10 11 12 \n 1 2 3 4 \n 5 6 7 8\n\n\n").should == 
+        StringParser.split_on_motifs("1 2 3 4 \n 5 6 7 8 \n 9 10 11 12 \n\nName\n 9 10 11 12 \n 1 2 3 4 \n 5 6 7 8\n\n\n").should ==
                                                                 [ PM.new(matrix:[[1,2,3,4],[5,6,7,8],[9,10,11,12]],name:nil),
                                                                   PM.new(matrix:[[9,10,11,12],[1,2,3,4],[5,6,7,8]],name:'Name') ]
       end

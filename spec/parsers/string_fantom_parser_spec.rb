@@ -48,7 +48,7 @@ P2	6 7 8 9
                   [0.0, 0.0, 1878368.0, 0.0]],
         name: 'motif_CTNCAG'
       },
-      
+
       'motif with additional rows' => {input: "
       NA  motif_1
       P0	A C G T S P

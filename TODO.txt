@@ -1,7 +1,7 @@
 ToDo:
   how to make PM#equal? and PM#hash so that using PMs in Sets wouldn't destroy comparability of Sets and two sets with the same PMs(but different objects) would be equal. (also using pm as a hash-key)
   Make specs and fix code in such a way that Parser.split_on_motifs and so on returned consistent result. E.g. Parser.parse! raised an error on multiple times invocation
-  
+
 Make parser exception print out text where parsing was broken (processing line +- 2 nearest lines and command and line numbers)
 Prevent parser going into infinity loop
 
@@ -20,6 +20,7 @@ Decide:
 -- refactor PM.new #== and so on to make possible consistently introduce or remove a variable at a single line
 -- Make PCM#valid? and PPM#valid? more specific. This shouldn't destroy functionality to load arbitrary data as matrix, but only in force mode (I don't understand yet where should it be: in a constructor or where? And which validation-"severity" levels should be? Strong validation - size-only-validation - size-and-type-validation - no validation ???  or may be  options: valid_strictness: 'strict', 'usual', 'strict_with_name' ??? It should be considered)
 -- PM#to_pcm and friends have unintuitive behavior. E.g. pm.to_pcm.to_pwm != pm.to_pwm  First is matrix treated as pcm and then converted, while second is matrix treated as pwm from start
+-- Should parser be reloadable or not? May be delete #reset_scanner?
 
 Specs
 -- PWM#probabilities, #score_variance, #gauss_estimation

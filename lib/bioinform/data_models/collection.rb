@@ -22,7 +22,7 @@ module Bioinform
     def inspect
       "<Collection '#{name}'>"
     end
-    
+
     def to_s
       result = ''
       each do |pm, infos|
@@ -30,7 +30,7 @@ module Bioinform
       end
       result
     end
-    
+
     def +(other)
       result = self.class.new
       each do |pm, infos|
@@ -47,7 +47,7 @@ module Bioinform
       collection << [pm, info]
       self
     end
-    
+
     def <<(pm)
       add_pm(pm, OpenStruct.new)
     end
@@ -59,7 +59,7 @@ module Bioinform
         Enumerator.new(self, :each)
       end
     end
-    
+
     def each_pm
       if block_given?
         each{|pm, infos| yield pm}
@@ -83,7 +83,7 @@ module Bioinform
         end                                           #   end
       end                                             # end
     end
-    
+
     def ==(other)
       (collection == other.collection) && (parameters == other.parameters)
     rescue

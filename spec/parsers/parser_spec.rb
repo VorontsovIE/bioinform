@@ -21,6 +21,7 @@ module Bioinform
         expect{ Parser.parse!([1,2,3],[4,5,6]) }.to raise_error
       end
     end
+
     context '::parse' do
       it 'should behave like Parser.new(input).parse!' do
         Parser.parse([1,2,3,4],[5,6,7,8]).should  == Parser.new([1,2,3,4],[5,6,7,8]).parse
@@ -37,9 +38,13 @@ module Bioinform
         Parser.choose("1 2 3 4\n5 6 7 8").should be_kind_of(StringParser)
         Parser.choose("1 2 3 4\n5 6 7 8").input.should == "1 2 3 4\n5 6 7 8"
       end
-
     end
 
+    context '::split_on_motifs' do
+      it 'should be able to get a single PM' do
+        Parser.split_on_motifs([[1,2,3,4],[5,6,7,8]], PM).should == [ PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name:nil) ]
+      end
+    end
 
     context '::normalize_hash_keys' do
       it 'should convert both symbolic and string keys, in both upcase and downcase to symbolic upcases' do
