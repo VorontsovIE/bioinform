@@ -1,5 +1,5 @@
-require 'spec_helper'
-require 'bioinform/support/multiline_squish'
+require_relative '../spec_helper'
+require_relative '../../lib/bioinform/support/multiline_squish'
 
 describe String do
   describe '#multiline_squish' do

@@ -1,6 +1,6 @@
-require 'spec_helper'
-require 'bioinform/parsers/parser'
-require 'bioinform/data_models/collection'
+require_relative '../spec_helper'
+require_relative '../../lib/bioinform/parsers/parser'
+require_relative '../../lib/bioinform/data_models/collection'
 
 module Bioinform
   describe TrivialParser do

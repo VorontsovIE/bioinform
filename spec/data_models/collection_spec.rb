@@ -1,5 +1,5 @@
-require 'spec_helper'
-require 'bioinform/data_models/collection'
+require_relative '../spec_helper'
+require_relative '../../lib/bioinform/data_models/collection'
 
 module Bioinform
   describe Collection do

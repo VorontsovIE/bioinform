@@ -1,5 +1,5 @@
-require 'bioinform/support'
-require 'bioinform/parsers'
+require_relative '../support'
+require_relative '../parsers'
 
 module Bioinform
   IndexByLetter = {'A' => 0, 'C' => 1, 'G' => 2, 'T' => 3, A: 0, C: 1, G: 2, T: 3}

@@ -1,5 +1,5 @@
-require 'spec_helper'
-require 'bioinform/support/same_by'
+require_relative '../spec_helper'
+require_relative '../../lib/bioinform/support/same_by'
 
 describe Enumerable do
   describe '#same_by?' do

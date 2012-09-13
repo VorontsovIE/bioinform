@@ -1,4 +1,4 @@
-require_relative '../../bioinform'
+require_relative '../../lib/bioinform'
 require 'docopt'
 require 'shellwords'
 require 'yaml'

@@ -1,5 +1,5 @@
-require 'bioinform/support'
-require 'bioinform/data_models'
+require_relative '../support'
+require_relative '../data_models'
 
 module Bioinform
   class PPM < PM

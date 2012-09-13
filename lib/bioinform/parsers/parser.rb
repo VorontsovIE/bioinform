@@ -1,6 +1,6 @@
-require 'bioinform/support'
-require 'bioinform/data_models/pm'
 require 'ostruct'
+require_relative '../support'
+require_relative '../data_models/pm'
 
 module Bioinform
   class Parser

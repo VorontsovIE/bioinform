@@ -1,5 +1,5 @@
-require 'spec_helper'
-require 'bioinform/support/array_product'
+require_relative '../spec_helper'
+require_relative '../../lib/bioinform/support/array_product'
 
 describe Array do
   context '::product' do

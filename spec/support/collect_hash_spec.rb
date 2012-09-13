@@ -1,5 +1,5 @@
-require 'spec_helper'
-require 'bioinform/support/collect_hash'
+require_relative '../spec_helper'
+require_relative '../../lib/bioinform/support/collect_hash'
 
 describe Enumerable do
   # %w{A C G T}.collect_hash{|k| [k*2, k*3] }

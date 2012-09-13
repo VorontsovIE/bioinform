@@ -1,4 +1,4 @@
-require 'bioinform/support/collect_hash'
+require_relative 'collect_hash'
 
 class Array
   def partial_sums(initial = 0.0)

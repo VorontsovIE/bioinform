@@ -1,5 +1,5 @@
-require 'spec_helper'
-require 'bioinform/parsers/string_parser'
+require_relative '../spec_helper'
+require_relative '../../lib/bioinform/parsers/string_parser'
 
 module Bioinform
   describe StringParser do

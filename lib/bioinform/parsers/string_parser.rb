@@ -1,6 +1,6 @@
 require 'strscan'
-require 'bioinform/support'
-require 'bioinform/parsers/parser'
+require_relative '../support'
+require_relative '../parsers/parser'
 
 module Bioinform
   class StringParser < Parser

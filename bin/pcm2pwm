@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 
-require 'bioinform/cli/pcm2pwm'
+require_relative '../lib/bioinform/cli/pcm2pwm'
 Bioinform::CLI::PCM2PWM.main(ARGV)

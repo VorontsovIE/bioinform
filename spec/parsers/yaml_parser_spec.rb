@@ -1,7 +1,7 @@
-require 'spec_helper'
 require 'yaml'
-require 'bioinform/parsers/yaml_parser'
-require 'bioinform/data_models/collection'
+require_relative '../spec_helper'
+require_relative '../../lib/bioinform/parsers/yaml_parser'
+require_relative '../../lib/bioinform/data_models/collection'
 
 module Bioinform
   describe YAMLParser do

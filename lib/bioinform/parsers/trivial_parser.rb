@@ -1,5 +1,5 @@
-require 'bioinform/support'
-require 'bioinform/parsers/parser'
+require_relative '../support'
+require_relative '../parsers/parser'
 
 module Bioinform
   # TrivialParser can be used to parse hashes returned by #parse method of other parsers:

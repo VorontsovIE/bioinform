@@ -1,5 +1,5 @@
-require 'spec_helper'
-require 'bioinform/cli'
+require_relative '../spec_helper'
+require_relative '../../lib/bioinform/cli'
 
 describe Bioinform::CLI do
   describe '::output_filename' do

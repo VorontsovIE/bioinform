@@ -1,5 +1,5 @@
-require 'spec_helper'
-require 'bioinform/support/delete_many'
+require_relative '../spec_helper'
+require_relative '../../lib/bioinform/support/delete_many'
 
 describe Array do
   before :each do

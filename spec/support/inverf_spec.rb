@@ -1,5 +1,5 @@
-require 'spec_helper'
-require 'bioinform/support/inverf'
+require_relative '../spec_helper'
+require_relative '../../lib/bioinform/support/inverf'
 
 describe 'Math#inverf' do
   it 'should be erf(inverf(x)) == x' do

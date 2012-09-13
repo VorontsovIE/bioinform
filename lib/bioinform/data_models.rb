@@ -1,11 +1,11 @@
-require 'bioinform/parsers'
+require_relative 'parsers'
 
-require 'bioinform/data_models/pm'
-require 'bioinform/data_models/pcm'
-require 'bioinform/data_models/ppm'
-require 'bioinform/data_models/pwm'
+require_relative 'data_models/pm'
+require_relative 'data_models/pcm'
+require_relative 'data_models/ppm'
+require_relative 'data_models/pwm'
 
-require 'bioinform/data_models/collection'
+require_relative 'data_models/collection'
 
-#require 'bioinform/data_models/iupac_word'
-#require 'bioinform/data_models/iupac_wordset'
+#require_relative 'bioinform/data_models/iupac_word'
+#require_relative 'bioinform/data_models/iupac_wordset'
