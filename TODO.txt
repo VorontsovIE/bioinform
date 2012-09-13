@@ -24,3 +24,5 @@ Decide:
 
 Specs
 -- PWM#probabilities, #score_variance, #gauss_estimation
+-- CLI::SplitMotifs
+-- CLI::MergeIntoCollection
