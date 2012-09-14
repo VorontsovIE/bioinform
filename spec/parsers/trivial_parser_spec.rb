@@ -33,7 +33,7 @@ module Bioinform
     end
 
     it 'can be used to create PM from PM (make copy)' do
-      pm = PM.new(matrix:[[1,2,3,4],[5,6,7,8]], name:'Matrix name')
+      pm = Fabricate(:pm)
       pm_copy = PM.new(pm, TrivialParser)
       pm_copy.should == pm
     end
@@ -41,10 +41,9 @@ module Bioinform
 
   describe TrivialCollectionParser do
     before :each do
-      @pm_1 = PM.new(matrix:[[1,2,3,4],[5,6,7,8]], name:'Matrix-1 name')
-      @pm_2 = PM.new(matrix:[[15,16,17,18],[11,12,13,14]], name:'Matrix-2 name')
-      @collection = Collection.new
-      @collection << @pm_1 << @pm_2
+      @pm_1 = Fabricate(:pm_first)
+      @pm_2 = Fabricate(:pm_second)
+      @collection = Fabricate(:two_elements_collection)
     end
 
     describe '#parse!' do

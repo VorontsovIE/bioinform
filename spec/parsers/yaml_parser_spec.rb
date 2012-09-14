@@ -7,20 +7,20 @@ module Bioinform
   describe YAMLParser do
     context '#parse!' do
       it 'should return PM that was encoded in YAML format' do
-        pm = PM.new(matrix:[[1,2,3,4],[5,6,7,8]], name:'Matrix name')
+        pm = Fabricate(:pm)
         parser = YAMLParser.new(pm.to_yaml)
         parser.parse!.should == pm
       end
     end
     it 'can be used to create PM from yaml-string' do
-      pm = PM.new(matrix:[[1,2,3,4],[5,6,7,8]], name:'Matrix name')
+      pm = Fabricate(:pm)
       pm_copy = PM.new(pm.to_yaml, YAMLParser)
       pm_copy.should == pm
     end
 
     context '::split_on_motifs' do
       it 'should be able to get a single PM' do
-        pm = PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name')
+        pm = Fabricate(:pm)
         YAMLParser.split_on_motifs(pm.to_yaml, PM).should == [ pm ]
       end
     end
@@ -28,8 +28,8 @@ module Bioinform
 
   describe YAMLCollectionParser do
     before :each do
-      @pm_1 = PM.new(matrix:[[1,2,3,4],[5,6,7,8]], name:'Matrix-1 name')
-      @pm_2 = PM.new(matrix:[[15,16,17,18],[11,12,13,14]], name:'Matrix-2 name')
+      @pm_1 = Fabricate(:pm_first)
+      @pm_2 = Fabricate(:pm_second)
       @collection = Collection.new
       @collection << @pm_1 << @pm_2
     end

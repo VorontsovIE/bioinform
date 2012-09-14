@@ -19,4 +19,5 @@ Gem::Specification.new do |gem|
   gem.add_dependency('docopt', '>= 0.5.0')
   
   gem.add_development_dependency "rspec", ">= 2.0"
+  gem.add_development_dependency "fabrication", ">= 2.2.3"
 end

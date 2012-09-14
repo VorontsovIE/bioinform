@@ -23,22 +23,19 @@ module Bioinform
 
     context '::split_on_motifs' do
       it 'should be able to get a single PM' do
-        StringParser.split_on_motifs("1 2 3 4 \n 5 6 7 8 \n 9 10 11 12").should == [ PM.new(matrix: [[1,2,3,4],[5,6,7,8],[9,10,11,12]], name:nil) ]
+        StringParser.split_on_motifs("1 2 3 4 \n 5 6 7 8").should == [ Fabricate(:pm_unnamed) ]
       end
       it 'should be able to split several PMs separated with an empty line' do
-        StringParser.split_on_motifs("1 2 3 4 \n 5 6 7 8 \n 9 10 11 12 \n\n 9 10 11 12 \n 1 2 3 4 \n 5 6 7 8").should ==
-                                                                [ PM.new(matrix:[[1,2,3,4],[5,6,7,8],[9,10,11,12]],name:nil),
-                                                                  PM.new(matrix:[[9,10,11,12],[1,2,3,4],[5,6,7,8]],name:nil) ]
+        StringParser.split_on_motifs("1 2 3 4 \n 5 6 7 8 \n\n 15 16 17 18 \n 11 21 31 41").should ==
+                                                                [ Fabricate(:pm_first, name: nil), Fabricate(:pm_second, name: nil) ]
       end
       it 'should be able to split several PMs separated with name' do
-        StringParser.split_on_motifs("1 2 3 4 \n 5 6 7 8 \n 9 10 11 12 \nName\n 9 10 11 12 \n 1 2 3 4 \n 5 6 7 8").should ==
-                                                                [ PM.new(matrix:[[1,2,3,4],[5,6,7,8],[9,10,11,12]],name:nil),
-                                                                  PM.new(matrix:[[9,10,11,12],[1,2,3,4],[5,6,7,8]],name:'Name') ]
+        StringParser.split_on_motifs("1 2 3 4 \n 5 6 7 8 \nPM_second\n 15 16 17 18 \n 11 21 31 41").should ==
+                                                                [ Fabricate(:pm_first, name: nil), Fabricate(:pm_second) ]
       end
       it 'should be able to split several PMs separated with both name and empty line' do
-        StringParser.split_on_motifs("1 2 3 4 \n 5 6 7 8 \n 9 10 11 12 \n\nName\n 9 10 11 12 \n 1 2 3 4 \n 5 6 7 8\n\n\n").should ==
-                                                                [ PM.new(matrix:[[1,2,3,4],[5,6,7,8],[9,10,11,12]],name:nil),
-                                                                  PM.new(matrix:[[9,10,11,12],[1,2,3,4],[5,6,7,8]],name:'Name') ]
+        StringParser.split_on_motifs("PM_first\n1 2 3 4 \n 5 6 7 8 \n\nPM_second\n 15 16 17 18 \n 11 21 31 41\n\n\n").should ==
+                                                                [ Fabricate(:pm_first), Fabricate(:pm_second) ]
       end
       it 'should create PMs by default' do
         result = StringParser.split_on_motifs("1 2 3 4 \n 5 6 7 8 \n 9 10 11 12 \nName\n 9 10 11 12 \n 1 2 3 4 \n 5 6 7 8")
@@ -51,54 +48,23 @@ module Bioinform
     end
 
     good_cases = {
-      'Nx4 string' => {input: "1 2 3 4\n5 6 7 8",
-                      matrix: [[1,2,3,4],[5,6,7,8]] },
-
-      '4xN string' => {input: "1 5\n2 6\n3 7\n 4 8",
-                      matrix: [[1,2,3,4],[5,6,7,8]] },
-
-      'string with name' => {input: "TestMatrix\n1 5\n2 6\n3 7\n 4 8",
-                            matrix: [[1,2,3,4],[5,6,7,8]], name: 'TestMatrix' },
-
-      'string with name (with introduction sign)' => {input: ">\t TestMatrix\n1 5\n2 6\n3 7\n 4 8",
-                                                      matrix: [[1,2,3,4],[5,6,7,8]],
-                                                      name: 'TestMatrix' },
-
+      'Nx4 string' => {input: "1 2 3 4\n5 6 7 8",  result: Fabricate(:pm_unnamed) },
+      '4xN string' => {input: "1 5\n2 6\n3 7\n 4 8",  result: Fabricate(:pm_unnamed) },
+      'string with name' => {input: "PM_name\n1 5\n2 6\n3 7\n 4 8",  result: Fabricate(:pm) },
+      'string with name (with introduction sign)' => {input: ">\t PM_name\n1 5\n2 6\n3 7\n 4 8",  result: Fabricate(:pm) },
       'string with name (with special characters)' => {input: "Testmatrix_first:subname+sub-subname\n1 5\n2 6\n3 7\n 4 8",
-                            matrix: [[1,2,3,4],[5,6,7,8]], name: 'Testmatrix_first:subname+sub-subname' },
-
-      'string with float numerics' => {input: "1.23 4.56 7.8 9.0\n9 -8.7 6.54 -3210",
-                                      matrix: [[1.23, 4.56, 7.8, 9.0], [9, -8.7, 6.54, -3210]]},
-
-      'string with exponents' => {input: "123e-2 0.456e+1 7.8 9.0\n9 -87000000000E-10 6.54 -3.210e3",
-                                  matrix: [[1.23, 4.56, 7.8, 9.0], [9, -8.7, 6.54, -3210]]},
-
-      'string with multiple spaces and tabs' => {input: "1 \t\t 2 3 4\n 5 6   7 8",
-                                                matrix: [[1,2,3,4],[5,6,7,8]] },
-
-      'string with preceeding and terminating newlines' => {input: "\n\n\t 1 2 3 4\n5 6 7 8  \n\t\n",
-                      matrix: [[1,2,3,4],[5,6,7,8]] },
-
-      'string with windows crlf' => {input: "1 2 3 4\r\n5 6 7 8",
-                      matrix: [[1,2,3,4],[5,6,7,8]] },
-
-      'Nx4 string with acgt-header' => {input: "A C G T\n1 2 3 4\n5 6 7 8",
-                      matrix: [[1,2,3,4],[5,6,7,8]] },
-
-      'Nx4 string with name and acgt-header' => {input: "Name\nA C G T\n1 2 3 4\n5 6 7 8",
-                      matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name'},
-
-      'Nx4 string with acgt-row-markers' => {input: "A 1 5\nC : 2 6\nG3 7\nT |4 8",
-                      matrix: [[1,2,3,4],[5,6,7,8]] },
-
-      '4x4 string with acgt-header' => {input: "A C G T\n1 2 3 4\n5 6 7 8\n0 0 0 0\n2 2 2 2",
-                      matrix: [[1,2,3,4],[5,6,7,8],[0,0,0,0],[2,2,2,2]] },
-
-      '4x4 string with acgt-row-markers' => {input: "A|1 2 3 4\nC|5 6 7 8\nG|0 0 0 0\nT|2 2 2 2",
-                      matrix: [[1,5,0,2],[2,6,0,2],[3,7,0,2],[4,8,0,2]] },
-
-      '4x4 string with name and acgt-row-markers' => {input: "Name\nA:1 2 3 4\nC:5 6 7 8\nG:0 0 0 0\nT:2 2 2 2",
-                      matrix: [[1,5,0,2],[2,6,0,2],[3,7,0,2],[4,8,0,2]], name: 'Name' }
+                                                       result: Fabricate(:pm, name: 'Testmatrix_first:subname+sub-subname') },
+      'string with float numerics' => {input: "1.23 4.56 7.8 9.0\n9 -8.7 6.54 -3210",  result: Fabricate(:pm_with_floats) },
+      'string with exponents' => {input: "123e-2 0.456e+1 7.8 9.0\n9 -87000000000E-10 6.54 -3.210e3",  result: Fabricate(:pm_with_floats) },
+      'string with multiple spaces and tabs' => {input: "1 \t\t 2 3 4\n 5 6   7 8",  result: Fabricate(:pm_unnamed) },
+      'string with preceeding and terminating newlines' => {input: "\n\n\t 1 2 3 4\n5 6 7 8  \n\t\n",  result: Fabricate(:pm_unnamed) },
+      'string with windows crlf' => {input: "1 2 3 4\r\n5 6 7 8",  result: Fabricate(:pm_unnamed) },
+      'Nx4 string with acgt-header' => {input: "A C G T\n1 2 3 4\n5 6 7 8",  result: Fabricate(:pm_unnamed) },
+      'Nx4 string with name and acgt-header' => {input: "PM_name\nA C G T\n1 2 3 4\n5 6 7 8",  result: Fabricate(:pm)},
+      'Nx4 string with acgt-row-markers' => {input: "A 1 5\nC : 2 6\nG3 7\nT |4 8",  result: Fabricate(:pm_unnamed) },
+      '4x4 string with acgt-header' => {input: "A C G T\n1 2 3 4\n5 6 7 8\n9 10 11 12\n13 14 15 16",  result: Fabricate(:pm_4x4_unnamed) },
+      '4x4 string with acgt-row-markers' => {input: "A|1 5 9 13\nC|2 6 10 14\nG|3 7 11 15\nT|4 8 12 16",  result: Fabricate(:pm_4x4_unnamed) },
+      '4x4 string with name and acgt-row-markers' => {input: "PM_name\nA:1 5 9 13\nC:2 6 10 14\nG:3 7 11 15\nT:4 8 12 16",  result: Fabricate(:pm_4x4) }
     }
 
     bad_cases = {

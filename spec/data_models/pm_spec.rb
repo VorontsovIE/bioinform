@@ -8,7 +8,7 @@ module Bioinform
         before :each do
           @collection = Collection.new(name: 'Collection 1')
           @matrix = [[1,2,3,4],[5,6,7,8]]
-          @name = 'Motif name'
+          @name = 'PM_motif'
           @background = [0.2,0.3,0.3,0.2]
           @tags = [@collection, 'Collection 2']
           @pm = PM.new(matrix: @matrix, name: @name, background: @background, tags: @tags)

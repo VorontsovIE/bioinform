@@ -6,8 +6,7 @@ module Bioinform
   LetterByIndex = {0 => :A, 1 => :C, 2 => :G, 3 => :T}
 
   class PM
-    attr_reader :matrix, :tags
-    attr_accessor :background, :name
+    attr_accessor :background, :name, :matrix, :tags
 
     def mark(tag)
       tags << tag

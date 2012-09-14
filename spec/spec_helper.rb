@@ -5,6 +5,7 @@ require 'rspec'
 
 require 'fileutils'
 require 'stringio'
+require 'fabrication'
 
 # from minitest
 def capture_io(&block)
@@ -39,12 +40,7 @@ def parser_specs(parser_klass, good_cases, bad_cases)
     good_cases.each do |case_description, input_and_result|
       it "should be able to parse #{case_description}" do
         result = parser_klass.new(input_and_result[:input]).parse
-        result.matrix.should == input_and_result[:matrix]
-        if input_and_result.has_key?(:name)
-          result.name.should == input_and_result[:name]
-        else
-          result.name.should be_nil
-        end
+        Bioinform::PM.new(result).should == input_and_result[:result]
       end
     end
 

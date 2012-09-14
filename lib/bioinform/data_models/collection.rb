@@ -18,6 +18,9 @@ module Bioinform
     def name
       parameters.name
     end
+    def name=(new_name)
+      parameters.name = new_name
+    end
 
     def inspect
       "<Collection '#{name}'>"

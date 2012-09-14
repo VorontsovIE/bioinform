@@ -4,6 +4,10 @@ require_relative '../data_models/pm'
 require_relative 'splittable_parser'
 
 module Bioinform
+  class Error < StandardError; end
+  class ParsingError < Error; end
+  class InvalidMatrix < Error; end
+  
   class Parser
     attr_reader :input
 
@@ -21,7 +25,7 @@ module Bioinform
 
     def parse!
       matrix = self.class.transform_input(input)
-      raise 'Parsing error' unless self.class.valid_matrix?(matrix)
+      raise InvalidMatrix unless self.class.valid_matrix?(matrix)
       OpenStruct.new(matrix: matrix)
     end
 
