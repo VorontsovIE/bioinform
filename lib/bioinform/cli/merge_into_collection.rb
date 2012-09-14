@@ -6,22 +6,24 @@ require 'yaml'
 module Bioinform
   module CLI
     module MergeIntoCollection
+      extend Bioinform::CLI::Helpers
       def self.main(argv)
         doc = <<-DOCOPT
-Tool for merging multiple motifs into a single collection file.
-It takes motif files or (entire collections) and creates a collection consisting of them all. By default motifs are treated simply as matrices(PM), but you can (possibly should) specify data model. Output file by default are in YAML-format but it's possible to create plain text file. YAML collections are useful if you want to provide additional information for motifs in collection with another tool, plain text is more readable by humans.
+          Tool for merging multiple motifs into a single collection file.
+          It takes motif files or (entire collections) and creates a collection consisting of them all. By default motifs are treated simply as matrices(PM), but you can (possibly should) specify data model. Output file by default are in YAML-format but it's possible to create plain text file. YAML collections are useful if you want to provide additional information for motifs in collection with another tool, plain text is more readable by humans.
 
-Usage:
-  #{__FILE__} [options] [<pm-files>...]
+          Usage:
+            #{__FILE__} [options] [<pm-files>...]
 
-Options:
-  -h --help                 Show this screen.
-  -n --name NAME            Specify name for a collection. Default filename is based on this parameter
-  -o --output-file FILE     Output file for resulting collection
-  -m --data-model MODEL     Data model: PM, PCM, PPM or PWM [default: PM]
-  -p --plain-text           Output collection of motifs in plain text (motifs separated with newlines, no additional information included).
+          Options:
+            -h --help                 Show this screen.
+            -n --name NAME            Specify name for a collection. Default filename is based on this parameter
+            -o --output-file FILE     Output file for resulting collection
+            -m --data-model MODEL     Data model: PM, PCM, PPM or PWM [default: PM]
+            -p --plain-text           Output collection of motifs in plain text (motifs separated with newlines, no additional information included).
         DOCOPT
 
+        doc.gsub!(/^#{doc[/\A +/]}/,'')
         options = Docopt::docopt(doc, argv: argv)
         p options
 =begin

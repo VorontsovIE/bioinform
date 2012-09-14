@@ -10,7 +10,7 @@ end
 describe Bioinform::CLI::PCM2PWM do
   before :each do
     @start_dir = Dir.pwd
-    Dir.chdir File.join(File.dirname(__FILE__), 'data')
+    Dir.chdir File.join(File.dirname(__FILE__), 'data', 'pcm2pwm')
   end
   after :each do
     File.delete('KLF4_f2.pwm')  if File.exist?('KLF4_f2.pwm')
