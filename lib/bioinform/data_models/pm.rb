@@ -9,17 +9,8 @@ module Bioinform
   class PM
     attr_accessor :matrix, :parameters
 
-    def tags; parameters.tags; end
-    def tags=(new_tags); parameters.tags = new_tags; end
-    def name; parameters.name; end
-    def name=(new_name); parameters.name = new_name; end
-    def background; parameters.background; end
-    def background=(new_background); parameters.background = new_background; end
-
-    def set_parameters(hsh)
-      hsh.each{|k,v| send("#{k}=", v) }
-      self
-    end
+    include Parameters
+    make_parameters :tags, :name, :background
 
     def mark(tag)
       tags << tag
