@@ -150,13 +150,6 @@ module Bioinform
       background.map{|element| element.to_f / sum}
     end
 
-    #def split(first_chunk_length)
-    #  [@matrix.first(first_chunk_length), matrix.last(length - first_chunk_length)]
-    #end
-    #def permute_columns(permutation_index)
-    #  @matrix.values_at(permutation_index)permutation_index.map{|col| matrix[col]}
-    #end
-
     def best_score
       @matrix.inject(0.0){|sum, col| sum + col.max}
     end
