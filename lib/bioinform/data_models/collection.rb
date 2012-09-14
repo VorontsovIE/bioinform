@@ -22,12 +22,8 @@ module Bioinform
       parameters.name = new_name
     end
 
-    def inspect
-      "<Collection '#{name}'>"
-    end
-
     def to_s
-      result = ''
+      result = "Collection: #{name.to_s}\n"
       each do |pm, infos|
         result << pm.to_s << "\n"
       end

@@ -9,7 +9,7 @@ module Bioinform
         pwm.score_mean.should == 1.5 + 6 + 2
       end
       it 'should be equal to a mean score of pwm by measure induced from background probability mean' do
-        pwm = PWM.new( [[1,2,1,2],[4,6,8,6],[2,2,2,2]] ).background([0.2, 0.3, 0.3, 0.2])
+        pwm = PWM.new( [[1,2,1,2],[4,6,8,6],[2,2,2,2]] ).set_parameters(background: [0.2, 0.3, 0.3, 0.2])
         pwm.score_mean.should == ((0.2*1+0.3*2+0.3*1+0.2*2) + (0.2*4+0.3*6+0.3*8+0.2*6) + (0.2*2+0.3*2+0.3*2+0.2*2)) / (0.2+0.3+0.3+0.2)
       end
     end

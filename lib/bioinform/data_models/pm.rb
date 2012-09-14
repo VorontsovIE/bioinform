@@ -1,3 +1,4 @@
+require 'ostruct'
 require_relative '../support'
 require_relative '../parsers'
 
@@ -6,7 +7,19 @@ module Bioinform
   LetterByIndex = {0 => :A, 1 => :C, 2 => :G, 3 => :T}
 
   class PM
-    attr_accessor :background, :name, :matrix, :tags
+    attr_accessor :matrix, :parameters
+
+    def tags; parameters.tags; end
+    def tags=(new_tags); parameters.tags = new_tags; end
+    def name; parameters.name; end
+    def name=(new_name); parameters.name = new_name; end
+    def background; parameters.background; end
+    def background=(new_background); parameters.background = new_background; end
+
+    def set_parameters(hsh)
+      hsh.each{|k,v| send("#{k}=", v) }
+      self
+    end
 
     def mark(tag)
       tags << tag
@@ -27,18 +40,19 @@ module Bioinform
     end
 
     def initialize(input, parser = nil)
+      @parameters = OpenStruct.new
       parser ||= self.class.choose_parser(input)
       raise 'No one parser can process input'  unless parser
       result = parser.new(input).parse
       @matrix = result.matrix
-      @name = result.name
-      @tags = result.tags || []
-      @background = result.background || [1, 1, 1, 1]
+      self.name = result.name
+      self.tags = result.tags || []
+      self.background = result.background || [1, 1, 1, 1]
       raise 'matrix not valid'  unless valid?
     end
 
     def ==(other)
-      @matrix == other.matrix && @background == other.background && @name == other.name
+      @matrix == other.matrix && background == other.background && name == other.name
     rescue
       false
     end
@@ -80,8 +94,8 @@ module Bioinform
         matrix_str = each_position.map{|pos| pos.join("\t")}.join("\n")
       end
 
-      if options[:with_name] && @name
-        @name + "\n" + matrix_str
+      if options[:with_name] && name
+        name + "\n" + matrix_str
       else
         matrix_str
       end
@@ -100,8 +114,8 @@ module Bioinform
 
       matrix_str = matrix_rows.join("\n")
 
-      if options[:with_name] && @name
-        @name + "\n" + header + matrix_str
+      if options[:with_name] && name
+        name + "\n" + header + matrix_str
       else
         header + matrix_str
       end
@@ -112,22 +126,6 @@ module Bioinform
         [ letter, @matrix.map{|pos| pos[letter_index]} ]
       end
       hsh.with_indifferent_access
-    end
-
-    # pm.background - returns a @background attribute
-    # pm.background(new_background) - sets an attribute and returns pm itself
-    # if more than one argument passed - raises an exception
-    def background(*args)
-      case args.size
-      when 0 then @background
-      when 1 then background!(args[0])
-      else raise ArgumentError, '#background method can get 0 or 1 argument'
-      end
-    end
-
-    def background!(new_background)
-      @background = new_background
-      self
     end
 
     def self.zero_column

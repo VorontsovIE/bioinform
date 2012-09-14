@@ -115,7 +115,7 @@ module Bioinform
       pm_eq = PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'First motif')
       pm_neq_matrix = PM.new(matrix: [[1,2,3,4],[15,16,17,18]], name: 'First motif')
       pm_neq_name = PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'Second motif')
-      pm_neq_background = PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'First motif').background!([1,2,2,1])
+      pm_neq_background = PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'First motif').set_parameters(background: [1,2,2,1])
 
       pm.should_not == pm_neq_matrix
       pm.should_not == pm_neq_name
@@ -240,26 +240,9 @@ module Bioinform
       before :each do
         @pm = PM.new( [[1,2,3,4],[1,4,5,6.5]] )
       end
-      context 'when none arguments passed' do
-        context 'when pm just created' do
-          it 'should be [1,1,1,1]' do
-            @pm.background.should == [1,1,1,1]
-          end
-        end
-        it 'should return background' do
-          @pm.background = [0.2, 0.3, 0.3, 0.2]
-          @pm.background.should == [0.2, 0.3, 0.3, 0.2]
-        end
-      end
-      context 'when one argument passed' do
-        it 'should set background' do
-          @pm.background([0.2,0.3,0.3,0.2])
-          @pm.background.should == [0.2, 0.3, 0.3, 0.2]
-        end
-      end
-      context 'when more than one argument passed' do
-        it 'should raise an ArgumentError' do
-          expect { @pm.background(:first, :second) }.to raise_error ArgumentError
+      context 'when pm just created' do
+        it 'should be [1,1,1,1]' do
+          @pm.background.should == [1,1,1,1]
         end
       end
     end
@@ -335,10 +318,10 @@ module Bioinform
       end
       context 'when background is normalized probabilities' do
         it 'should be 1.0' do
-          @pm_2_positions.background( [0.2, 0.3, 0.3, 0.2] )
+          @pm_2_positions.background = [0.2, 0.3, 0.3, 0.2]
           @pm_2_positions.vocabulary_volume.should == 1.0
 
-          @pm_3_positions.background( [0.2, 0.3, 0.3, 0.2] )
+          @pm_3_positions.background = [0.2, 0.3, 0.3, 0.2]
           @pm_3_positions.vocabulary_volume.should == 1.0
         end
       end
