@@ -2,7 +2,10 @@ require 'ostruct'
 
 module Bioinform
   class Collection
-    attr_reader :collection, :parameters
+    attr_reader :collection
+
+    include Parameters
+    make_parameters :name
 
     # collection name is a tag name for each motif in a collection. But motif can be included in several collections so have several tags
     def initialize(parameters = {})
@@ -13,13 +16,6 @@ module Bioinform
 
     def size
       collection.size
-    end
-
-    def name
-      parameters.name
-    end
-    def name=(new_name)
-      parameters.name = new_name
     end
 
     def to_s
