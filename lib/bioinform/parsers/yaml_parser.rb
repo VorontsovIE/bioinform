@@ -1,5 +1,7 @@
 require_relative '../support'
 require_relative 'parser'
+require_relative '../data_models/collection'
+require 'yaml'
 
 module Bioinform
   # YAMLParser can be used to parse hashes returned by #parse method of other parsers:

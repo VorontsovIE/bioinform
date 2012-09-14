@@ -27,7 +27,9 @@ module Bioinform
     end
     
     def self.split_on_motifs(input)
-      choose_parser(input).split_on_motifs(input, self)
+      parser = choose_parser(input)
+      raise ParsingError, "No parser can parse given input"  unless parser
+      parser.split_on_motifs(input, self)
     end
 
     def initialize(input, parser = nil)

@@ -58,4 +58,12 @@ describe Bioinform::CLI::SplitMotifs do
       end
     end
   end
+  
+  it 'splits motifs from Collections (yamled Bioinform::Collection instances)' do
+    run_split_motifs('collection.yaml')
+    @motifs_in_collection.each do |motif_name|
+      File.exist?("#{motif_name}.mat").should be_true
+      File.read("#{motif_name}.mat") == File.read("#{motif_name}.mat.result")
+    end
+  end
 end
