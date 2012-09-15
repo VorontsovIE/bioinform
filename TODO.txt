@@ -2,7 +2,7 @@ ToDo:
   how to make PM#equal? and PM#hash so that using PMs in Sets wouldn't destroy comparability of Sets and two sets with the same PMs(but different objects) would be equal. (also using pm as a hash-key)
   Make specs and fix code in such a way that Parser.split_on_motifs and so on returned consistent result. E.g. Parser.parse! raised an error on multiple times invocation
 
-  CLI::SplitMotifs when splits collection file should be able to obtain real data models and make appropriate extensions
+  refactor CLI::SplitMotifs in place where it splits collection file and choose real data models or makes PM
 
 Make parser exception print out text where parsing was broken (processing line +- 2 nearest lines and command and line numbers)
 Prevent parser going into infinity loop
@@ -26,4 +26,3 @@ Decide:
 
 Specs
 -- PWM#probabilities, #score_variance, #gauss_estimation
--- CLI::MergeIntoCollection

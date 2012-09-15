@@ -18,10 +18,10 @@ module Bioinform
       collection.size
     end
 
-    def to_s
-      result = "Collection: #{name.to_s}\n"
+    def to_s(with_name = true)
+      result = (with_name) ? "Collection: #{name.to_s}\n" : ''
       each do |pm, infos|
-        result << pm.to_s << "\n"
+        result << pm.to_s << "\n\n"
       end
       result
     end

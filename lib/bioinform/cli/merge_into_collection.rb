@@ -1,4 +1,4 @@
-require_relative '../../lib/bioinform'
+require_relative '../../bioinform'
 require 'docopt'
 require 'shellwords'
 require 'yaml'
@@ -25,10 +25,14 @@ module Bioinform
 
         doc.gsub!(/^#{doc[/\A +/]}/,'')
         options = Docopt::docopt(doc, argv: argv)
-        p options
-=begin
+
         plain_text = options['--plain-text']
-        output_file = options['--output-file']
+        name = options['--name']
+        if options['--plain-text']
+          output_file = options['--output-file'] || set_extension(name || 'collection', 'txt')
+        else
+          output_file = options['--output-file'] || set_extension(name || 'collection', 'yaml')
+        end
         data_model = Bioinform.const_get(options['--data-model'].upcase)
 
         if options['<pm-files>'].empty?
@@ -36,51 +40,33 @@ module Bioinform
         else
           filelist = options['<pm-files>']
         end
+        
+        filelist = filelist.map do |data_source|
+          if File.directory? data_source
+            Dir.glob(File.join(data_source, '*'))
+          elsif File.file? data_source
+            data_source
+          else
+            raise "File or directory #{data_source} can't be found"
+          end
+        end.flatten
 
         collection = Collection.new
+        collection.name = name  if name
 
-        filelist.each do |pm_filename|
-          input = File.read(pm_filename)
-          data_model.choose_parser(input).split_on_motifs(input, data_model).each do |pm|
+        filelist.each do |filename|
+          data_model.split_on_motifs(File.read(filename)).each do |pm|
+            pm.name ||= File.basename(filename, File.extname(filename))
             collection << pm
           end
         end
 
         if plain_text
+          File.open(output_file, 'w'){|f| f.puts(collection.to_s(false)) }
+        else
           File.open(output_file, 'w'){|f| YAML.dump(collection, f) }
-        else
-          File.open(output_file, 'w'){|f| f.puts(collection.to_s) }
         end
         
-        
-        
-        
-        if File.directory?(data_source)
-          motifs = Dir.glob(File.join(data_source,'*')).sort.map do |filename|
-            pwm = data_model.new(File.read(filename))
-            pwm.name ||= File.basename(filename, File.extname(filename))
-            pwm
-          end
-        elsif File.file?(data_source)
-          input = File.read(data_source)
-          motifs = data_model.split_on_motifs(input)
-        elsif data_source == '.stdin'
-          filelist = $stdin.read.shellsplit
-          motifs = []
-          filelist.each do |filename|
-            motif = data_model.new(File.read(filename))
-            motif.name ||= File.basename(filename, File.extname(filename))
-            motifs << motif
-          end
-        else
-          raise "Specified data source `#{data_source}` is neither directory nor file nor even .stdin"
-        end
-
-        
-        
-        
-        
-=end
       rescue Docopt::Exit => e
         puts e.message
       end
