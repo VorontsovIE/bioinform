@@ -51,6 +51,35 @@ module Bioinform
         else
           File.open(output_file, 'w'){|f| f.puts(collection.to_s) }
         end
+        
+        
+        
+        
+        if File.directory?(data_source)
+          motifs = Dir.glob(File.join(data_source,'*')).sort.map do |filename|
+            pwm = data_model.new(File.read(filename))
+            pwm.name ||= File.basename(filename, File.extname(filename))
+            pwm
+          end
+        elsif File.file?(data_source)
+          input = File.read(data_source)
+          motifs = data_model.split_on_motifs(input)
+        elsif data_source == '.stdin'
+          filelist = $stdin.read.shellsplit
+          motifs = []
+          filelist.each do |filename|
+            motif = data_model.new(File.read(filename))
+            motif.name ||= File.basename(filename, File.extname(filename))
+            motifs << motif
+          end
+        else
+          raise "Specified data source `#{data_source}` is neither directory nor file nor even .stdin"
+        end
+
+        
+        
+        
+        
 =end
       rescue Docopt::Exit => e
         puts e.message

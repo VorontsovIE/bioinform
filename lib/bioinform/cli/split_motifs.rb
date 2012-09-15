@@ -15,7 +15,7 @@ module Bioinform
 
           Options:
             -h --help                Show this screen.
-            -e --extension EXT       Extension of output files [default: mat]
+            -e --extension EXT       Extension of output files
             -f --folder FOLDER       Where to save output files [default: .]
         DOCOPT
 
@@ -29,8 +29,14 @@ module Bioinform
         Dir.mkdir(folder)  unless Dir.exist?(folder)
         raise "File #{collection_filename} not exist"  unless File.exist? collection_filename
 
-        PM.split_on_motifs(File.read(collection_filename)).each do |motif|
-          File.open(set_folder(folder, set_extension(motif.name, extension)), 'w'){|f| f.puts motif}
+        input = File.read(collection_filename)
+        Parser.choose(input).split.each do |motif|
+          if motif.is_a? PM
+            File.open(set_folder(folder, set_extension(motif.name, extension || motif.class.name.gsub(/^.*::/,'').downcase)), 'w'){|f| f.puts motif}
+          else
+            motif = PM.new(motif)
+            File.open(set_folder(folder, set_extension(motif.name, extension || 'mat')), 'w'){|f| f.puts motif}
+          end
         end
       rescue Docopt::Exit => e
         puts e.message

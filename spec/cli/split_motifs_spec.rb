@@ -15,6 +15,7 @@ describe Bioinform::CLI::SplitMotifs do
     @motifs_in_collection.each do |motif_name|
       File.delete("#{motif_name}.mat")  if File.exist?("#{motif_name}.mat")
       File.delete("#{motif_name}.pwm")  if File.exist?("#{motif_name}.pwm")
+      File.delete("#{motif_name}.pat")  if File.exist?("#{motif_name}.pat")
     end
     FileUtils.rm_rf('result_folder')  if Dir.exist?('result_folder')
     Dir.chdir(@start_dir)
@@ -59,11 +60,18 @@ describe Bioinform::CLI::SplitMotifs do
     end
   end
   
-  it 'splits motifs from Collections (yamled Bioinform::Collection instances)' do
+  it 'splits motifs from Collections (yamled Bioinform::Collection instances) with appropriate extension' do
     run_split_motifs('collection.yaml')
     @motifs_in_collection.each do |motif_name|
-      File.exist?("#{motif_name}.mat").should be_true
-      File.read("#{motif_name}.mat") == File.read("#{motif_name}.mat.result")
+      File.exist?("#{motif_name}.pwm").should be_true
+      File.read("#{motif_name}.pwm") == File.read("#{motif_name}.mat.result")
+    end
+  end
+  it 'splits motifs from Collections with specified extension' do
+    run_split_motifs('collection.yaml -e pat')
+    @motifs_in_collection.each do |motif_name|
+      File.exist?("#{motif_name}.pat").should be_true
+      File.read("#{motif_name}.pat") == File.read("#{motif_name}.mat.result")
     end
   end
 end

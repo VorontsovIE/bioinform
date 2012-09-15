@@ -11,6 +11,13 @@ module Bioinform
           [ pm_klass.new(input, self) ]
         end
       end
+      def each
+        if block_given?
+          yield self
+        else
+          Enumerator.new(self, :each)
+        end
+      end
     end
     include SingleMotifParser
 
@@ -22,7 +29,7 @@ module Bioinform
       end
       module ClassMethods
         def split_on_motifs(input, pm_klass = PM)
-          split(input).map{|el| pm_klass.new(el)}
+          split(input).map{|el| el.is_a?(PM) ? el : pm_klass.new(el)}
         end
         def split(input)
           self.new(input).split
