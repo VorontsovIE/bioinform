@@ -1,6 +1,7 @@
 # Bioinform
-
 Bioinform is a bunch of classes extracted from daily bioinformatics work. This classes is an attempt to encapsulate loading(parsing) logic for positional matrices in different formats and common transformations. It also includes several core classes extensions which are particularly useful on Enumerables
+
+Bioinform is in its development phase. API is changing very quickly. Each version is tested and consistent but no one guarantees that code worked in your version will work in future versions. However last version of bioinform is always consistent with latest version of macroape, and cli-tools that're built on top of libraries changes their interface not so often, so you can use them thinking about library as about black-box that makes able to do some useful things
 
 ## Installation
 
@@ -19,6 +20,11 @@ Or install it yourself as:
 ## Usage
 
 Usage is under construction. I don't recommend use this gem for a while: syntax is on the way to change to more simple and concise. But stay tuned
+
+### Command-line applications
+  * pcm2pwm
+  * split_motifs
+  * merge_into_collection
 
 ## Contributing
 

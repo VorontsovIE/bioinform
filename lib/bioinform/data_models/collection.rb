@@ -2,7 +2,7 @@ require 'ostruct'
 
 module Bioinform
   class Collection
-    attr_reader :collection
+    attr_accessor :collection
 
     include Parameters
     make_parameters :name
