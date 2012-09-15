@@ -8,7 +8,7 @@ module Bioinform
       end
       module ClassMethods
         def split_on_motifs(input, pm_klass = PM)
-          [ pm_klass.new(input, self) ]
+          [ input.is_a?(pm_klass) ? self : pm_klass.new(input, self) ]
         end
       end
       def each
@@ -29,7 +29,7 @@ module Bioinform
       end
       module ClassMethods
         def split_on_motifs(input, pm_klass = PM)
-          split(input).map{|el| el.is_a?(PM) ? el : pm_klass.new(el)}
+          split(input).map{|el| el.is_a?(pm_klass) ? el : pm_klass.new(el)}
         end
         def split(input)
           self.new(input).split
