@@ -4,7 +4,7 @@ module Bioinform
   class Motif
     include Parameters
     make_parameters :pcm,:pwm,:ppm, :name
-    # 0)Motif.new(nil)
+    # 0)Motif.new()
     # 1)Motif.new(pcm: ..., pwm: ..., name: ...,threshold: ...)
     # 2)Motif.new(my_pcm)
     # 3)Motif.new(pm: my_pcm, threshold: ...)
@@ -17,8 +17,11 @@ module Bioinform
         set_parameters(motif_type => pm)
       when Hash
         pm = parameters.delete(:pm)
-        motif_type = pm.class.name.downcase.sub(/^.+::/,'')
-        set_parameters(parameters.merge(motif_type => pm))
+        set_parameters(parameters)
+        if pm
+          motif_type = pm.class.name.downcase.sub(/^.+::/,'')
+          set_parameters(motif_type => pm)
+        end
       end
     end
     
