@@ -4,6 +4,7 @@ module Bioinform
   class Motif
     include Parameters
     make_parameters :pcm, :pwm, :ppm, :name
+
     # 0)Motif.new()
     # 1)Motif.new(pcm: ..., pwm: ..., name: ...,threshold: ...)
     # 2)Motif.new(my_pcm)
