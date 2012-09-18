@@ -1,3 +1,8 @@
+Collection contain Motif-s, each Motif can contain any of list: pcm,pwm,ppm.
+Name, background, tags and any other parameters should be removed from PM class to be placed in Motif
+
+
+
 ToDo:
   how to make PM#equal? and PM#hash so that using PMs in Sets wouldn't destroy comparability of Sets and two sets with the same PMs(but different objects) would be equal. (also using pm as a hash-key)
   Make specs and fix code in such a way that Parser.split_on_motifs and so on returned consistent result. E.g. Parser.parse! raised an error on multiple times invocation
