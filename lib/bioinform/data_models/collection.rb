@@ -66,17 +66,18 @@ module Bioinform
     include Enumerable
 
     %w[pcm ppm pwm].each do |data_model|
-      method_name = "each_#{data_model}".to_sym       #
-      converter_method = "to_#{data_model}".to_sym    #
-      define_method method_name do |&block|           # define_method :each_pcm do |&block|
-        if block                                      #   if block
-          each do |pm, infos|                         #     each do |pm, infos|
-            block.call pm.send(converter_method)      #       block.call pm.send(:to_pcm)
-          end                                         #     end
-        else                                          #   else
-          Enumerator.new(self, method_name)           #     Enumerator.new(self, :each_pcm)
-        end                                           #   end
-      end                                             # end
+      method_name = "each_#{data_model}".to_sym               #
+      converter_method = "to_#{data_model}".to_sym            #
+      define_method method_name do |&block|                   # define_method :each_pcm do |&block|
+        if block                                              #   if block
+          each do |pm, infos|                                 #     each do |pm, infos|
+            motif = pm.send(converter_method) rescue nil      #       motif = pm.send(:to_pcm) rescue nil
+            block.call(motif)                                 #       block.call(motif)
+          end                                                 #     end
+        else                                                  #   else
+          Enumerator.new(self, method_name)                   #     Enumerator.new(self, :each_pcm)
+        end                                                   #   end
+      end                                                     # end
     end
 
     def ==(other)
