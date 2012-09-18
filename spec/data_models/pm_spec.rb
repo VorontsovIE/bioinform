@@ -3,7 +3,7 @@ require_relative '../../lib/bioinform/data_models/pm'
 
 module Bioinform
   describe PM do
-    {:to_pcm => PCM, :to_pwm => PWM, :to_ppm => PPM}.each do |converter_method, result_klass|
+    {:as_pcm => PCM, :as_pwm => PWM, :as_ppm => PPM}.each do |converter_method, result_klass|
       describe "##{converter_method}" do
         before :each do
           @collection = Collection.new(name: 'Collection 1')

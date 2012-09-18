@@ -184,15 +184,14 @@ module Bioinform
       deep_dup
     end
 
-    def to_pcm
+    def as_pcm
       PCM.new(matrix: matrix, name: name, tags: tags, background: background)
     end
-    def to_ppm
+    def as_ppm
       PPM.new(matrix: matrix, name: name, tags: tags, background: background)
     end
-    def to_pwm
+    def as_pwm
       PWM.new(matrix: matrix, name: name, tags: tags, background: background)
     end
-
   end
 end

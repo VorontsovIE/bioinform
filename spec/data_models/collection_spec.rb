@@ -55,11 +55,11 @@ module Bioinform
     end
     describe '#each_pcm' do
       before :each do
-        @collection << @pm_1 << @pm_2 << @pm_3
+        @collection << @pm_1.as_pcm << @pm_2 << @pm_3.as_pcm
       end
       context 'with block given' do
         it 'should yield elements of collecton converted to pcm' do
-          expect{|b| @collection.each_pcm(&b)}.to yield_successive_args(PCM, PCM, PCM)
+          expect{|b| @collection.each_pcm(&b)}.to yield_successive_args(PCM, nil, PCM)
         end
       end
       context 'with block given' do
