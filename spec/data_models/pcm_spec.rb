@@ -28,15 +28,25 @@ module Bioinform
     end
 
     describe '#to_ppm' do
-      it 'should return PPM' do
-        PCM.new([[1, 2, 3, 1],[4, 0, 1, 2]]).to_ppm.should be_kind_of(PPM)
-      end
-      it 'should make transformation el --> el / count' do
-        PCM.new([[1, 2, 3, 1],[4, 0, 1, 2]]).to_ppm.should == PPM.new([[1.0/7, 2.0/7, 3.0/7, 1.0/7],[4.0/7, 0.0/7, 1.0/7, 2.0/7]])
-      end
-      it 'should preserve name' do
-        PCM.new(matrix: [[1, 2, 3, 1],[4, 0, 1, 2]], name: nil).to_ppm.name.should be_nil
-        PCM.new(matrix: [[1, 2, 3, 1],[4, 0, 1, 2]], name: 'Stub name').to_ppm.name.should == 'Stub name'
+      let(:pcm_motif) { PCM.new(matrix: [[1, 2, 3, 1],[4, 0, 1, 2]]) }
+      context 'returned object' do
+        subject{pcm_motif.to_ppm}
+        it { should be_kind_of(PPM)}
+        it 'should have matrix transformed with el --> el / count' do
+          subject.matrix.should == [[1, 2, 3, 1].map{|el| el.to_f / 7.0}, [4, 0, 1, 2].map{|el| el.to_f / 7.0}]
+        end
+        context 'when source PCM name is absent' do
+          let(:pcm_motif) { PCM.new(matrix: [[1, 2, 3, 1],[4, 0, 1, 2]], name: nil) }
+          it 'should have no name' do
+            subject.name.should be_nil
+          end
+        end
+        context 'when source PCM has name' do
+          let(:pcm_motif) { PCM.new(matrix: [[1, 2, 3, 1],[4, 0, 1, 2]], name: 'Stub-name') }
+          it 'should has the same name' do
+            subject.name.should == 'Stub-name'
+          end
+        end
       end
     end
 
