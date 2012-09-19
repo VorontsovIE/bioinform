@@ -17,12 +17,14 @@ module Bioinform
         motif_type = pm.class.name.downcase.sub(/^.+::/,'')
         set_parameters(motif_type => pm)
       when Hash
-        pm = parameters.delete(:pm)
-        set_parameters(parameters)
-        if pm
+        if parameters.has_key?(:pm) && parameters[:pm].is_a?(PM)
+          pm = parameters.delete(:pm)
           motif_type = pm.class.name.downcase.sub(/^.+::/,'')
           set_parameters(motif_type => pm)
         end
+        set_parameters(parameters)
+      else
+        raise ArgumentError, "Motif::new doesn't accept argument #{parameters} of class #{parameters.class}"
       end
     end
     
