@@ -22,7 +22,7 @@ module Bioinform
 
     def to_ppm
       mat = each_position.map{|pos| pos.map{|el| el.to_f / count }}
-      PPM.new(matrix: mat, name: name, tags: tags, background: background)
+      PPM.new(get_parameters.merge(matrix: mat))
     end
   end
 end

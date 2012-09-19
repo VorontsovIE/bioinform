@@ -185,13 +185,13 @@ module Bioinform
     end
 
     def as_pcm
-      PCM.new(matrix: matrix, name: name, tags: tags, background: background)
+      PCM.new(get_parameters.merge(matrix: matrix))
     end
     def as_ppm
-      PPM.new(matrix: matrix, name: name, tags: tags, background: background)
+      PPM.new(get_parameters.merge(matrix: matrix))
     end
     def as_pwm
-      PWM.new(matrix: matrix, name: name, tags: tags, background: background)
+      PWM.new(get_parameters.merge(matrix: matrix))
     end
   end
 end
