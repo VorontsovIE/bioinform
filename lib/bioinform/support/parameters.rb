@@ -21,5 +21,8 @@ module Bioinform
     def get_parameters
       @parameters.marshal_dump
     end
+    def parameter_defined?(param_name)
+      get_parameters.has_key?(param_name)
+    end
   end
 end

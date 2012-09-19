@@ -10,6 +10,7 @@ module Bioinform
     # 2)Motif.new(my_pcm)
     # 3)Motif.new(pm: my_pcm, threshold: ...)
     # 2) and 3) cases will automatically choose data model
+    #### What if pm already is a Motif
     def initialize(parameters = {})
       case parameters
       when PM
@@ -38,6 +39,14 @@ module Bioinform
 
     def method_missing(meth, *args)
       parameters.__send__(meth, *args)
+    end
+
+    def ==(other)
+      parameters == other.parameters
+    end
+    
+    def to_s
+      parameters.to_s
     end
 
   end

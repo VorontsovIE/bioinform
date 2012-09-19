@@ -1,11 +1,9 @@
---- &19257216 !ruby/object:Bioinform::Collection
+--- !ruby/object:Bioinform::Collection
 collection:
-- - !ruby/object:Bioinform::PM
+- - &16518624 !ruby/object:Bioinform::PM
     parameters: !ruby/object:OpenStruct
       table:
         :name: GABPA_f1
-        :tags:
-        - *19257216
         :background:
         - 1
         - 1
@@ -67,12 +65,10 @@ collection:
       - -1.0304105539540915
   - !ruby/object:OpenStruct
     table: {}
-- - !ruby/object:Bioinform::PM
+- - &16542144 !ruby/object:Bioinform::PM
     parameters: !ruby/object:OpenStruct
       table:
         :name: KLF4_f2
-        :tags:
-        - *19257216
         :background:
         - 1
         - 1
@@ -122,12 +118,10 @@ collection:
       - -0.18161647647456935
   - !ruby/object:OpenStruct
     table: {}
-- - !ruby/object:Bioinform::PM
+- - &10015932 !ruby/object:Bioinform::PM
     parameters: !ruby/object:OpenStruct
       table:
         :name: SP1_f1
-        :tags:
-        - *19257216
         :background:
         - 1
         - 1
@@ -181,5 +175,21 @@ collection:
       - -0.68254820978656
   - !ruby/object:OpenStruct
     table: {}
+container:
+- !ruby/object:Bioinform::Motif
+  parameters: !ruby/object:OpenStruct
+    table:
+      :pm: *16518624
+    modifiable: true
+- !ruby/object:Bioinform::Motif
+  parameters: !ruby/object:OpenStruct
+    table:
+      :pm: *16542144
+    modifiable: true
+- !ruby/object:Bioinform::Motif
+  parameters: !ruby/object:OpenStruct
+    table:
+      :pm: *10015932
+    modifiable: true
 parameters: !ruby/object:OpenStruct
   table: {}
