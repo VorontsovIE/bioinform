@@ -17,5 +17,9 @@ module Bioinform
       hsh.each{|k,v| send("#{k}=", v) }
       self
     end
+    # return hash of parameters
+    def get_parameters
+      @parameters.marshal_dump
+    end
   end
 end
