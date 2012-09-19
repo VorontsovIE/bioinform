@@ -1,9 +1,10 @@
 Fabricator(:pwm, from: Bioinform::PWM) do
   initialize_with{ Bioinform::PWM.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'PWM_name')}
 end
+
+# It has name 'PCM_name' because name isn't converted during #to_pwm
 Fabricator(:pwm_by_pcm, from: Bioinform::PWM) do
   initialize_with{ Fabricate(:pcm).to_pwm }
-  name 'PWM_name'
 end
 
 Fabricator(:rounded_upto_3_digits_pwm_by_pcm_with_pseudocount_1, from: :pwm) do

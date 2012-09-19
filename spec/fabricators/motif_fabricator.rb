@@ -22,12 +22,12 @@ Fabricator(:motif_pcm_and_ppm, from: :motif) do
   ppm(fabricator: :ppm)
 end
 
-Fabricator(:motif_pcm_and_pwm, from: :motif) do
-  pcm(fabricator: :pcm)
-  pwm(fabricator: :pwm_by_pcm)
+Fabricator(:motif_pwm_and_ppm, from: :motif) do
+  pwm(fabricator: :pwm)
+  ppm(fabricator: :ppm)
 end
 
-Fabricator(:motif_pcm_and_inconsistent_pwm, from: :motif) do
+Fabricator(:motif_pcm_and_pwm, from: :motif) do
   pcm(fabricator: :pcm)
-  pwm(fabricator: :pwm_by_pwm_nonstandart_converter)
+  pwm(fabricator: :pwm)
 end
