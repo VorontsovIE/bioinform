@@ -1,4 +1,5 @@
 require 'ostruct'
+require_relative 'motif'
 
 module Bioinform
   class Collection

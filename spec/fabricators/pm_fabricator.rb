@@ -41,3 +41,12 @@ Fabricator(:pm_3, from: :pm) do
   matrix [[2,3,4,5],[6,7,8,9]]
   name 'motif_3'
 end
+
+Fabricator(:pm_4,from: :pm) do
+  matrix [[1,0,1,0],[0,0,0,0],[1,2,3,4]]
+  name 'pm 4'
+end
+Fabricator(:pm_5, from: :pm) do
+  matrix [[1,2,1,2],[0,3,6,9],[1,2,3,4]]
+  name 'pm 5'
+end

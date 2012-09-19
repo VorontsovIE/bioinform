@@ -27,7 +27,7 @@ module Bioinform
         raise ArgumentError, "Motif::new doesn't accept argument #{parameters} of class #{parameters.class}"
       end
     end
-    
+
     #def pcm; parameters.pcm; end
     def pwm; parameters.pwm || pcm.try(:to_pwm); end
     def ppm; parameters.ppm || pcm.try(:to_ppm); end
@@ -35,11 +35,10 @@ module Bioinform
     #def pwm=(pwm); parameters.pwm = pwm; end
     #def ppm=(ppm); parameters.ppm = ppm; end
     #def name; parameters.name || pwm.try(:name) || pcm.try(:name) || ppm.try(:name); end
-    
-    
+
     def method_missing(meth, *args)
       parameters.__send__(meth, *args)
     end
-    
+
   end
 end

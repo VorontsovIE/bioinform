@@ -4,7 +4,7 @@ require_relative '../../lib/bioinform/data_models/collection'
 
 module Bioinform
   describe TrivialParser do
-    context '#initialize' do
+    context '.new' do
       it 'should take the only input argument' do
         TrivialParser.instance_method(:initialize).arity.should == 1
       end
@@ -20,7 +20,7 @@ module Bioinform
       end
     end
 
-    context '::split_on_motifs' do
+    context '.split_on_motifs' do
       it 'should be able to get a single PM' do
         TrivialParser.split_on_motifs({matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name'}, PM).should == [ PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name:'Name') ]
       end
@@ -40,24 +40,24 @@ module Bioinform
   end
 
   describe TrivialCollectionParser do
-    before :each do
-      @pm_1 = Fabricate(:pm_first)
-      @pm_2 = Fabricate(:pm_second)
-      @collection = Fabricate(:two_elements_collection)
-    end
+    let(:collection){ Fabricate(:three_elements_collection) }
+    let(:pm_1){ Fabricate(:pm_1) }
+    let(:pm_2){ Fabricate(:pm_2) }
+    let(:pm_3){ Fabricate(:pm_3) }
 
     describe '#parse!' do
       it 'can be used to obtain PMs from Collection' do
-        @parser = TrivialCollectionParser.new(@collection)
-        @parser.parse!.should == @pm_1
-        @parser.parse!.should == @pm_2
+        @parser = TrivialCollectionParser.new(collection)
+        @parser.parse!.should == pm_1
+        @parser.parse!.should == pm_2
+        @parser.parse!.should == pm_3
         expect{ @parser.parse! }.to raise_error
       end
     end
 
-    describe '::split_on_motifs' do
+    describe '.split_on_motifs' do
       it 'should be able to split collection into PMs' do
-        TrivialCollectionParser.split_on_motifs(@collection).should == [@pm_1, @pm_2]
+        TrivialCollectionParser.split_on_motifs(collection).should == [pm_1, pm_2, pm_3]
       end
     end
   end

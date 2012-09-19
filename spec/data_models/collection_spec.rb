@@ -5,9 +5,9 @@ module Bioinform
   describe Collection do
     before :each do
       @collection = Collection.new(name: 'Main collection')
-      @pm_1 = PM.new(matrix:[[1,1,1,1]],name:'Stub datamodel')
-      @pm_2 = PM.new(matrix:[[1,2,3,4],[4,3,2,1]],name:'Second stub')
-      @pm_3 = PM.new(matrix:[[11,12,13,14],[41,31,21,11]],name:'Third stub')
+      @pm_1 = Fabricate(:pm_1)
+      @pm_2 = Fabricate(:pm_2)
+      @pm_3 = Fabricate(:pm_3)
     end
     describe '#size' do
       it 'should return size of collection' do
@@ -72,8 +72,8 @@ module Bioinform
     describe '#+' do
       before :each do
         @collection << @pm_1 << @pm_2 << @pm_3
-        @pm_sec_1 = PM.new(matrix: [[1,0,1,0],[0,0,0,0],[1,2,3,4]], name: 'Secondary collection matrix 1')
-        @pm_sec_2 = PM.new(matrix: [[1,2,1,2],[0,3,6,9],[1,2,3,4]], name: 'Secondary collection matrix 2')
+        @pm_sec_1 = Fabricate(:pm_4)
+        @pm_sec_2 = Fabricate(:pm_5)
         @secondary_collection = Collection.new(name: 'Secondary collection')
         @secondary_collection << @pm_sec_1 << @pm_sec_2
         @summary_collection = @collection + @secondary_collection
