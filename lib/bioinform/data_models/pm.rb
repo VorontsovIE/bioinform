@@ -10,15 +10,15 @@ module Bioinform
     attr_accessor :matrix, :parameters
 
     include Parameters
-    make_parameters :tags, :name, :background
+    make_parameters  :name, :background # , :tags
 
-    def mark(tag)
-      tags << tag
-    end
+#    def mark(tag)
+#      tags << tag
+#    end
 
-    def tagged?(tag)
-      tags.any?{|t| (t.eql? tag) || (t.respond_to?(:name) && t.name && (t.name == tag)) }
-    end
+#    def tagged?(tag)
+#      tags.any?{|t| (t.eql? tag) || (t.respond_to?(:name) && t.name && (t.name == tag)) }
+#    end
 
     def self.choose_parser(input)
       [TrivialParser, YAMLParser, Parser, StringParser, StringFantomParser, TrivialCollectionParser, YAMLCollectionParser].find do |parser|
@@ -39,7 +39,7 @@ module Bioinform
       result = parser.new(input).parse
       @matrix = result.matrix
       self.name = result.name
-      self.tags = result.tags || []
+#      self.tags = result.tags || []
       self.background = result.background || [1, 1, 1, 1]
       raise 'matrix not valid'  unless valid?
     end

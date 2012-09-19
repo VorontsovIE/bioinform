@@ -17,97 +17,97 @@ module Bioinform
         it "should return an instance of #{result_klass}" do
           @conv_motif.should be_kind_of(result_klass)
         end
-        it 'should return have the same matrix, name, background and tags' do
+        it 'should return have the same matrix, name and background' do #, background and tags' do
           @conv_motif.matrix.should == @matrix
           @conv_motif.name.should == @name
           @conv_motif.background.should == @background
-          @conv_motif.tags.should == @tags
+#          @conv_motif.tags.should == @tags
         end
       end
     end
 
-    describe '#tagged?' do
-      context 'when PM marked with Collection object' do
-        context 'without collection-name' do
-          before :each do
-            @marking_collection = Collection.new
-            @nonmarking_collection = Collection.new
-            @pm = PM.new(matrix:[[1,1,1,1]], name:'Motif name')
-            @pm.mark(@marking_collection)
-          end
-          it 'should be true for marking collection' do
-            @pm.should be_tagged(@marking_collection)
-          end
-          it 'should be false for nonmarking collection' do
-            @pm.should_not be_tagged(@nonmarking_collection)
-          end
-          it 'should be false for nil-name' do
-            @pm.should_not be_tagged(nil)
-          end
-          it 'should be false for any string' do
-            @pm.should_not be_tagged('Another name')
-          end
-        end
-        context 'with collection-name' do
-          before :each do
-            @marking_collection = Collection.new(name: 'Collection name')
-            @nonmarking_collection = Collection.new(name: 'Another name')
-            @pm = PM.new(matrix:[[1,1,1,1]], name:'Motif name')
-            @pm.mark(@marking_collection)
-          end
-          it 'should be true for marking collection' do
-            @pm.should be_tagged(@marking_collection)
-          end
-          it 'should be false for nonmarking collection' do
-            @pm.should_not be_tagged(@nonmarking_collection)
-          end
-          it 'should be true for name of marking collection' do
-            @pm.should be_tagged('Collection name')
-          end
-          it 'should be false for string that is not name of marking collection' do
-            @pm.should_not be_tagged('Another name')
-          end
-        end
-      end
+    # describe '#tagged?' do
+      # context 'when PM marked with Collection object' do
+        # context 'without collection-name' do
+          # before :each do
+            # @marking_collection = Collection.new
+            # @nonmarking_collection = Collection.new
+            # @pm = PM.new(matrix:[[1,1,1,1]], name:'Motif name')
+            # @pm.mark(@marking_collection)
+          # end
+          # it 'should be true for marking collection' do
+            # @pm.should be_tagged(@marking_collection)
+          # end
+          # it 'should be false for nonmarking collection' do
+            # @pm.should_not be_tagged(@nonmarking_collection)
+          # end
+          # it 'should be false for nil-name' do
+            # @pm.should_not be_tagged(nil)
+          # end
+          # it 'should be false for any string' do
+            # @pm.should_not be_tagged('Another name')
+          # end
+        # end
+        # context 'with collection-name' do
+          # before :each do
+            # @marking_collection = Collection.new(name: 'Collection name')
+            # @nonmarking_collection = Collection.new(name: 'Another name')
+            # @pm = PM.new(matrix:[[1,1,1,1]], name:'Motif name')
+            # @pm.mark(@marking_collection)
+          # end
+          # it 'should be true for marking collection' do
+            # @pm.should be_tagged(@marking_collection)
+          # end
+          # it 'should be false for nonmarking collection' do
+            # @pm.should_not be_tagged(@nonmarking_collection)
+          # end
+          # it 'should be true for name of marking collection' do
+            # @pm.should be_tagged('Collection name')
+          # end
+          # it 'should be false for string that is not name of marking collection' do
+            # @pm.should_not be_tagged('Another name')
+          # end
+        # end
+      # end
 
-      context 'when PM marked with name' do
-        before :each do
-          @nonmarking_collection = Collection.new(name: 'Another name')
-          @pm = PM.new(matrix:[[1,1,1,1]], name:'Motif name')
-          @pm.mark('Mark name')
-        end
-        it 'should be true for marking name' do
-          @pm.should be_tagged('Mark name')
-        end
-        it 'should be false for string that is not marking name' do
-          @pm.should_not be_tagged('Another name')
-        end
-        it 'should be false for nonmarking collection' do
-          @pm.should_not be_tagged(@nonmarking_collection)
-        end
-      end
+      # context 'when PM marked with name' do
+        # before :each do
+          # @nonmarking_collection = Collection.new(name: 'Another name')
+          # @pm = PM.new(matrix:[[1,1,1,1]], name:'Motif name')
+          # @pm.mark('Mark name')
+        # end
+        # it 'should be true for marking name' do
+          # @pm.should be_tagged('Mark name')
+        # end
+        # it 'should be false for string that is not marking name' do
+          # @pm.should_not be_tagged('Another name')
+        # end
+        # it 'should be false for nonmarking collection' do
+          # @pm.should_not be_tagged(@nonmarking_collection)
+        # end
+      # end
 
-      context 'when PM marked with several marks' do
-        before :each do
-          @collection_1 = Collection.new(name: 'First name')
-          @collection_2 = Collection.new(name: 'Second name')
-          @collection_3 = Collection.new(name: 'Nonmarking collection')
-          @pm = PM.new(matrix:[[1,1,1,1]], name:'Motif name')
-          @pm.mark(@collection_1)
-          @pm.mark(@collection_2)
-          @pm.mark('Stringy-name')
-        end
-        it 'should be true for each mark' do
-          @pm.should be_tagged(@collection_1)
-          @pm.should be_tagged(@collection_2)
-          @pm.should be_tagged('Stringy-name')
-        end
-        it 'should be false for not presented marks' do
-          @pm.should_not be_tagged(@collection_3)
-          @pm.should_not be_tagged('Bad stringy-name')
-        end
-      end
-    end
+      # context 'when PM marked with several marks' do
+        # before :each do
+          # @collection_1 = Collection.new(name: 'First name')
+          # @collection_2 = Collection.new(name: 'Second name')
+          # @collection_3 = Collection.new(name: 'Nonmarking collection')
+          # @pm = PM.new(matrix:[[1,1,1,1]], name:'Motif name')
+          # @pm.mark(@collection_1)
+          # @pm.mark(@collection_2)
+          # @pm.mark('Stringy-name')
+        # end
+        # it 'should be true for each mark' do
+          # @pm.should be_tagged(@collection_1)
+          # @pm.should be_tagged(@collection_2)
+          # @pm.should be_tagged('Stringy-name')
+        # end
+        # it 'should be false for not presented marks' do
+          # @pm.should_not be_tagged(@collection_3)
+          # @pm.should_not be_tagged('Bad stringy-name')
+        # end
+      # end
+    # end
 
     describe '#==' do
       it 'should be true iff motifs have the same matrix, background and name' do

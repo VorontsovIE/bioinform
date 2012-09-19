@@ -39,7 +39,7 @@ module Bioinform
     end
 
     def add_pm(pm, info)
-      pm.mark(self)
+#      pm.mark(self)
       collection << [pm, info]
       self
     end
