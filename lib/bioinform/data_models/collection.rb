@@ -58,6 +58,8 @@ module Bioinform
       add_pm(pm, OpenStruct.new)
     end
 
+    # collection.each{|motif| ... }
+    # collection.each(:pwm, :threshold){|pwm,threshold| }
     def each(*args)
       if args.empty?
         if block_given?
@@ -67,7 +69,7 @@ module Bioinform
         end
       else
         if block_given?
-          container.each{|motif| yield( args.map{|arg| motif.parameters.send(arg)} ) }
+          container.each{|motif| yield( *args.map{|arg| motif.parameters.send(arg)} ) }
         else
           Enumerator.new(self, :each, *args)
         end

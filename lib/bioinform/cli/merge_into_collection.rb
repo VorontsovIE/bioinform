@@ -62,12 +62,11 @@ module Bioinform
         end
 
         if plain_text
-          File.open(output_file, 'w'){|f|
-            f.puts(collection.to_s(false))
+          File.open(output_file, 'w') do |f|
             collection.each(options['--data-model'].downcase) do |pm|
-              #f.puts(pm.to_s + "\n\n")
+              f.puts(pm.to_s + "\n\n")
             end
-          }
+          end
         else
           File.open(output_file, 'w'){|f| YAML.dump(collection, f) }
         end
