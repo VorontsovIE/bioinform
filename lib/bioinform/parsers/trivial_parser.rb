@@ -15,6 +15,7 @@ module Bioinform
     def parse!
       case input
       when PM then input
+      when Motif then input.pm
       when OpenStruct then input
       when Hash then OpenStruct.new(input)
       end
@@ -27,7 +28,7 @@ module Bioinform
       @input = input
     end
     def parse!
-      input.collection.shift.first
+      input.container.shift.pm
     end
   end
 end

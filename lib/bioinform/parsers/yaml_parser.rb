@@ -27,7 +27,7 @@ module Bioinform
       @collection ||= YAML.load(input)
     end
     def parse!
-      collection.collection.shift.first
+      collection.container.shift.pm
     rescue Psych::SyntaxError
       raise 'parsing error'
     end

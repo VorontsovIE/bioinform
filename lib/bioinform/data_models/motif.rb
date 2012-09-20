@@ -3,7 +3,7 @@ require 'active_support/core_ext/object/try'
 module Bioinform
   class Motif
     include Parameters
-    make_parameters :pcm, :pwm, :ppm, :name
+    make_parameters :pcm, :pwm, :ppm, :name, :original_data_model
 
     # 0)Motif.new()
     # 1)Motif.new(pcm: ..., pwm: ..., name: ...,threshold: ...)
@@ -15,12 +15,14 @@ module Bioinform
       case parameters
       when PM
         pm = parameters
-        motif_type = pm.class.name.downcase.sub(/^.+::/,'')
+        motif_type = pm.class.name.downcase.sub(/^.+::/,'').to_sym
+        self.original_data_model = motif_type
         set_parameters(motif_type => pm)
       when Hash
         if parameters.has_key?(:pm) && parameters[:pm].is_a?(PM)
           pm = parameters.delete(:pm)
-          motif_type = pm.class.name.downcase.sub(/^.+::/,'')
+          motif_type = pm.class.name.downcase.sub(/^.+::/,'').to_sym
+          self.original_data_model = motif_type
           set_parameters(motif_type => pm)
         end
         set_parameters(parameters)
@@ -29,6 +31,7 @@ module Bioinform
       end
     end
 
+    def pm; ((original_data_model || :pm) == :pm) ? parameters.pm : send(original_data_model); end
     #def pcm; parameters.pcm; end
     def pwm; parameters.pwm || pcm.try(:to_pwm); end
     def ppm; parameters.ppm || pcm.try(:to_ppm); end
@@ -48,6 +51,5 @@ module Bioinform
     def to_s
       parameters.to_s
     end
-
   end
 end

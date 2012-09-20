@@ -3,7 +3,6 @@ require_relative 'motif'
 
 module Bioinform
   class Collection
-    attr_accessor :collection
     attr_accessor :container
 
     include Parameters
@@ -11,7 +10,6 @@ module Bioinform
 
     # collection name is a tag name for each motif in a collection. But motif can be included in several collections so have several tags
     def initialize(parameters = {})
-      @collection = []
       @container = []
       @parameters = OpenStruct.new(parameters)
       yield @parameters  if block_given?
@@ -31,12 +29,6 @@ module Bioinform
 
     def +(other)
       result = self.class.new
-      collection.each do |pm, infos|
-        result.collection << [pm, infos]
-      end
-      other.collection.each do |pm, infos|
-        result.collection << [pm, infos]
-      end
       container.each do |motif|
         result.container << motif
       end
@@ -48,7 +40,6 @@ module Bioinform
 
     def add_pm(pm, info)
 #      pm.mark(self)
-      collection << [pm, info]
       container << Motif.new(info.marshal_dump.merge(pm: pm))
       #### What if pm already is a Motif
       self
@@ -73,19 +64,6 @@ module Bioinform
     end
 
     include Enumerable
-
-    %w[pcm ppm pwm].each do |data_model|
-      method_name = "each_#{data_model}".to_sym               #
-      define_method method_name do |&block|                   # define_method :each_pcm do |&block|
-        if block                                              #   if block
-          container.each do |motif|                           #     container.each do |motif|
-            block.call(motif.send(data_model))                #       block.call(motif.send(:pcm))
-          end                                                 #     end
-        else                                                  #   else
-          Enumerator.new(self, method_name)                   #     Enumerator.new(self, :each_pcm)
-        end                                                   #   end
-      end                                                     # end
-    end
 
     def ==(other)
       (parameters == other.parameters) && (container == other.container)
