@@ -38,18 +38,18 @@ module Bioinform
 #      end
     end
 
-    describe '#each_motif' do
+    describe '#each' do
       before :each do
         @collection << @pm_1 << @pm_2 << @pm_3
       end
       context 'with block given' do
         it 'should yield Motifs' do
-          expect{|b| @collection.each_motif(&b)}.to yield_successive_args(Motif,Motif,Motif)
+          expect{|b| @collection.each(&b)}.to yield_successive_args(Motif,Motif,Motif)
         end
       end
       context 'with block given' do
         it 'return an Enumerator' do
-          @collection.each_motif.should be_kind_of(Enumerator)
+          @collection.each.should be_kind_of(Enumerator)
         end
       end
     end

@@ -61,29 +61,17 @@ module Bioinform
     # collection.each{|motif| ... }
     # collection.each(:pwm, :threshold){|pwm,threshold| }
     def each(*args)
-      if args.empty?
-        if block_given?
-          collection.each{|pm, infos| yield [pm, infos]}
+      if block_given?
+        if args.empty?
+          container.each{|motif| yield motif}
         else
-          Enumerator.new(self, :each)
+          container.each{|motif| yield( *args.map{|arg| motif.parameters.send(arg)} ) }
         end
       else
-        if block_given?
-          container.each{|motif| yield( *args.map{|arg| motif.parameters.send(arg)} ) }
-        else
-          Enumerator.new(self, :each, *args)
-        end
+        Enumerator.new(self, :each, *args)
       end
     end
 
-    def each_motif
-      if block_given?
-        container.each{|motif| yield motif}
-      else
-        Enumerator.new(self, :each_motif)
-      end
-    end
-    
     include Enumerable
 
     %w[pcm ppm pwm].each do |data_model|
