@@ -38,7 +38,7 @@ module Bioinform
     #def pcm=(pcm); parameters.pcm = pcm; end
     #def pwm=(pwm); parameters.pwm = pwm; end
     #def ppm=(ppm); parameters.ppm = ppm; end
-    #def name; parameters.name || pwm.try(:name) || pcm.try(:name) || ppm.try(:name); end
+    def name; parameters.name || pm.name; end
 
     def method_missing(meth, *args)
       parameters.__send__(meth, *args)
