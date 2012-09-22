@@ -13,7 +13,7 @@ module Bioinform
           It takes motif files or (entire collections) and creates a collection consisting of them all. By default motifs are treated simply as matrices(PM), but you can (possibly should) specify data model. Output file by default are in YAML-format but it's possible to create plain text file. YAML collections are useful if you want to provide additional information for motifs in collection with another tool, plain text is more readable by humans.
 
           Usage:
-            #{__FILE__} [options] [<pm-files>...]
+            merge_into_collection [options] [<pm-files>...]
 
           Options:
             -h --help                 Show this screen.

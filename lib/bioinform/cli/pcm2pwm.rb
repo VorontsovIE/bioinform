@@ -13,7 +13,7 @@ module Bioinform
           When filelist is empty, it's obtained from STDIN. One can use it: `ls -b pcm_folder/*.pcm | pcm2pwm` (ls -b option escape spaces in filenames)
 
           Usage:
-            #{__FILE__} [options] [<pcm-files>...]
+            pcm2pwm [options] [<pcm-files>...]
 
           Options:
             -h --help           Show this screen.

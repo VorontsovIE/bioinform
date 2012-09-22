@@ -11,7 +11,7 @@ module Bioinform
           It get a file with a set of motifs and splits it into motifs according to their names.
 
           Usage:
-            #{__FILE__} [options] <collection-file>
+            split_motifs [options] <collection-file>
 
           Options:
             -h --help                Show this screen.
