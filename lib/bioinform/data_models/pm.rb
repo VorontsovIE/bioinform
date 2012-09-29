@@ -1,6 +1,7 @@
 require 'ostruct'
 require_relative '../support'
 require_relative '../parsers'
+require_relative '../formatters'
 
 module Bioinform
   IndexByLetter = {'A' => 0, 'C' => 1, 'G' => 2, 'T' => 3, A: 0, C: 1, G: 2, T: 3}
@@ -21,7 +22,7 @@ module Bioinform
 #    end
 
     def self.choose_parser(input)
-      [TrivialParser, YAMLParser, Parser, StringParser, StringFantomParser, TrivialCollectionParser, YAMLCollectionParser].find do |parser|
+      [TrivialParser, YAMLParser, Parser, StringParser, StringFantomParser, JasparParser, TrivialCollectionParser, YAMLCollectionParser].find do |parser|
         self.new(input, parser) rescue nil
       end
     end
@@ -77,21 +78,8 @@ module Bioinform
     end
     alias_method :size, :length
 
-    def to_s(options = {})
-      default_options = {with_name: true, letters_as_rows: false}
-      options = default_options.merge(options)
-      if options[:letters_as_rows]
-        hsh = to_hash
-        matrix_str = [:A,:C,:G,:T].collect{|letter| "#{letter}|" + hsh[letter].join("\t")}.join("\n")
-      else
-        matrix_str = each_position.map{|pos| pos.join("\t")}.join("\n")
-      end
-
-      if options[:with_name] && name
-        name + "\n" + matrix_str
-      else
-        matrix_str
-      end
+    def to_s(options = {}, formatter = RawFormatter)
+      formatter.new(self, options).to_s
     end
 
     def pretty_string(options = {})
