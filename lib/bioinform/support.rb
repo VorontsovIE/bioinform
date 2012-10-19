@@ -15,3 +15,4 @@ require_relative 'support/array_product'
 
 require_relative 'support/advanced_scan'
 require_relative 'support/parameters'
+require_relative 'support/strip_doc'
