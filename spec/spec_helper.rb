@@ -2,12 +2,28 @@ $LOAD_PATH.unshift File.dirname(__FILE__) + '/../lib'
 $LOAD_PATH.unshift File.dirname(__FILE__)
 
 require 'rspec'
+require 'rspec-given'
 
 require 'fileutils'
 require 'stringio'
 require 'fabrication'
 
-# from minitest
+#require 'fakefs/spec_helpers'                   ##
+#RSpec.configure do |config|                     ##
+#  config.include FakeFS::SpecHelpers            ##
+#end                                             ##
+
+require 'fakefs/safe'
+#FakeFS.activate!
+# your code
+#FakeFS.deactivate!
+# or
+#FakeFS do
+  # your code
+#end
+
+
+# from minitest (TODO: make use of minitest, not override it)
 def capture_io(&block)
   orig_stdout, orig_stderr = $stdout, $stderr
   captured_stdout, captured_stderr = StringIO.new, StringIO.new
@@ -20,9 +36,10 @@ ensure
 end
 
 # Method stubs $stdin not STDIN !
-def provide_stdin(input, &block)
+def provide_stdin(input, tty = false, &block)
   orig_stdin = $stdin
   $stdin = StringIO.new(input)
+  $stdin.send(:define_singleton_method, :tty?){ tty }  # Simulate that stdin is tty by default
   yield
 ensure
   $stdin = orig_stdin
@@ -50,4 +67,20 @@ def parser_specs(parser_klass, good_cases, bad_cases)
       end
     end
   end
+end
+
+##############################
+
+def make_file(filename, content)
+  FakeFS do
+    File.open(filename, 'w'){|f| f.puts content }
+  end
+end
+
+def motif_filename(motif, model_type)
+  "#{motif.name}.#{model_type}"
+end
+
+def make_model_file(motif, model_type)
+  make_file(motif_filename(motif, model_type), motif.send(model_type))
 end
