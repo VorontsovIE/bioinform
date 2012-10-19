@@ -1,3 +1,5 @@
+require_relative 'support'
+
 module Bioinform
   module CLI
     module Helpers
