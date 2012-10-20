@@ -45,6 +45,7 @@ end
 ##################################
 
 describe Bioinform::CLI::ConvertMotif do
+  include FakeFS::SpecHelpers
   Given(:resulting_stdout) { resulting_io[:stdout] }
   Given(:resulting_stderr) { resulting_io[:stderr] }
   
@@ -59,9 +60,7 @@ describe Bioinform::CLI::ConvertMotif do
     Given(:arguments) { input_filenames }
     Given(:resulting_io) {
       capture_io{
-        FakeFS do
           Bioinform::CLI::ConvertMotif.main(command)
-        end
       }
     }
     include_context 'input filenames are motif_name.motif_type'

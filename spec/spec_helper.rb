@@ -8,20 +8,7 @@ require 'fileutils'
 require 'stringio'
 require 'fabrication'
 
-#require 'fakefs/spec_helpers'                   ##
-#RSpec.configure do |config|                     ##
-#  config.include FakeFS::SpecHelpers            ##
-#end                                             ##
-
-require 'fakefs/safe'
-#FakeFS.activate!
-# your code
-#FakeFS.deactivate!
-# or
-#FakeFS do
-  # your code
-#end
-
+require 'fakefs/spec_helpers'
 
 # from minitest (TODO: make use of minitest, not override it)
 def capture_io(&block)
@@ -72,9 +59,7 @@ end
 ##############################
 
 def make_file(filename, content)
-  FakeFS do
-    File.open(filename, 'w'){|f| f.puts content }
-  end
+  File.open(filename, 'w'){|f| f.puts content }
 end
 
 def motif_filename(motif, model_type)
