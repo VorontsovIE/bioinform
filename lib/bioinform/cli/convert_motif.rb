@@ -34,8 +34,8 @@ module Bioinform
           case options[:to_model]
           when 'pwm'
             puts motif.to_pwm
-          #when 'pñm'
-            #puts motif.to_pcm
+          when 'pcm'
+            puts motif.to_pcm
           when 'ppm'
             puts motif.to_ppm
           end
