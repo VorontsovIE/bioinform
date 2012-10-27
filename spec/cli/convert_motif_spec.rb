@@ -4,6 +4,7 @@ require_relative '../../lib/bioinform/cli/convert_motif'
 require_relative 'shared_examples/convert_motif/single_motif_specified'
 require_relative 'shared_examples/convert_motif/several_motifs_specified'
 require_relative 'shared_examples/convert_motif/motif_list_empty'
+require_relative 'shared_examples/convert_motif/yield_motif_conversion_error'
 
 def make_option_list(options = {})
   result = []
@@ -70,12 +71,10 @@ describe Bioinform::CLI::ConvertMotif do
       include_context 'most common options'      
 
       include_examples 'single motif specified'
+      include_examples 'several motifs specified'
     end
     
-    
     include_examples 'motif list is empty'
-    
-#    include_examples 'several motifs specified'
   end
   
 ########################################################
@@ -97,7 +96,12 @@ describe Bioinform::CLI::ConvertMotif do
     }
 
     include_examples 'motif list is empty'
-#    include_examples 'single motif specified'
-#    include_examples 'several motifs specified'
+    context 'with most options specified' do
+      include_context 'completely specified option list'
+      include_context 'most common options'      
+
+      include_examples 'single motif specified'
+      include_examples 'several motifs specified'
+    end
   end
 end

@@ -16,7 +16,6 @@ module Bioinform
       end
       
       def main(argv)
-        $logger.info argv
         parse!(argv, filename_format: './{name}.{ext}')
         motif_files = arguments
         motif_files += $stdin.read.shellsplit  unless $stdin.tty?
@@ -25,23 +24,36 @@ module Bioinform
           return
         end
         
-        motif_files.each do |filename|
-          $logger.info filename
-          $logger.info File.read(filename)
-          motif = PCM.new(File.read(filename))
-          
-
-          case options[:to_model]
+        output_motifs = []
+        motifs = motif_files.map do |filename|
+          case options[:model_from]
           when 'pwm'
-            puts motif.to_pwm
+            PWM.new(File.read(filename))
           when 'pcm'
-            puts motif.to_pcm
+            PCM.new(File.read(filename))
           when 'ppm'
-            puts motif.to_ppm
+            PPM.new(File.read(filename))
           end
-
         end
-
+        
+        motifs.each do |motif|
+          begin
+            case options[:model_to]
+            when 'pwm'
+              output_motifs << motif.to_pwm
+            when 'pcm'
+              output_motifs << motif.to_pcm
+            when 'ppm'
+              output_motifs << motif.to_ppm
+            end
+          rescue
+            $stderr.puts "One can't convert from #{options[:model_from]} data-model to #{options[:model_to]} data-model"
+            raise
+          end
+        end
+        puts output_motifs.join("\n\n")
+      rescue
+        $stderr.puts "Error! Conversion wasn't performed"
       end
 
       def option_parser
@@ -65,10 +77,10 @@ module Bioinform
           cli.on('--formatter FORMATTER', 'Formatter for output motif.'){|formatter| options[:formatter] = formatter}
           cli.on('--from MODEL_OF_INPUT', 'Specify motif model of input.',
                                           'It can be overriden by --parser option',
-                                          '(when parser implies certain input model)'){|from_model| options[:from_model] = from_model}
+                                          '(when parser implies certain input model)'){|model_from| options[:model_from] = model_from}
           cli.on('--to MODEL_OF_OUTPUT',  'Specify motif model to convert to.',
                                           'It can be overriden by --formatter option',
-                                          '(when formatter implies certain output model)'){|to_model| options[:to_model] = to_model}
+                                          '(when formatter implies certain output model)'){|model_to| options[:model_to] = model_to}
           cli.on('--algorithm ALGORITHM', 'Conversion algorithm to transform model.'){|conversion_algorithm| options[:conversion_algorithm] = conversion_algorithm}
           cli.on('--save [FILENAME_FORMAT]',  'Save resulting motifs to according files.',
                                               'filename format by default is ' + options[:filename_format],
