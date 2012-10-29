@@ -1,5 +1,7 @@
 require_relative '../support'
 require_relative '../data_models'
+require_relative '../conversion_algorithms/pcm2ppm_converter'
+require_relative '../conversion_algorithms/pcm2pwm_converter'
 
 module Bioinform
   class PCM < PM
@@ -12,17 +14,11 @@ module Bioinform
     end
 
     def to_pwm(pseudocount = Math.log(count))
-      mat = each_position.map do |pos|
-        pos.each_index.map do |ind|
-          Math.log((pos[ind] + probability[ind] * pseudocount) / (probability[ind]*(count + pseudocount)) )
-        end
-      end
-      PWM.new(get_parameters.merge(matrix: mat))
+      ConversionAlgorithms::PCM2PWMConverter.convert(self, pseudocount: pseudocount)
     end
 
     def to_ppm
-      mat = each_position.map{|pos| pos.map{|el| el.to_f / count }}
-      PPM.new(get_parameters.merge(matrix: mat))
+      ConversionAlgorithms::PCM2PPMConverter.convert(self)
     end
   end
 end
