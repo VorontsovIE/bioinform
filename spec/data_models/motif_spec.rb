@@ -74,7 +74,7 @@ module Bioinform
       end
       context 'when argument is neither PM nor Hash' do
         it 'raises ArgumentError' do
-          expect{ described_class.new('stub pm') }.to raise_error, ArgumentError
+          expect{ described_class.new('stub pm') }.to raise_error(ArgumentError)
         end
       end
     end

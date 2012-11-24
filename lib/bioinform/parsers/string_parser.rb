@@ -8,7 +8,7 @@ module Bioinform
     attr_reader :scanner, :row_acgt_markers
 
     def initialize(input)
-      raise ArgumentError  unless input.is_a?(String)
+      raise ArgumentError, 'StringParser should be initialized with a String'  unless input.is_a?(String)
       super
       @scanner = StringScanner.new(input.multiline_squish)
     end

@@ -1,5 +1,6 @@
 require 'ostruct'
 require 'active_support/core_ext/object/try'
+require_relative '../support/parameters'
 module Bioinform
   class Motif
     include Parameters
