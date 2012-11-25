@@ -327,44 +327,6 @@ module Bioinform
       end
     end
 
-    describe '#best_score' do
-      it 'should be equal to best score' do
-        @pm = PM.new( [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -1.0, -1.5, -1.0]] )
-        @pm.best_score.should == 4.9 + 7.13 + (-1.0)
-      end
-    end
-    describe '#worst_score' do
-      it 'should be equal to worst score' do
-        @pm = PM.new( [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -1.0, -1.5, -1.0]] )
-        @pm.worst_score.should == 1.3 + 3.25 + (-1.5)
-      end
-    end
-
-    describe '#best_suffix' do
-      it 'should return maximal score of suffices from i-th position inclusively i.e. [i..end]' do
-        @pm = PM.new( [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -1.0, -1.5, -1.0]] )
-        @pm.best_suffix(0).should == (4.9 + 7.13 - 1.0)
-        @pm.best_suffix(1).should == (7.13 - 1.0)
-        @pm.best_suffix(2).should == (-1.0)
-        @pm.best_suffix(3).should == (0.0)
-      end
-      it 'should give right results after left(right)_augment, discrete, reverse_complement etc' do
-        pm = PM.new([[1, 2, 3, 4], [10,10.5,11,11.5]])
-        pm.best_suffix(1).should == 11.5
-        pm.left_augment!(1)
-        pm.best_suffix(1).should == 15.5
-      end
-    end
-    describe '#worst_suffix' do
-      it 'should return minimal score of suffices from i-th position inclusively i.e. [i..end]' do
-        @pm = PM.new( [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -1.0, -1.5, -1.0]] )
-        @pm.worst_suffix(0).should == (1.3 + 3.25 - 1.5)
-        @pm.worst_suffix(1).should == (3.25 - 1.5)
-        @pm.worst_suffix(2).should == (- 1.5)
-        @pm.worst_suffix(3).should == (0.0)
-      end
-    end
-
     [:reverse_complement].each do |meth|
       describe "nonbang method #{meth}" do
         before :each do

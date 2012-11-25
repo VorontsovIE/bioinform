@@ -36,5 +36,21 @@ module Bioinform
     def to_pwm
       self
     end
+
+    def best_score
+      @matrix.inject(0.0){|sum, col| sum + col.max}
+    end
+    def worst_score
+      @matrix.inject(0.0){|sum, col| sum + col.min}
+    end
+
+    # best score of suffix s[i..l]
+    def best_suffix(i)
+      @matrix[i...length].map(&:max).inject(0.0, &:+)
+    end
+
+    def worst_suffix(i)
+      @matrix[i...length].map(&:min).inject(0.0, &:+)
+    end
   end
 end

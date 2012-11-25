@@ -26,7 +26,7 @@ module Bioinform
         self.new(input, parser) rescue nil
       end
     end
-    
+
     def self.split_on_motifs(input)
       parser = choose_parser(input)
       raise ParsingError, "No parser can parse given input"  unless parser
@@ -138,22 +138,6 @@ module Bioinform
     def probability
       sum = background.inject(0.0, &:+)
       background.map{|element| element.to_f / sum}
-    end
-
-    def best_score
-      @matrix.inject(0.0){|sum, col| sum + col.max}
-    end
-    def worst_score
-      @matrix.inject(0.0){|sum, col| sum + col.min}
-    end
-
-    # best score of suffix s[i..l]
-    def best_suffix(i)
-      @matrix[i...length].map(&:max).inject(0.0, &:+)
-    end
-
-    def worst_suffix(i)
-      @matrix[i...length].map(&:min).inject(0.0, &:+)
     end
 
     def reverse_complement
