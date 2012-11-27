@@ -17,4 +17,5 @@ Gem::Specification.new do |gem|
   
   gem.add_dependency('activesupport', '>= 3.0.0')
   gem.add_dependency('docopt', '= 0.5.0')
+  gem.add_development_dependency('fakefs', '~> 0.4.2')
 end
