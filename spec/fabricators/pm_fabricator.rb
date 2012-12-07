@@ -1,4 +1,4 @@
-Fabricator(:pm, from: Bioinform::PM) do
+Fabricator(:pm, class_name: Bioinform::PM) do
   initialize_with{ Bioinform::PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'PM_name') }
 end
 

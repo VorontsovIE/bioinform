@@ -1,4 +1,4 @@
-Fabricator(:pcm, from: Bioinform::PCM) do
+Fabricator(:pcm, class_name: Bioinform::PCM) do
   initialize_with{ Bioinform::PCM.new(matrix: [[1, 2, 3, 1],[4, 0, 1, 2]], name: 'PCM_name') }
 end
 

@@ -1,7 +1,7 @@
 require_relative '../../lib/bioinform/support/strip_doc'
 require 'ostruct'
 
-Fabricator(:SP1_f1_plain_text, from: OpenStruct) do
+Fabricator(:SP1_f1_plain_text, class_name: OpenStruct) do
   name 'SP1_f1'
   pcm (<<-EOS).strip_doc
     SP1_f1
@@ -64,7 +64,7 @@ Fabricator(:SP1_f1_plain_text, from: OpenStruct) do
 end
 
 
-Fabricator(:KLF4_f2_plain_text, from: OpenStruct) do
+Fabricator(:KLF4_f2_plain_text, class_name: OpenStruct) do
   name 'KLF4_f2'
   
   pcm (<<-EOS).strip_doc

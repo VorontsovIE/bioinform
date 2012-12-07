@@ -1,10 +1,10 @@
-Fabricator(:ppm, from: Bioinform::PPM) do
+Fabricator(:ppm, class_name: Bioinform::PPM) do
   initialize_with{ Bioinform::PPM.new(matrix: [[0.2, 0.3, 0.3, 0.2],[0.7, 0.2, 0.0, 0.1]]) }
   name 'PPM_name'
 end
 
 # It has the same name as original pcm because PCM#to_ppm doesn't change the name
-Fabricator(:ppm_by_pcm, from: Bioinform::PPM) do
+Fabricator(:ppm_by_pcm, class_name: Bioinform::PPM) do
   initialize_with{ Fabricate(:pcm).to_ppm }
 end
 

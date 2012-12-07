@@ -1,4 +1,4 @@
-Fabricator(:motif, from: Bioinform::Motif) do
+Fabricator(:motif, class_name: Bioinform::Motif) do
 end
 
 Fabricator(:motif_with_name, from: :motif) do
