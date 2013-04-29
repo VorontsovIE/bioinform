@@ -59,7 +59,7 @@ module Bioinform
           container.each{|motif| yield( *args.map{|arg| motif.parameters.send(arg)} ) }
         end
       else
-        Enumerator.new(self, :each, *args)
+        self.to_enum(:each, *args)
       end
     end
 

@@ -15,7 +15,7 @@ module Bioinform
         if block_given?
           yield self
         else
-          Enumerator.new(self, :each)
+          self.to_enum(:each)
         end
       end
     end
@@ -47,7 +47,7 @@ module Bioinform
             yield result
           end
         else
-          Enumerator.new(self, :each)
+          self.to_enum(:each)
         end
       end
 

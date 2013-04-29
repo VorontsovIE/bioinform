@@ -69,7 +69,7 @@ module Bioinform
       if block_given?
         matrix.each{|pos| yield pos}
       else
-        Enumerator.new(self, :each_position)
+        self.to_enum(:each_position)
       end
     end
 

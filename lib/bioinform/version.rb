@@ -1,3 +1,3 @@
 module Bioinform
-  VERSION = "0.2.0beta"
+  VERSION = "0.1.10"
 end
