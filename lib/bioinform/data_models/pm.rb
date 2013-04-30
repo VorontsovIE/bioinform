@@ -4,7 +4,8 @@ require_relative '../parsers'
 require_relative '../formatters'
 
 module Bioinform
-  IndexByLetter = {'A' => 0, 'C' => 1, 'G' => 2, 'T' => 3, A: 0, C: 1, G: 2, T: 3}
+  IndexByLetter = { 'A' => 0, 'C' => 1, 'G' => 2, 'T' => 3, A: 0, C: 1, G: 2, T: 3,
+                    'a' => 0, 'c' => 1, 'g' => 2, 't' => 3, a: 0, c: 1, g: 2, t: 3}
   LetterByIndex = {0 => :A, 1 => :C, 2 => :G, 3 => :T}
 
   class PM

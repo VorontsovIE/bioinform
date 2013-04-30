@@ -19,7 +19,6 @@ module Bioinform
     end
 
     def score(word)
-      word = word.upcase
       raise ArgumentError, 'word in PWM#score(word) should have the same length as matrix'  unless word.length == length
       #raise ArgumentError, 'word in PWM#score(word) should have only ACGT-letters'  unless word.each_char.all?{|letter| %w{A C G T}.include? letter}
       (0...length).map do |pos|
