@@ -23,14 +23,15 @@ module Bioinform
       raise ArgumentError, 'word in PWM#score(word) should have the same length as matrix'  unless word.length == length
       #raise ArgumentError, 'word in PWM#score(word) should have only ACGT-letters'  unless word.each_char.all?{|letter| %w{A C G T}.include? letter}
       (0...length).map do |pos|
-        begin
-        # Need support of N-letters and other IUPAC
-          letter = word[pos]
+        letter = word[pos]
+        if IndexByLetter[letter]
           matrix[pos][IndexByLetter[letter]]
-        rescue
-          raise ArgumentError, 'word in PWM#score(word) should have only ACGT-letters'
+        elsif letter == 'N'
+          matrix[pos].zip(probability).map{|el, p| el * p}.inject(0.0, &:+)
+        else
+          raise ArgumentError, "word in PWM#score(#{word}) should have only ACGT or N letters"
         end
-      end.inject(&:+)
+      end.inject(0.0, &:+)
     end
 
     def to_pwm

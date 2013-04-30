@@ -29,6 +29,10 @@ module Bioinform
         pwm.score('agata').should == 13141
         pwm.score('CCGCT').should == 22324
       end
+      it 'should give score average score(considering probabilities) for a position for a N-letter' do
+        pwm.score('AANAA').should == (11011 + 250)
+        pwm.set_parameters(background: [0.1,0.4,0.1,0.4]).score('AANAA').should == (11011 + 0.1*100 + 0.4*200 + 0.1*300 + 0.4*400)
+      end
       it 'should raise an ArgumentError if word contain bad letter' do
         expect{ pwm.score('AAAAV') }.to raise_error(ArgumentError)
       end
