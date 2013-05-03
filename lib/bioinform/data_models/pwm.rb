@@ -26,11 +26,11 @@ module Bioinform
         if IndexByLetter[letter]
           matrix[pos][IndexByLetter[letter]]
         elsif letter == 'N'
-          matrix[pos].zip(probability).map{|el, p| el * p}.inject(0.0, &:+)
+          matrix[pos].zip(probability).map{|el, p| el * p}.inject(0, &:+)
         else
           raise ArgumentError, "word in PWM#score(#{word}) should have only ACGT or N letters"
         end
-      end.inject(0.0, &:+)
+      end.inject(0, &:+).to_f
     end
 
     def to_pwm
