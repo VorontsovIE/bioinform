@@ -1,3 +1,5 @@
+! Make matrices immutable  - it will allow more safe interface and better caching 
+
 Collection contain Motif-s, each Motif can contain any of list: pcm,pwm,ppm.
 Name, background, tags and any other parameters should be removed from PM class to be placed in Motif
 
