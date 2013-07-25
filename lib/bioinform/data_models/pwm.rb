@@ -38,10 +38,10 @@ module Bioinform
     end
 
     def best_score
-      @matrix.inject(0.0){|sum, col| sum + col.max}
+      best_suffix(0)
     end
     def worst_score
-      @matrix.inject(0.0){|sum, col| sum + col.min}
+      worst_suffix(0)
     end
 
     # best score of suffix s[i..l]
