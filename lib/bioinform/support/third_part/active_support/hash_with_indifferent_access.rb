@@ -3,6 +3,7 @@ require_relative 'core_ext/hash/keys'
 # This class has dubious semantics and we only have it so that
 # people can write <tt>params[:key]</tt> instead of <tt>params['key']</tt>
 # and they get the same value for both keys.
+unless defined? ActiveSupport::HashWithIndifferentAccess
 
 module ActiveSupport
   class HashWithIndifferentAccess < Hash
@@ -176,3 +177,5 @@ module ActiveSupport
 end
 
 HashWithIndifferentAccess = ActiveSupport::HashWithIndifferentAccess
+
+end
