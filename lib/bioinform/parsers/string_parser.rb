@@ -10,7 +10,7 @@ module Bioinform
     def initialize(input)
       raise ArgumentError, 'StringParser should be initialized with a String'  unless input.is_a?(String)
       super
-      @scanner = StringScanner.new(input.multiline_squish)
+      @scanner = StringScanner.new(input.gsub(/[[:blank:]]/,' ').multiline_squish)
     end
 
     def number_pat
