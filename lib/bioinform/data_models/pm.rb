@@ -66,6 +66,22 @@ module Bioinform
       false
     end
 
+    def validation_errors(options = {})
+      errors = []
+      if !matrix.is_a?(Array)
+        errors << 'Matrix is not an array'
+      elsif matrix.empty?
+        errors << 'Matrix is not an array'
+      elsif ! matrix.all?{|pos| pos.is_a?(Array)}
+        errors << 'Some of matrix positions aren\'t represented as arrays'
+      elsif ! matrix.all?{|pos| pos.size == 4}
+        errors << 'Some of matrix positions have number of columns other than 4'
+      elsif ! matrix.all?{|pos| pos.all?{|el| el.is_a?(Numeric)}}
+        errors << 'Some of matrix elements aren\'t represented by numbers'
+      end
+      errors
+    end
+
     def valid?(options = {})
       self.class.valid_matrix?(@matrix, options)
     end

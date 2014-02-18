@@ -24,5 +24,11 @@ module Bioinform
     def self.valid_matrix?(matrix, options = {})
       super && matrix.all?{|pos| pos.all?{|el| el >=0 } }
     end
+
+    def validation_errors(options = {})
+      validation_errors = []
+      validation_errors << "PCM matrix should contain only non-negative elements"  unless matrix.all?{|pos| pos.all?{|el| el >=0 } }
+      super + validation_errors
+    end
   end
 end
