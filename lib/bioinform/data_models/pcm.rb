@@ -20,5 +20,9 @@ module Bioinform
     def to_ppm
       ConversionAlgorithms::PCM2PPMConverter.convert(self)
     end
+
+    def self.valid_matrix?(matrix, precision = 0.001)
+      matrix.all?{|pos| pos.all?{|el| el >=0 } }
+    end
   end
 end
