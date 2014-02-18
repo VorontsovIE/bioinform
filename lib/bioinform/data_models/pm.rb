@@ -43,16 +43,20 @@ module Bioinform
       self.name = result.name
 #      self.tags = result.tags || []
       self.background = result.background || [1, 1, 1, 1]
-      raise 'matrix not valid'  unless valid?
     end
 
+    def self.new_with_validation(input, parser = nil)
+      obj = self.new(input, parser)
+      raise 'matrix not valid'  unless obj.valid?
+      obj
+    end
     def ==(other)
       @matrix == other.matrix && background == other.background && name == other.name
     rescue
       false
     end
 
-    def self.valid_matrix?(matrix)
+    def self.valid_matrix?(matrix, options = {})
       matrix.is_a?(Array) &&
       ! matrix.empty? &&
       matrix.all?{|pos| pos.is_a?(Array)} &&
@@ -62,8 +66,8 @@ module Bioinform
       false
     end
 
-    def valid?
-      self.class.valid_matrix?(@matrix)
+    def valid?(options = {})
+      self.class.valid_matrix?(@matrix, options)
     end
 
     def each_position
