@@ -356,5 +356,12 @@ module Bioinform
         end
       end
     end
+
+    describe '#consensus' do
+      let(:pm) { PM.new( [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -0.5, -1.5, -1.0]] ) }
+      it 'is a string of nucleotides of maximal weights' do
+        pm.consensus.should == 'GAC'
+      end
+    end
   end
 end

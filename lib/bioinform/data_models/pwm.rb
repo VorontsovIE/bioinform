@@ -52,5 +52,15 @@ module Bioinform
     def worst_suffix(i)
       @matrix[i...length].map(&:min).inject(0.0, &:+)
     end
+
+
+    def matrix_rounded(n)
+      matrix.map{|pos| pos.map{|x| x.round(n) } }
+    end
+    private :matrix_rounded
+
+    def round(n)
+      PWM.new(matrix_rounded(n)).tap{|pm| pm.name = name}
+    end
   end
 end

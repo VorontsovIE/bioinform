@@ -123,6 +123,13 @@ module Bioinform
       end
     end
 
+    def consensus
+      each_position.map{|pos|
+        pos.each_with_index.max_by{|el, letter_index| el}
+      }.map{|el, letter_index| letter_index}.map{|letter_index| %w{A C G T}[letter_index] }.join
+    end
+
+
     def to_hash
       hsh = %w{A C G T}.each_with_index.collect_hash do |letter, letter_index|
         [ letter, @matrix.map{|pos| pos[letter_index]} ]

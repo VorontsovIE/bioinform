@@ -5,6 +5,8 @@ require_relative '../conversion_algorithms/pcm2pwm_converter'
 
 module Bioinform
   class PCM < PM
+    make_parameters :pseudocount
+
     def count
       matrix.first.inject(&:+)
     end

@@ -79,5 +79,18 @@ module Bioinform
       end
     end
 
+    describe '#round' do
+      let(:matrix) { [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -0.5, -1.5, -1.0]] }
+      let(:pm) { PWM.new( matrix ).tap{|pm| pm.name = 'motif name'} }
+      it 'gives model with matrix elements rounded' do
+        pm.round(1).matrix.should == [[1.3, 2.0, 4.9, 3.2], [7.1, 6.5, 3.3, 4.6], [-1.0, -0.5, -1.5, -1.0]]
+      end
+      it 'gives PWM model' do
+        pm.round(1).should be_kind_of(PWM)
+      end
+      it 'gives model with the same name' do
+        pm.round(1).name.should == 'motif name'
+      end
+    end
   end
 end
