@@ -1,3 +1,5 @@
+require 'ostruct'
+
 module Bioinform  
   class MatrixParser
     def initialize(options = {})
@@ -24,7 +26,7 @@ module Bioinform
 
       matrix = matrix.transpose  if @nucleotides_in == :rows
       # raise 'Matrix not valid' unless ! matrix.empty? && matrix.all?{|pos| pos.size == 4 }
-      {matrix: matrix, name: name}
+      OpenStruct.new(matrix: matrix, name: name)
     end
 
     def parse(input)
@@ -35,6 +37,29 @@ module Bioinform
       result = parse!(input)
     rescue
       false
+    end
+
+    class TemporaryWrapper
+      attr_reader :input
+      include Bioinform::Parser::ClassMethods
+      include Bioinform::Parser::SingleMotifParser::ClassMethods
+      def initialize(parser)
+        @parser, input = parser, input
+      end
+      def parse
+        @parser.parse(@input)
+      end
+      def parse!
+        @parser.parse!(@input)
+      end
+      def new(input)
+        @input = input
+        self
+      end
+    end
+
+    def wrapper
+      TemporaryWrapper.new(self)
     end
   end
 end

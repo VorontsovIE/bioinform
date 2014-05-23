@@ -23,7 +23,7 @@ module Bioinform
 #    end
 
     def self.choose_parser(input)
-      [TrivialParser, YAMLParser, Parser, StringParser, StringFantomParser, JasparParser, TrivialCollectionParser, YAMLCollectionParser].find do |parser|
+      [TrivialParser, YAMLParser, Parser, StringParser, Bioinform::MatrixParser.new(has_name: false).wrapper, Bioinform::MatrixParser.new(has_name: true).wrapper, StringFantomParser, JasparParser, TrivialCollectionParser, YAMLCollectionParser].find do |parser|
         self.new(input, parser) rescue nil
       end
     end
@@ -40,6 +40,7 @@ module Bioinform
       raise 'No one parser can process input'  unless parser
       result = parser.new(input).parse
       @matrix = result.matrix
+      raise 'Non valid matrix' unless self.class.valid_matrix?(@matrix)
       self.name = result.name
 #      self.tags = result.tags || []
       self.background = result.background || [1, 1, 1, 1]
