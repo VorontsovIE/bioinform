@@ -20,7 +20,7 @@ module Bioinform
     end
     pm.to_pwm
   rescue => e
-    raise "PWM creation failed (#{e})"
+    raise Error, "PWM creation failed (#{e})"
   end
 
   def self.get_pcm(data_model, matrix, effective_count)
@@ -29,9 +29,13 @@ module Bioinform
       pm.set_parameters(effective_count: effective_count)
     end
     pm.to_pcm
+  rescue => e
+    raise Error, "PWM creation failed (#{e})"
   end
 
   def self.get_ppm(data_model, matrix)
     Bioinform.const_get(data_model).new(matrix).to_ppm
+  rescue => e
+    raise Error, "PWM creation failed (#{e})"
   end
 end
