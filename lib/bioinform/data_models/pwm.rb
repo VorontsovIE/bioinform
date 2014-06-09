@@ -1,5 +1,6 @@
 require_relative '../support'
 require_relative '../data_models'
+require_relative '../conversion_algorithms/pwm2pcm_converter'
 
 module Bioinform
   class PWM < PM

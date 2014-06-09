@@ -1,5 +1,6 @@
 module Bioinform
   module ConversionAlgorithms
+    # s_{\alpha,j} = ln(\frac{x_{\alpha,j} + \cappa p_{\alpha}}{(N+\cappa)p_{\alpha}})
     module PCM2PWMConverter
       def self.convert(pcm, parameters = {})
         default_parameters = {pseudocount: Math.log(pcm.count),
