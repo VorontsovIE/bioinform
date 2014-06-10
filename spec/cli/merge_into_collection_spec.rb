@@ -27,7 +27,7 @@ describe Bioinform::CLI::MergeIntoCollection do
     context 'when name not specified' do
       it 'collects motifs into file collection.yaml' do
         run_merge_into_collection('GABPA_f1.pwm KLF4_f2.pwm SP1_f1.pwm')
-        File.exist?('collection.yaml').should be_true
+        File.exist?('collection.yaml').should be_truthy
         YAML.load(File.read('collection.yaml')).should == YAML.load(File.read('collection.yaml.result'))
       end
     end
@@ -35,7 +35,7 @@ describe Bioinform::CLI::MergeIntoCollection do
     context 'when name specified' do
       it 'collects motifs into file <collection name>.yaml' do
         run_merge_into_collection('--name my_collection GABPA_f1.pwm KLF4_f2.pwm SP1_f1.pwm')
-        File.exist?('my_collection.yaml').should be_true
+        File.exist?('my_collection.yaml').should be_truthy
         YAML.load(File.read('my_collection.yaml')).should == YAML.load(File.read('collection.yaml.result')).set_parameters(name: 'my_collection')
       end
     end
@@ -43,7 +43,7 @@ describe Bioinform::CLI::MergeIntoCollection do
     context 'with --data-model option' do
       it 'treat motifs as specified data model' do
         run_merge_into_collection('--data-model pwm GABPA_f1.pwm KLF4_f2.pwm SP1_f1.pwm')
-        File.exist?('collection.yaml').should be_true
+        File.exist?('collection.yaml').should be_truthy
         YAML.load(File.read('collection.yaml')).should == YAML.load(File.read('collection_pwm.yaml.result'))
       end
     end
@@ -53,7 +53,7 @@ describe Bioinform::CLI::MergeIntoCollection do
     context 'when name not specified' do
       it 'should collect motifs into file collection.txt in plain-text format' do
         run_merge_into_collection('--plain GABPA_f1.pwm KLF4_f2.pwm SP1_f1.pwm')
-        File.exist?('collection.txt').should be_true
+        File.exist?('collection.txt').should be_truthy
         YAML.load(File.read('collection.txt')).should == YAML.load(File.read('collection.txt.result'))
       end
     end
@@ -61,7 +61,7 @@ describe Bioinform::CLI::MergeIntoCollection do
     context 'when name specified' do
       it 'should collect motifs into file <collection name>.txt in plain-text format' do
         run_merge_into_collection('--name my_collection --plain GABPA_f1.pwm KLF4_f2.pwm SP1_f1.pwm')
-        File.exist?('my_collection.txt').should be_true
+        File.exist?('my_collection.txt').should be_truthy
         YAML.load(File.read('my_collection.txt')).should == YAML.load(File.read('collection.txt.result'))
       end
     end
@@ -69,7 +69,7 @@ describe Bioinform::CLI::MergeIntoCollection do
     context 'with --data-model option' do
       it 'generate usual txt file' do
         run_merge_into_collection('--data-model pwm --plain GABPA_f1.pwm KLF4_f2.pwm SP1_f1.pwm')
-        File.exist?('collection.txt').should be_true
+        File.exist?('collection.txt').should be_truthy
         YAML.load(File.read('collection.txt')).should == YAML.load(File.read('collection.txt.result'))
       end
     end
@@ -78,7 +78,7 @@ describe Bioinform::CLI::MergeIntoCollection do
   context 'when --output-file specified' do
     it 'collects motifs into specified file' do
       run_merge_into_collection('--output-file result.out GABPA_f1.pwm KLF4_f2.pwm SP1_f1.pwm')
-      File.exist?('result.out').should be_true
+      File.exist?('result.out').should be_truthy
       YAML.load(File.read('result.out')).should == YAML.load(File.read('collection.yaml.result'))
     end
   end
@@ -86,14 +86,14 @@ describe Bioinform::CLI::MergeIntoCollection do
   context 'when filelist is empty' do
     it 'takes filelist from stdin' do
       provide_stdin('GABPA_f1.pwm KLF4_f2.pwm SP1_f1.pwm'){ run_merge_into_collection('') }
-      File.exist?('collection.yaml').should be_true
+      File.exist?('collection.yaml').should be_truthy
       YAML.load(File.read('collection.yaml')).should == YAML.load(File.read('collection.yaml.result'))
     end
   end
   context 'when filelist contain folder name' do
     it 'takes filelist as files from folder' do
       run_merge_into_collection('pwm_folder')
-      File.exist?('collection.yaml').should be_true
+      File.exist?('collection.yaml').should be_truthy
       YAML.load(File.read('collection.yaml')).should == YAML.load(File.read('collection.yaml.result'))
     end
   end

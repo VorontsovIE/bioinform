@@ -54,8 +54,8 @@ module Bioinform
 
     context '::need_transpose?' do
       it 'should point whether matrix have positions(need not be transposed -- false) or letters(true) as first index' do
-        Parser.need_tranpose?([[1,3,5,7], [2,4,6,8]]).should be_false
-        Parser.need_tranpose?([[1,2],[3,4],[5,6],[7,8]]).should be_true
+        Parser.need_tranpose?([[1,3,5,7], [2,4,6,8]]).should be_falsy
+        Parser.need_tranpose?([[1,2],[3,4],[5,6],[7,8]]).should be_truthy
       end
     end
     context '::array_from_acgt_hash' do
