@@ -3,6 +3,8 @@ require_relative 'pm'
 module Bioinform
   module MotifModel
     class PWM < PM
+
+      # MOVE #score TO SEPARATE CLASS
       # For scoring IUPAC-sequences and sequences with N-s, use special scoring model class (because it should consider background)
       def score(word)
         raise Error, 'Word length should be the same as PWM length'  unless word.length == length
