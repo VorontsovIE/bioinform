@@ -12,8 +12,12 @@ module Bioinform
           begin
             letter = word[pos]
             matrix[pos][IndexByLetter[letter]]
-          rescue
-            raise Error, 'Unknown nucleotide `#{letter}`'  unless IndexByLetter[letter]
+          rescue => e
+            if !IndexByLetter[letter]
+              raise Error, 'Unknown nucleotide `#{letter}` at position #{pos}'
+            else
+              raise Error, e.message
+            end
           end
         end.inject(0.0, &:+)
       end

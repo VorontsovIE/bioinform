@@ -57,5 +57,7 @@ describe Bioinform::MotifModel::PM do
     end
 
     specify { expect{|b| pm.each_position(&b) }.to yield_successive_args([1,2,3,1.567], [12,-11,12,0], [-1.1, 0.6, 0.4, 0.321]) }
+    specify { expect(pm.each_position).to be_kind_of Enumerator }
+    specify { expect{|b| pm.each_position.each(&b) }.to yield_successive_args([1,2,3,1.567], [12,-11,12,0], [-1.1, 0.6, 0.4, 0.321]) }
   end
 end

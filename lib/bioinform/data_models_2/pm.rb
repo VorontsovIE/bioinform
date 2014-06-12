@@ -75,15 +75,9 @@ module Bioinform
 
       alias_method :revcomp, :reverse_complement
 
-      # It should be moved away
-      def consensus
-        matrix.map{|pos|
-          max_el = pos.max
-          nucleotide_indices = pos.each_with_index.find_all{|el, nucleotide_index| el == max_el }.map{|el, nucleotide_index| nucleotide_index }
-          best_nucleotides = nucleotide_indices.map{|nucleotide_index| VOCABULARY[nucleotide_index]}.join
-          CONSENSUS[best_nucleotides]
-        }.join
-      end
+      # def consensus
+      #   ConsensusFormatter.by_maximal_elements.consensus(self)
+      # end
 
     end
   end
