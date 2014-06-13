@@ -3,20 +3,43 @@ require 'bioinform/alphabet'
 describe Bioinform::ComplimentableAlphabet do
   specify "should raise if complement's complement is not original letter" do
     expect{ Bioinform::ComplimentableAlphabet.new([:A,:B,:X,:Y], [:X,:Y,:B,:A]) }.to raise_error Bioinform::Error
+    expect{ Bioinform::ComplimentableAlphabet.new([:A,:B,:B,:C], [:C,:B,:B,:A]) }.to raise_error Bioinform::Error
+    expect{ Bioinform::ComplimentableAlphabet.new([:A,:B,:X,:Y], [:X,:Y,:B,:A,:C]) }.to raise_error Bioinform::Error
+  end
+
+  context 'usage with alphabet non-symbolized, non-upcased' do
+    let(:alphabet) { Bioinform::ComplimentableAlphabet.new([:a,:B,'x','Y'], ['X',:y,:A,'B']) }
+
+    specify{ expect(alphabet.alphabet).to eq [:A,:B,:X,:Y]  }
+    specify{ expect(alphabet.complement_letter(:A)).to eq :X  }
+    specify{ expect(alphabet.complement_letter(:x)).to eq :a  }
+    specify{ expect(alphabet.complement_letter('B')).to eq 'Y'  }
+    specify{ expect(alphabet.complement_letter('b')).to eq 'y'  }
+
+    specify{ expect(alphabet.index_by_letter(:B)).to eq 1  }
+    specify{ expect(alphabet.index_by_letter(:b)).to eq 1  }
+    specify{ expect(alphabet.index_by_letter('B')).to eq 1  }
+    specify{ expect(alphabet.index_by_letter('b')).to eq 1  }
   end
 
   context 'with correct alphabet' do
     specify{ expect{ Bioinform::ComplimentableAlphabet.new([:A,:B,:X,:Y], [:X,:Y,:A,:B]) }.not_to raise_error }
     let(:alphabet) { Bioinform::ComplimentableAlphabet.new([:A,:B,:X,:Y], [:X,:Y,:A,:B]) }
-    specify{ expect( alphabet.letter_by_index(2)).to eq :X  }
-    specify{ expect( alphabet.index_by_letter(:B)).to eq 1  }
-    specify{ expect( alphabet.index_by_letter(:B)).to eq 1  }
-    specify{ expect( alphabet.complement_letter(:B)).to eq :Y  }
-    specify{ expect( alphabet.complement_index(1)).to eq 3  } # :B --> :Y
+
+    specify{ expect(alphabet.alphabet).to eq [:A,:B,:X,:Y]  }
+    specify{ expect(alphabet.letter_by_index(2)).to eq :X  }
+
+    specify{ expect(alphabet.complement_index(1)).to eq 3  } # :B --> :Y
+
+    specify{ expect{|b| alphabet.each_letter(&b) }.to yield_successive_args(:A,:B,:X,:Y) }
+    specify{ expect{|b| alphabet.each_letter.each(&b) }.to yield_successive_args(:A,:B,:X,:Y) }
+    specify{ expect{|b| alphabet.each_letter_index(&b) }.to yield_successive_args(0,1,2,3) }
+    specify{ expect{|b| alphabet.each_letter_index.each(&b) }.to yield_successive_args(0,1,2,3) }
   end
 end
 
 describe Bioinform::NucleotideAlphabet do
+  specify { expect( Bioinform::NucleotideAlphabet.size ).to eq 4 }
   specify { expect( Bioinform::NucleotideAlphabet.complement_letter(:A) ).to eq :T }
   specify { expect{ Bioinform::NucleotideAlphabet.complement_letter(:N) }.to raise_error Bioinform::Error }
 
@@ -25,6 +48,7 @@ describe Bioinform::NucleotideAlphabet do
 end
 
 describe Bioinform::IUPACAlphabet do
+  specify { expect( Bioinform::IUPACAlphabet.size ).to eq 15 }
   specify { expect( Bioinform::IUPACAlphabet.complement_letter(:A) ).to eq :T }
   specify { expect( Bioinform::IUPACAlphabet.complement_letter(:N) ).to eq :N }
   specify { expect( Bioinform::IUPACAlphabet.complement_letter(:R) ).to eq :Y } # R = AG; Y = CT

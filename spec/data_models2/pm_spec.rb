@@ -28,7 +28,41 @@ describe Bioinform::MotifModel::PM do
       specify do
         expect( Bioinform::MotifModel::PM.new(matrix).matrix ).to eq matrix
       end
+      specify do
+        expect( Bioinform::MotifModel::PM.new(matrix).alphabet ).to eq Bioinform::NucleotideAlphabet
+      end
     end
+  end
+
+  context 'with different alphabet' do
+    let(:matrix_4) { [[1,2,3,1.567],[12,-11,12,0],[-1.1, 0.6, 0.4, 0.321]] }
+    let(:matrix_15) { [[1,2,3,1.567,  12,-11,12,0,-1.1,0.6,  0.4,0.321,0.11,-1.23, 2.0],
+                       [0,0,0,0,       0,0,0,0,0,0, 0,0,0,0, 0]] }
+    specify do
+      expect{ Bioinform::MotifModel::PM.new(matrix_4, alphabet: Bioinform::IUPACAlphabet) }.to raise_error Bioinform::Error
+    end
+    specify do
+      expect{ Bioinform::MotifModel::PM.new(matrix_15, alphabet: Bioinform::IUPACAlphabet) }.not_to raise_error
+    end
+
+    let(:iupac_pm) { Bioinform::MotifModel::PM.new(matrix_15, alphabet: Bioinform::IUPACAlphabet) }
+    specify { expect(iupac_pm.matrix).to eq matrix_15 }
+    specify { expect(iupac_pm.alphabet).to eq Bioinform::IUPACAlphabet }
+
+    #                                                    A C G T       AC    AG   AT   CG   CT   GT       ACG    ACT   AGT   CGT     ACGT
+    #                                                    1,2,3,1.567,  12,  -11,  12,  0,  -1.1, 0.6,     0.4,   0.321,0.11,-1.23,    2.0
+    specify { expect(iupac_pm.complement.matrix).to eq [[1.567,3,2,1,  0.6, -1.1, 12,  0,  -11,  12,      -1.23, 0.11,0.321,0.4,      2.0],
+                                                        [0,0,0,0,       0,0,0,0,0,0,                       0,0,0,0,                   0]] }
+    specify { expect(iupac_pm.complement.alphabet).to eq Bioinform::IUPACAlphabet }
+
+    specify { expect(iupac_pm.reverse.matrix).to eq [[0,0,0,0,       0,0,0,0,0,0, 0,0,0,0, 0],
+                                                      [1,2,3,1.567,  12,-11,12,0,-1.1,0.6,  0.4,0.321,0.11,-1.23, 2.0]] }
+    specify { expect(iupac_pm.reverse.alphabet).to eq Bioinform::IUPACAlphabet }
+
+    specify { expect(iupac_pm.reverse_complement.alphabet).to eq Bioinform::IUPACAlphabet }
+    specify { expect(iupac_pm.reverse_complement.matrix).to eq  [[0,0,0,0,       0,0,0,0,0,0,                       0,0,0,0,                   0],
+                                                                [1.567,3,2,1,  0.6, -1.1, 12,  0,  -11,  12,      -1.23, 0.11,0.321,0.4,      2.0]] }
+
   end
 
   context 'valid PM' do

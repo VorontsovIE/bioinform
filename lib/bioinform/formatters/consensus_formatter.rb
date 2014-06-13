@@ -1,4 +1,4 @@
-require_relative '../iupac'
+require_relative '../alphabet'
 module Bioinform
   class ConsensusFormatter
 
