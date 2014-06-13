@@ -1,18 +1,7 @@
 require_relative '../formatters/raw_formatter'
+require_relative '../error'
 
 module Bioinform
-  class Error < ::StandardError
-  end
-  class ValidationError < Error
-    attr_reader :validation_errors
-    def initialize(msg, errors)
-      super(msg)
-      @validation_errors = errors
-    end
-    def to_s
-      "#{super} (#{@validation_errors.join('; ')})"
-    end
-  end
   module MotifModel
     # VOCABULARY = ['A','C','G','T'].freeze
     # IndexByLetter = { 'A' => 0, 'C' => 1, 'G' => 2, 'T' => 3,
