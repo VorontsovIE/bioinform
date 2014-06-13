@@ -3,6 +3,16 @@ require_relative '../formatters/raw_formatter'
 module Bioinform
   class Error < ::StandardError
   end
+  class ValidationError < Error
+    attr_reader :validation_errors
+    def initialize(msg, errors)
+      super(msg)
+      @validation_errors = errors
+    end
+    def to_s
+      "#{super} (#{@validation_errors.join('; ')})"
+    end
+  end
   module MotifModel
     # VOCABULARY = ['A','C','G','T'].freeze
     # IndexByLetter = { 'A' => 0, 'C' => 1, 'G' => 2, 'T' => 3,
@@ -21,17 +31,21 @@ module Bioinform
       def initialize(matrix, alphabet: NucleotideAlphabet)
         @matrix = matrix
         @alphabet = alphabet
-        raise Error, 'invalid matrix'  unless valid?
+        raise ValidationError.new('invalid matrix', validation_errors)  unless valid?
+      end
+
+      def validation_errors
+        errors = []
+        errors << "matrix should be an Array"  unless matrix.is_a? Array
+        errors << "matrix shouldn't be empty"  unless matrix.size > 0
+        errors << "each matrix position should be an Array"  unless matrix.all?{|pos| pos.is_a?(Array) }
+        errors << "each matrix position should be of size compatible with alphabet (=#{alphabet.size})"  unless matrix.all?{|pos| pos.size == alphabet.size }
+        errors << "each matrix element should be Numeric"  unless matrix.all?{|pos| pos.all?{|el| el.is_a?(Numeric) } }
+        errors
       end
 
       def valid?
-        matrix.size > 0 &&
-        matrix.is_a?(Array) &&
-        matrix.all?{|pos|
-          pos.is_a?(Array) &&
-          pos.size == alphabet.size &&
-          pos.all?{|el| el.is_a?(Numeric) }
-        }
+       validation_errors.empty?
       rescue
         false
       end

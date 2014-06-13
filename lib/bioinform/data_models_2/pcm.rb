@@ -3,8 +3,10 @@ require_relative 'pm'
 module Bioinform
   module MotifModel
     class PCM < PM
-      def valid?
-        super && matrix.all?{|pos| pos.all?{|el| el >= 0 } }
+      def validation_errors
+        errors = super
+        errors << "elements of PCM should be non-negative"  unless matrix.all?{|pos| pos.all?{|el| el >= 0 } }
+        errors
       end
 
       def count
