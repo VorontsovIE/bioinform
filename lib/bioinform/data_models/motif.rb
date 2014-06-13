@@ -46,7 +46,7 @@ module Bioinform
     end
 
     def ==(other)
-      parameters == other.parameters
+      other.class == self.class && parameters == other.parameters
     end
     
     def to_s

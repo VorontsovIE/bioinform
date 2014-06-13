@@ -5,72 +5,72 @@ module Bioinform
   describe Parser do
     context '#initialize' do
       it 'should accept an array correctly' do
-        Parser.new([[1,2,3,4],[5,6,7,8]]).parse.matrix.should == [[1,2,3,4],[5,6,7,8]]
+        expect( Parser.new([[1,2,3,4],[5,6,7,8]]).parse.matrix ).to eq( [[1,2,3,4],[5,6,7,8]] )
       end
       it 'should treat several arguments as an array composed of them' do
-        Parser.new([1,2,3,4],[5,6,7,8]).parse.should == Parser.new([[1,2,3,4],[5,6,7,8]]).parse
+        expect( Parser.new([1,2,3,4],[5,6,7,8]).parse ).to eq Parser.new([[1,2,3,4],[5,6,7,8]]).parse
       end
       it 'should treat one Array of numbers as an Array(with 1 element) of Arrays' do
-        Parser.new([1,2,3,4]).parse.should == Parser.new([[1,2,3,4]]).parse
+        expect( Parser.new([1,2,3,4]).parse ).to eq Parser.new([[1,2,3,4]]).parse
       end
     end
 
     context '::parse!' do
       it 'should behave like Parser.new(input).parse!' do
-        Parser.parse!([1,2,3,4],[5,6,7,8]).should  == Parser.new([1,2,3,4],[5,6,7,8]).parse!
+        expect( Parser.parse!([1,2,3,4],[5,6,7,8]) ).to eq Parser.new([1,2,3,4],[5,6,7,8]).parse!
         expect{ Parser.parse!([1,2,3],[4,5,6]) }.to raise_error
       end
     end
 
     context '::parse' do
       it 'should behave like Parser.new(input).parse!' do
-        Parser.parse([1,2,3,4],[5,6,7,8]).should  == Parser.new([1,2,3,4],[5,6,7,8]).parse
-        Parser.parse([1,2,3],[4,5,6]).should be_nil
+        expect( Parser.parse([1,2,3,4],[5,6,7,8]) ).to eq Parser.new([1,2,3,4],[5,6,7,8]).parse
+        expect( Parser.parse([1,2,3],[4,5,6]) ).to be_nil
       end
     end
 
     context '::choose' do
       it 'should create parser of appropriate type' do
-        Parser.choose([[1,2,3,4],[5,6,7,8]]).should be_kind_of(Parser)
-        Parser.choose([[1,2,3,4],[5,6,7,8]]).input.should == [[1,2,3,4],[5,6,7,8]]
-        Parser.choose(matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name').should be_kind_of(TrivialParser)
-        Parser.choose(matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name').input.should == {matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name'}
-        Parser.choose("1 2 3 4\n5 6 7 8").should be_kind_of(StringParser)
-        Parser.choose("1 2 3 4\n5 6 7 8").input.should == "1 2 3 4\n5 6 7 8"
+        expect( Parser.choose([[1,2,3,4],[5,6,7,8]]) ).to be_kind_of(Parser)
+        expect( Parser.choose([[1,2,3,4],[5,6,7,8]]).input ).to eq([[1,2,3,4],[5,6,7,8]])
+        expect( Parser.choose(matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name') ).to be_kind_of(TrivialParser)
+        expect( Parser.choose(matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name').input ).to eq({matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name'})
+        expect( Parser.choose("1 2 3 4\n5 6 7 8") ).to be_kind_of(StringParser)
+        expect( Parser.choose("1 2 3 4\n5 6 7 8").input ).to eq "1 2 3 4\n5 6 7 8"
       end
     end
 
     context '::split_on_motifs' do
       it 'should be able to get a single PM' do
-        Parser.split_on_motifs([[1,2,3,4],[5,6,7,8]], PM).should == [ PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name:nil) ]
+        expect( Parser.split_on_motifs([[1,2,3,4],[5,6,7,8]], PM) ).to eq( [ PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name:nil) ] )
       end
     end
 
     context '::normalize_hash_keys' do
       it 'should convert both symbolic and string keys, in both upcase and downcase to symbolic upcases' do
-        Parser.normalize_hash_keys( {a: 1, C: 2, 'g' => 3, 'T' => 4} ).should == {A: 1, C: 2, G: 3, T: 4}
+        expect( Parser.normalize_hash_keys( {a: 1, C: 2, 'g' => 3, 'T' => 4} ) ).to eq( {A: 1, C: 2, G: 3, T: 4} )
       end
     end
 
     context '::need_transpose?' do
       it 'should point whether matrix have positions(need not be transposed -- false) or letters(true) as first index' do
-        Parser.need_tranpose?([[1,3,5,7], [2,4,6,8]]).should be_falsy
-        Parser.need_tranpose?([[1,2],[3,4],[5,6],[7,8]]).should be_truthy
+        expect( Parser.need_tranpose?([[1,3,5,7], [2,4,6,8]]) ).to be_falsy
+        expect( Parser.need_tranpose?([[1,2],[3,4],[5,6],[7,8]]) ).to be_truthy
       end
     end
     context '::array_from_acgt_hash' do
       it 'should convert hash of arrays to a transposed array of arrays' do
         input = {A: [1,2,3], C: [2,3,4], G: [3,4,5], T: [4,5,6]}
-        Parser.array_from_acgt_hash(input).should == [[1,2,3], [2,3,4], [3,4,5], [4,5,6]].transpose
+        expect( Parser.array_from_acgt_hash(input) ).to eq( [[1,2,3], [2,3,4], [3,4,5], [4,5,6]].transpose )
       end
       it 'should convert hash of numbers to an array of numbers' do
         input = {A: 1, C: 2, G: 3, T: 4}
-        Parser.array_from_acgt_hash(input).should == [1,2,3,4]
+        expect( Parser.array_from_acgt_hash(input) ).to eq( [1,2,3,4] )
       end
       it 'should process both symbolic and string keys, in both upcase and downcase' do
         input_normal_keys = {A: 1, C: 2, G: 3, T: 4}
         input_different_keys = {:A => 1, :c => 2, 'g' => 3, 'T' => 4}
-        Parser.array_from_acgt_hash(input_different_keys).should == Parser.array_from_acgt_hash(input_normal_keys)
+        expect( Parser.array_from_acgt_hash(input_different_keys) ).to eq Parser.array_from_acgt_hash(input_normal_keys)
       end
     end
 
@@ -80,11 +80,11 @@ module Bioinform
         inputs << [[1,2,3,4], [2,3,4,5], [3,4,5,6]]
         inputs << [{A:1, C:2, G:3, T:4}, {A:2, C:3, G:4, T:5}, {A:3, C:4, G:5, T:6}]
         inputs.each do |input|
-          Parser.try_convert_to_array( input ).should == input
+          expect( Parser.try_convert_to_array( input ) ).to eq input
         end
       end
       it 'should convert ACGT-Hashes to an array of positions (not letters)' do
-        Parser.try_convert_to_array( {:A => [1,2,3], :c => [2,3,4], 'g' => [3,4,5], 'T' => [4,5,6]} ).should == [[1,2,3],[2,3,4],[3,4,5],[4,5,6]].transpose
+        expect( Parser.try_convert_to_array( {:A => [1,2,3], :c => [2,3,4], 'g' => [3,4,5], 'T' => [4,5,6]} ) ).to eq( [[1,2,3],[2,3,4],[3,4,5],[4,5,6]].transpose )
       end
     end
 
@@ -92,12 +92,12 @@ module Bioinform
       it 'should give the same result as #parse!' do
         parser = Parser.new('stub parser')
         parser.stub(:parse!).and_return('stub result')
-        parser.parse.should == 'stub result'
+        expect(parser.parse).to eq 'stub result'
       end
       it 'should return nil if #parse! raised an exception' do
         parser = Parser.new('stub parser')
         parser.stub(:parse!).and_raise
-        parser.parse.should be_nil
+        expect(parser.parse).to be_nil
       end
     end
 

@@ -2,6 +2,7 @@ require 'ostruct'
 
 module Bioinform  
   class MatrixParser
+    attr_reader :has_name, :name_pattern, :has_header_row, :has_header_column, :nucleotides_in
     def initialize(options = {})
       @has_name = options.fetch(:has_name, true)
       @name_pattern = options.fetch(:name_pattern, /^>?\s*(?<name>[^\t\r\n]+).*$/)
