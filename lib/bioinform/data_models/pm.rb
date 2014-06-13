@@ -2,6 +2,7 @@ require 'ostruct'
 require_relative '../support'
 require_relative '../parsers'
 require_relative '../formatters'
+require_relative '../formatters/pretty_matrix_formatter'
 
 module Bioinform
   IndexByLetter = { 'A' => 0, 'C' => 1, 'G' => 2, 'T' => 3, A: 0, C: 1, G: 2, T: 3,
@@ -105,23 +106,7 @@ module Bioinform
     end
 
     def pretty_string(options = {})
-      default_options = {with_name: true, letters_as_rows: false}
-
-      return to_s(options)  if options[:letters_as_rows]
-
-      options = default_options.merge(options)
-      header = %w{A C G T}.map{|el| el.rjust(4).ljust(7)}.join + "\n"
-      matrix_rows = each_position.map do |position|
-        position.map{|el| el.round(3).to_s.rjust(6)}.join(' ')
-      end
-
-      matrix_str = matrix_rows.join("\n")
-
-      if options[:with_name] && name
-        name + "\n" + header + matrix_str
-      else
-        header + matrix_str
-      end
+      PrettyMatrixFormatter.new(options).format_string(self)
     end
 
     def consensus
