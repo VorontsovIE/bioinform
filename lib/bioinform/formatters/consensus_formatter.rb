@@ -1,4 +1,5 @@
 require_relative '../alphabet'
+
 module Bioinform
   class ConsensusFormatter
 
@@ -28,6 +29,7 @@ module Bioinform
       nucleotide_indices = nucleotide_indices_by_position(pos)
       Bioinform::IUPAC::IUPACLettersByNucleotideIndices[nucleotide_indices]
     end
+
     private :nucleotide_indices_by_position, :iupac_letter_by_position
   end
 end

@@ -46,7 +46,7 @@ module Bioinform
       end
 
       def to_s
-        RawFormatter.new(self, with_name: false).to_s
+        RawFormatter.new(with_name: false).format_string(self)
       end
 
       def ==(other)
@@ -83,7 +83,7 @@ module Bioinform
       private :complement_matrix
 
       # def consensus
-      #   ConsensusFormatter.by_maximal_elements.consensus(self)
+      #   ConsensusFormatter.by_maximal_elements.format_string(self)
       # end
 
     end

@@ -102,7 +102,7 @@ module Bioinform
     alias_method :size, :length
 
     def to_s(options = {}, formatter = RawFormatter)
-      formatter.new(self, options).to_s
+      formatter.new(options).format_string(self)
     end
 
     def pretty_string(options = {})
