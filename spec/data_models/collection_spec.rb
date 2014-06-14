@@ -56,7 +56,7 @@ module Bioinform
 
     describe '#each(:pcm)' do
       before :each do
-        @collection << @pm_1.as_pcm << @pm_2 << @pm_3.as_pcm
+        @collection << Fabricate(:pcm_1) << @pm_2 << Fabricate(:pcm_3)
       end
       context 'with block given' do
         it 'should yield elements of collecton converted to pcm' do

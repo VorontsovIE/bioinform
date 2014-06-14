@@ -3,28 +3,28 @@ require_relative '../../lib/bioinform/data_models/pm'
 
 module Bioinform
   describe PM do
-    {:as_pcm => [PCM, [[1,10,3,4],[5,6,7,0]]], :as_pwm => [PWM, [[1,2,3,4],[5,6,7,8]]], :as_ppm => [PPM, [[0.1,0.2,0.3,0.4],[0.5,0.1,0.3,0.1]]]}.each do |converter_method, (result_klass, matrix)|
-      describe "##{converter_method}" do
-        before :each do
-          @collection = Collection.new(name: 'Collection 1')
-          @matrix = matrix
-          @name = 'PM_motif'
-          @background = [0.2,0.3,0.3,0.2]
-          @tags = [@collection, 'Collection 2']
-          @pm = PM.new(matrix: matrix, name: @name, background: @background, tags: @tags)
-          @conv_motif = @pm.send converter_method
-        end
-        it "should return an instance of #{result_klass}" do
-          @conv_motif.should be_kind_of(result_klass)
-        end
-        it 'should return have the same matrix, name and background' do #, background and tags' do
-          @conv_motif.matrix.should == @matrix
-          @conv_motif.name.should == @name
-          @conv_motif.background.should == @background
-#          @conv_motif.tags.should == @tags
-        end
-      end
-    end
+#     {:as_pcm => [PCM, [[1,10,3,4],[5,6,7,0]]], :as_pwm => [PWM, [[1,2,3,4],[5,6,7,8]]], :as_ppm => [PPM, [[0.1,0.2,0.3,0.4],[0.5,0.1,0.3,0.1]]]}.each do |converter_method, (result_klass, matrix)|
+#       describe "##{converter_method}" do
+#         before :each do
+#           @collection = Collection.new(name: 'Collection 1')
+#           @matrix = matrix
+#           @name = 'PM_motif'
+#           @background = [0.2,0.3,0.3,0.2]
+#           @tags = [@collection, 'Collection 2']
+#           @pm = PM.new(matrix: matrix, name: @name, background: @background, tags: @tags)
+#           @conv_motif = @pm.send converter_method
+#         end
+#         it "should return an instance of #{result_klass}" do
+#           @conv_motif.should be_kind_of(result_klass)
+#         end
+#         it 'should return have the same matrix, name and background' do #, background and tags' do
+#           @conv_motif.matrix.should == @matrix
+#           @conv_motif.name.should == @name
+#           @conv_motif.background.should == @background
+# #          @conv_motif.tags.should == @tags
+#         end
+#       end
+#     end
 
     # describe '#tagged?' do
       # context 'when PM marked with Collection object' do

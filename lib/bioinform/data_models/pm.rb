@@ -170,15 +170,5 @@ module Bioinform
     def dup
       deep_dup
     end
-
-    def as_pcm
-      PCM.new(get_parameters.merge(matrix: matrix))
-    end
-    def as_ppm
-      PPM.new(get_parameters.merge(matrix: matrix))
-    end
-    def as_pwm
-      PWM.new(get_parameters.merge(matrix: matrix))
-    end
   end
 end
