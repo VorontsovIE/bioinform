@@ -14,7 +14,7 @@ module Bioinform
             Math.log((pos[index] + probability[index] * pseudocount) / (probability[index]*(pcm.count + pseudocount)) )
           end
         end
-        PWM.new(pcm.get_parameters.merge(matrix: matrix))
+        PWM.new(matrix: matrix, name: pcm.name, background: pcm.background)
       end
     end
   end

@@ -9,7 +9,7 @@ module Bioinform
             el.to_f / pcm.count
           end
         end
-        PPM.new(pcm.get_parameters.merge(matrix: matrix))
+        PPM.new(matrix: matrix, name: pcm.name, background: pcm.background, pseudocount: pcm.pseudocount)
       end
     end
   end

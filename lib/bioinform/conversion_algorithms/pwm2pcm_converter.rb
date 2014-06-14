@@ -48,7 +48,9 @@ module Bioinform
           end
           pwm_pos
         end
-        PCM.new(pwm.get_parameters.merge(matrix: matrix))
+        # TODO: should we use background or probability?
+        # It's yet unused code, change it safely
+        PCM.new(matrix: matrix, name: pwm.name, background: pwm.background, probability: probability, pseudocount: pseudocount)
       end
     end
   end
