@@ -71,5 +71,8 @@ module Bioinform
       false
     end
 
+    def empty?
+      container.empty?
+    end
   end
 end

@@ -31,14 +31,14 @@ def parser_specs(parser_klass, good_cases, bad_cases)
   context '#parse!' do
     good_cases.each do |case_description, input_and_result|
       it "should be able to parse #{case_description}" do
-        result = parser_klass.new(input_and_result[:input]).parse
+        result = parser_klass.new.parse(input_and_result[:input])
         Bioinform::PM.new(result).should == input_and_result[:result]
       end
     end
 
     bad_cases.each do |case_description, input|
       it "should raise an exception on parsing #{case_description}" do
-        expect{ parser_klass.new(input[:input]).parse! }.to raise_error
+        expect{ parser_klass.new.parse!(input[:input]) }.to raise_error
       end
     end
   end

@@ -23,7 +23,8 @@ module Bioinform
       matrix.transpose
     end
 
-    def parse!
+    def parse!(input)
+      init_input(input)
       scan_any_spaces
       scan_splitter
       name = parse_name

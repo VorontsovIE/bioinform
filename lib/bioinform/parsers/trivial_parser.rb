@@ -9,10 +9,8 @@ module Bioinform
   # PM.new(StringParser.new("1 2 3 4\n5 6 7 8").parse)
   # StringParser.new("First\n1 2 3 4\n5 6 7 8\nSecond\n0 0 0 0").map{|inp| PM.new(inp, TrivialParser)}
   class TrivialParser < Parser
-    def initialize(input)
-      @input = input
-    end
-    def parse!
+
+    def parse!(input)
       case input
       when PM then input
       when Motif then input.pm
@@ -24,11 +22,14 @@ module Bioinform
 
   class TrivialCollectionParser < Parser
     include MultipleMotifsParser
-    def initialize(input)
+
+    def parse!(input)
       @input = input
+      @input.container.shift.pm
     end
-    def parse!
-      input.container.shift.pm
+
+    def rest_input
+      !@input.container.empty? ? @input : nil
     end
   end
 end

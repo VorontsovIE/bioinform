@@ -8,10 +8,7 @@ module Bioinform
   # yaml_dump_of_pm = PM.new(...).to_yaml
   # PM.new(yaml_dump_of_pm, YAMLParser)
   class YAMLParser < Parser
-    def initialize(input)
-      @input = input
-    end
-    def parse!
+    def parse!(input)
       YAML.load(input)
     rescue Psych::SyntaxError
       raise 'parsing error'
@@ -20,16 +17,17 @@ module Bioinform
 
   class YAMLCollectionParser < Parser
     include MultipleMotifsParser
-    def initialize(input)
-      @input = input
-    end
-    def collection
-      @collection ||= YAML.load(input)
-    end
-    def parse!
-      collection.container.shift.pm
+    # def collection
+    # end
+    def parse!(input)
+      # @input = input
+      @collection = YAML.load(input)
+      @collection.container.shift.pm
     rescue Psych::SyntaxError
       raise 'parsing error'
+    end
+    def rest_input
+      !@collection.empty? ? @collection.to_yaml : nil
     end
   end
 end

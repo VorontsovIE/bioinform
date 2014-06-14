@@ -7,7 +7,7 @@ module Bioinform
     include MultipleMotifsParser
     attr_reader :scanner, :row_acgt_markers
 
-    def initialize(input)
+    def init_input(input)
       raise ArgumentError, 'StringParser should be initialized with a String'  unless input.is_a?(String)
       super
       @scanner = StringScanner.new(input.gsub(/[[:blank:]]/,' ').multiline_squish)
@@ -56,7 +56,8 @@ module Bioinform
       scanner.scan(/A\s*C\s*G\s*T\s*\n/i)
     end
 
-    def parse!
+    def parse!(input)
+      init_input(input)
       scan_any_spaces
       name = parse_name
       parse_acgt_header
@@ -67,6 +68,10 @@ module Bioinform
 
     def scanner_reset
       scanner.reset
+    end
+
+    def rest_input
+      scanner.rest? ? scanner.rest : nil
     end
   end
 end

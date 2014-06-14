@@ -24,7 +24,8 @@ module Bioinform
 #    end
 
     def self.choose_parser(input)
-      [TrivialParser, YAMLParser, Parser, StringParser, Bioinform::MatrixParser.new(has_name: false).wrapper, Bioinform::MatrixParser.new(has_name: true).wrapper, StringFantomParser, JasparParser, TrivialCollectionParser, YAMLCollectionParser].find do |parser|
+      # [TrivialParser, YAMLParser, Parser, StringParser, Bioinform::MatrixParser.new(has_name: false).wrapper, Bioinform::MatrixParser.new(has_name: true).wrapper, StringFantomParser, JasparParser, TrivialCollectionParser, YAMLCollectionParser].find do |parser|
+      [TrivialParser.new, YAMLParser.new, Parser.new, StringParser.new, Bioinform::MatrixParser.new(has_name: false), Bioinform::MatrixParser.new(has_name: true), StringFantomParser.new, JasparParser.new, TrivialCollectionParser.new, YAMLCollectionParser.new].find do |parser|
         self.new(input, parser) rescue nil
       end
     end
@@ -32,14 +33,14 @@ module Bioinform
     def self.split_on_motifs(input)
       parser = choose_parser(input)
       raise ParsingError, "No parser can parse given input"  unless parser
-      parser.split_on_motifs(input, self)
+      CollectionParser.new(parser, input).split_on_motifs(self)
     end
 
     def initialize(input, parser = nil)
       @parameters = OpenStruct.new
       parser ||= self.class.choose_parser(input)
       raise 'No one parser can process input'  unless parser
-      result = parser.new(input).parse
+      result = parser.parse(input)
       @matrix = result.matrix
       raise 'Non valid matrix' unless self.class.valid_matrix?(@matrix)
       self.name = result.name

@@ -43,7 +43,7 @@ module Bioinform
         
         filelist = filelist.map do |data_source|
           if File.directory? data_source
-            Dir.glob(File.join(data_source, '*'))
+            Dir.glob(File.join(data_source, '*')).sort
           elsif File.file? data_source
             data_source
           else

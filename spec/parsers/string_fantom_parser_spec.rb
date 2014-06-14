@@ -3,7 +3,7 @@ require_relative '../../lib/bioinform/parsers/string_fantom_parser'
 
 module Bioinform
   describe StringFantomParser do
-    describe '#split_on_motifs' do
+    describe '#split_on_motifs' do ##############
       it 'should be able to parse several motifs' do
         input = "
 //
@@ -23,7 +23,7 @@ NA  motif_3
 P0	A	C	G	T
 P1	2 3	4 5
 P2	6 7 8 9"
-        StringFantomParser.split_on_motifs(input).should == [ Fabricate(:pm_1), Fabricate(:pm_2), Fabricate(:pm_3) ]
+        CollectionParser.new(StringFantomParser.new, input).split_on_motifs.should == [ Fabricate(:pm_1), Fabricate(:pm_2), Fabricate(:pm_3) ]
       end
     end
 

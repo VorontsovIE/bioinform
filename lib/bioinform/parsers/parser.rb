@@ -11,7 +11,7 @@ module Bioinform
   class Parser
     attr_reader :input
 
-    def initialize(*input)
+    def init_input(*input)
       if input.size == 1  # [ [1,2,3,4] ],  [  [[1,2,3,4],[5,6,7,8]] ]
         if input.first.is_a?(Array) && input.first.all?{|el| el.is_a? Numeric}  # [ [1,2,3,4] ]
           @input = input
@@ -23,26 +23,31 @@ module Bioinform
       end
     end
 
-    def parse!
-      matrix = self.class.transform_input(input)
+    def parse!(*input)
+      init_input(*input)
+      matrix = self.class.transform_input(@input)
       raise InvalidMatrix unless self.class.valid_matrix?(matrix)
       OpenStruct.new(matrix: matrix)
     end
 
-    def parse
-      parse! rescue nil
+    def parse(*input)
+      parse!(*input) rescue nil
+    end
+
+    def rest_input
+      nil
     end
 
     module ClassMethods
       def choose(input, data_model = PM)
-        data_model.choose_parser(input).new(input)
+        data_model.choose_parser(input)
       end
 
       def parse!(*input)
-        new(*input).parse!
+        new.parse!(*input)
       end
       def parse(*input)
-        new(*input).parse
+        new.parse(*input)
       end
 
       def valid_matrix?(matrix)
