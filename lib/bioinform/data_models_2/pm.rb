@@ -1,5 +1,6 @@
 require_relative '../formatters/raw_formatter'
 require_relative '../error'
+require_relative '../alphabet'
 
 module Bioinform
   module MotifModel
@@ -50,7 +51,7 @@ module Bioinform
       end
 
       def ==(other)
-        self.class == other.class && matrix == other.matrix
+        self.class == other.class && matrix == other.matrix && alphabet == other.alphabet
       end
 
       def each_position

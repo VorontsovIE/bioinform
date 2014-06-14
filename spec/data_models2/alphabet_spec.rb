@@ -1,14 +1,14 @@
 require 'bioinform/alphabet'
 
-describe Bioinform::ComplimentableAlphabet do
+describe Bioinform::ComplementableAlphabet do
   specify "should raise if complement's complement is not original letter" do
-    expect{ Bioinform::ComplimentableAlphabet.new([:A,:B,:X,:Y], [:X,:Y,:B,:A]) }.to raise_error Bioinform::Error
-    expect{ Bioinform::ComplimentableAlphabet.new([:A,:B,:B,:C], [:C,:B,:B,:A]) }.to raise_error Bioinform::Error
-    expect{ Bioinform::ComplimentableAlphabet.new([:A,:B,:X,:Y], [:X,:Y,:B,:A,:C]) }.to raise_error Bioinform::Error
+    expect{ Bioinform::ComplementableAlphabet.new([:A,:B,:X,:Y], [:X,:Y,:B,:A]) }.to raise_error Bioinform::Error
+    expect{ Bioinform::ComplementableAlphabet.new([:A,:B,:B,:C], [:C,:B,:B,:A]) }.to raise_error Bioinform::Error
+    expect{ Bioinform::ComplementableAlphabet.new([:A,:B,:X,:Y], [:X,:Y,:B,:A,:C]) }.to raise_error Bioinform::Error
   end
 
   context 'usage with alphabet non-symbolized, non-upcased' do
-    let(:alphabet) { Bioinform::ComplimentableAlphabet.new([:a,:B,'x','Y'], ['X',:y,:A,'B']) }
+    let(:alphabet) { Bioinform::ComplementableAlphabet.new([:a,:B,'x','Y'], ['X',:y,:A,'B']) }
 
     specify{ expect(alphabet.alphabet).to eq [:A,:B,:X,:Y]  }
     specify{ expect(alphabet.complement_letter(:A)).to eq :X  }
@@ -23,10 +23,16 @@ describe Bioinform::ComplimentableAlphabet do
   end
 
   context 'with correct alphabet' do
-    specify{ expect{ Bioinform::ComplimentableAlphabet.new([:A,:B,:X,:Y], [:X,:Y,:A,:B]) }.not_to raise_error }
-    let(:alphabet) { Bioinform::ComplimentableAlphabet.new([:A,:B,:X,:Y], [:X,:Y,:A,:B]) }
+    specify{ expect{ Bioinform::ComplementableAlphabet.new([:A,:B,:X,:Y], [:X,:Y,:A,:B]) }.not_to raise_error }
+    let(:alphabet) { Bioinform::ComplementableAlphabet.new([:A,:B,:X,:Y], [:X,:Y,:A,:B]) }
+
+    specify{ expect(alphabet).to eq Bioinform::ComplementableAlphabet.new([:A,:B,:X,:Y], [:X,:Y,:A,:B]) }
+    specify{ expect(alphabet).not_to eq Bioinform::ComplementableAlphabet.new([:A,:C,:X,:Y], [:X,:Y,:A,:C]) }
+    specify{ expect(alphabet).not_to eq Bioinform::ComplementableAlphabet.new([:A,:B,:X,:Y], [:Y,:X,:B,:A]) }
+    specify{ expect(alphabet).not_to eq Bioinform::ComplementableAlphabet.new([:B,:A,:Y,:X], [:X,:Y,:A,:B]) }
 
     specify{ expect(alphabet.alphabet).to eq [:A,:B,:X,:Y]  }
+    specify{ expect(alphabet.complement_alphabet).to eq [:X,:Y,:A,:B]  }
     specify{ expect(alphabet.letter_by_index(2)).to eq :X  }
 
     specify{ expect(alphabet.complement_index(1)).to eq 3  } # :B --> :Y

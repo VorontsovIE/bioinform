@@ -73,6 +73,7 @@ describe Bioinform::MotifModel::PM do
     specify { expect(pm.to_s).to eq("1\t2\t3\t1.567\n"+"12\t-11\t12\t0\n"+"-1.1\t0.6\t0.4\t0.321") }
 
     specify { expect(pm).to eq Bioinform::MotifModel::PM.new( [[1,2,3,1.567],[12,-11,12,0],[-1.1, 0.6, 0.4, 0.321]]) }
+    specify { expect(pm).not_to eq Bioinform::MotifModel::PM.new( [[1,2,3,1.567],[12,-11,12,0],[-1.1, 0.6, 0.4, 0.321]], alphabet: Bioinform::ComplementableAlphabet.new([:A,:B,:C,:D],[:D,:C,:B,:A])) }
     specify { expect(pm).not_to eq Bioinform::MotifModel::PM.new( [[1,2,3,1.567],[12,-11,12,0],[-1.1, 0.6, 0.4, 0.321],[1, 2, 3, 4]]) }
     specify { expect(pm).not_to eq Bioinform::MotifModel::PM.new( [[1,2,3,1.567],[12,-11,12,0],[1, 2, 3, 4]]) }
     specify { expect(pm).not_to eq [[1,2,3,1.567],[12,-11,12,0],[1, 2, 3, 4]] }

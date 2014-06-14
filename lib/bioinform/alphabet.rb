@@ -1,11 +1,12 @@
 require_relative 'support'
+require_relative 'error'
 
 module Bioinform
   # alphabets for DNA/RNA (which do have complements)
-  class ComplimentableAlphabet
-    attr_reader :alphabet
+  class ComplementableAlphabet
+    attr_reader :alphabet, :complement_alphabet
 
-    # ComplimentableAlphabet.new([:A,:C,:G,:T], [:T,:G,:C,:A])
+    # ComplementableAlphabet.new([:A,:C,:G,:T], [:T,:G,:C,:A])
     def initialize(alphabet, complements)
       @alphabet = alphabet.map{|letter| letter.upcase.to_sym }
       @complement_alphabet = complements.map{|letter| letter.upcase.to_sym }
@@ -52,6 +53,10 @@ module Bioinform
       letter = @complement_alphabet[index] || raise(Error, "Unknown letter-index #{index}")
       @index_by_letter[letter]
     end
+
+    def ==(other)
+      @alphabet == other.alphabet && @complement_alphabet == other.complement_alphabet
+    end
   end
 
 
@@ -73,7 +78,7 @@ module Bioinform
 
   iupac_letters = [:A, :C, :G, :T, :M, :R, :W, :S, :Y, :K, :V, :H, :D, :B, :N]
 
-  NucleotideAlphabet = ComplimentableAlphabet.new([:A,:C,:G,:T], [:T,:G,:C,:A])
-  IUPACAlphabet = ComplimentableAlphabet.new( iupac_letters,
+  NucleotideAlphabet = ComplementableAlphabet.new([:A,:C,:G,:T], [:T,:G,:C,:A])
+  IUPACAlphabet = ComplementableAlphabet.new( iupac_letters,
                                               iupac_letters.map{|letter| IUPAC.complement_iupac_letter(letter) } )
 end
