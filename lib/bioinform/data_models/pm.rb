@@ -54,7 +54,7 @@ module Bioinform
       obj
     end
     def ==(other)
-      @matrix == other.matrix && background == other.background && name == other.name
+      matrix == other.matrix && background == other.background && name == other.name
     rescue
       false
     end
@@ -86,7 +86,7 @@ module Bioinform
     end
 
     def valid?(options = {})
-      self.class.valid_matrix?(@matrix, options)
+      self.class.valid_matrix?(matrix, options)
     end
 
     def each_position
@@ -98,7 +98,7 @@ module Bioinform
     end
 
     def length
-      @matrix.length
+      matrix.length
     end
     alias_method :size, :length
 
@@ -119,7 +119,7 @@ module Bioinform
 
     def to_hash
       hsh = %w{A C G T}.each_with_index.collect_hash do |letter, letter_index|
-        [ letter, @matrix.map{|pos| pos[letter_index]} ]
+        [ letter, matrix.map{|pos| pos[letter_index]} ]
       end
       hsh.with_indifferent_access
     end
@@ -129,20 +129,20 @@ module Bioinform
     end
 
     def reverse_complement!
-      @matrix.reverse!.map!(&:reverse!)
+      self.matrix = matrix.reverse!.map!(&:reverse!)
       self
     end
     def left_augment!(n)
-      n.times{ @matrix.unshift(self.class.zero_column) }
+      self.matrix = Array.new(n){self.class.zero_column} + matrix
       self
     end
     def right_augment!(n)
-      n.times{ @matrix.push(self.class.zero_column) }
+      self.matrix = matrix + Array.new(n){self.class.zero_column}
       self
     end
 
     def discrete!(rate)
-      @matrix.map!{|position| position.map{|element| (element * rate).ceil}}
+      self.matrix = matrix.map{|position| position.map{|element| (element * rate).ceil}}
       self
     end
 

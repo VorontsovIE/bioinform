@@ -48,11 +48,11 @@ module Bioinform
 
     # best score of suffix s[i..l]
     def best_suffix(i)
-      @matrix[i...length].map(&:max).inject(0.0, &:+)
+      matrix[i...length].map(&:max).inject(0.0, &:+)
     end
 
     def worst_suffix(i)
-      @matrix[i...length].map(&:min).inject(0.0, &:+)
+      matrix[i...length].map(&:min).inject(0.0, &:+)
     end
 
 
