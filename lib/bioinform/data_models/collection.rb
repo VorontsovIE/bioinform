@@ -52,7 +52,7 @@ module Bioinform
         if args.empty?
           container.each{|motif| yield motif}
         else
-          container.each{|motif| yield( *args.map{|arg| motif.parameters.send(arg)} ) }
+          container.each{|motif| yield( *args.map{|arg| motif.send(arg)} ) }
         end
       else
         self.to_enum(:each, *args)

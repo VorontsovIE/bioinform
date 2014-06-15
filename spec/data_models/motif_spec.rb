@@ -22,7 +22,7 @@ shared_examples 'when pm is PM' do
   context 'when pm-value is a PM' do
     let(:pm) { Fabricate(:pm) }
     it 'sets only parameter pm attribute to specified PM' do
-      subject.parameters.pm.should == Fabricate(:pm)
+      subject.pm.should == Fabricate(:pm)
       subject.pcm.should be_nil
       subject.pwm.should be_nil
       subject.ppm.should be_nil
@@ -40,14 +40,14 @@ module Bioinform
 
       context 'when argument is a Hash' do
         subject{ described_class.new(hash) }
-        context 'which contains usual symbolic parameters' do
-          let(:hash){ {:a => 123, :key => 'value', :threshold => {0.1 => 15} } }
-          it 'sets its content as parameters' do
-            subject.parameters.a.should == 123
-            subject.parameters.key.should == 'value'
-            subject.parameters.threshold.should == {0.1 => 15}
-          end
-        end
+        # context 'which contains usual symbolic parameters' do
+        #   let(:hash){ {:a => 123, :key => 'value', :threshold => {0.1 => 15} } }
+        #   it 'sets its content as parameters' do
+        #     subject.parameters.a.should == 123
+        #     subject.parameters.key.should == 'value'
+        #     subject.parameters.threshold.should == {0.1 => 15}
+        #   end
+        # end
         context 'which contains any combination of :pwm, :pcm and :ppm keys' do
           let(:hash) { {pcm: 'my_pcm', ppm: 'my_ppm'} }
           it 'sets corresponding attributes to specified values' do
@@ -65,7 +65,7 @@ module Bioinform
         context 'when pm-value is a usual object' do
           let(:pm) { 'stub pm' }
           it 'sets only parameter pm attribute to specified value' do
-            subject.parameters.pm.should == 'stub pm'
+            subject.pm.should == 'stub pm'
             subject.pcm.should be_nil
             subject.pwm.should be_nil
             subject.ppm.should be_nil
