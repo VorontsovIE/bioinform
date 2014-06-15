@@ -4,6 +4,11 @@ require_relative '../parsers'
 require_relative '../formatters'
 require_relative '../formatters/pretty_matrix_formatter'
 
+require_relative '../data_models_2/pm'
+require_relative '../data_models_2/named_model'
+
+# require 'yaml'
+
 module Bioinform
   IndexByLetter = { 'A' => 0, 'C' => 1, 'G' => 2, 'T' => 3, A: 0, C: 1, G: 2, T: 3,
                     'a' => 0, 'c' => 1, 'g' => 2, 't' => 3, a: 0, c: 1, g: 2, t: 3}
@@ -13,7 +18,6 @@ module Bioinform
     attr_accessor :matrix, :name, :background
 
     def self.choose_parser(input)
-      # [TrivialParser, YAMLParser, Parser, StringParser, Bioinform::MatrixParser.new(has_name: false).wrapper, Bioinform::MatrixParser.new(has_name: true).wrapper, StringFantomParser, JasparParser, TrivialCollectionParser, YAMLCollectionParser].find do |parser|
       [ TrivialParser.new, YAMLParser.new, Parser.new, StringParser.new,
         Bioinform::MatrixParser.new(has_name: false), Bioinform::MatrixParser.new(has_name: true),
         StringFantomParser.new, JasparParser.new, TrivialCollectionParser.new, YAMLCollectionParser.new
@@ -28,15 +32,40 @@ module Bioinform
       CollectionParser.new(parser, input).split_on_motifs(self)
     end
 
+    # def name
+    #   pm_inner.name
+    # end
+
+    # def matrix
+    #   pm_inner.matrix
+    # end
+
+    def pm_inner
+      MotifModel::NamedModel.new(MotifModel::PM.new(@matrix), @name)
+    end
+
+    # def encode_with(coder)
+    #   coder['matrix'] = matrix
+    #   coder['name'] = name
+    #   coder['background'] = background
+    # end
+    # def init_with(coder)
+    #   @matrix = coder['matrix']
+    #   @name = coder['name']
+    #   @background = coder['background']
+    #   @pm_inner = MotifModel::NamedModel.new(MotifModel::PM.new(@matrix), @name)
+    #   p self
+    # end
+
     def initialize(input, parser = nil)
       parser ||= self.class.choose_parser(input)
       raise 'No one parser can process input'  unless parser
       result = parser.parse(input)
       self.matrix = result.matrix
-      raise 'Non valid matrix' unless self.class.valid_matrix?(@matrix)
       self.name = result.name
-#      self.tags = result.tags || []
       self.background = result.background || [1, 1, 1, 1]
+
+      raise 'Non valid matrix' unless self.class.valid_matrix?(result.matrix)
     end
 
     def self.new_with_validation(input, parser = nil)
@@ -81,16 +110,12 @@ module Bioinform
       self.class.valid_matrix?(matrix, options)
     end
 
-    def each_position
-      if block_given?
-        matrix.each{|pos| yield pos}
-      else
-        self.to_enum(:each_position)
-      end
+    def each_position(&block)
+      pm_inner.each_position(&block)
     end
 
     def length
-      matrix.length
+      pm_inner.length
     end
     alias_method :size, :length
 
@@ -103,9 +128,7 @@ module Bioinform
     end
 
     def consensus
-      each_position.map{|pos|
-        pos.each_with_index.max_by{|el, letter_index| el}
-      }.map{|el, letter_index| letter_index}.map{|letter_index| %w{A C G T}[letter_index] }.join
+      ConsensusFormatter.by_maximal_elements.format_string(pm_inner)
     end
 
 
@@ -120,24 +143,6 @@ module Bioinform
       [0, 0, 0, 0]
     end
 
-    def reverse_complement!
-      self.matrix = matrix.reverse!.map!(&:reverse!)
-      self
-    end
-    def left_augment!(n)
-      self.matrix = Array.new(n){self.class.zero_column} + matrix
-      self
-    end
-    def right_augment!(n)
-      self.matrix = matrix + Array.new(n){self.class.zero_column}
-      self
-    end
-
-    def discrete!(rate)
-      self.matrix = matrix.map{|position| position.map{|element| (element * rate).ceil}}
-      self
-    end
-
     def vocabulary_volume
       background.inject(&:+) ** length
     end
@@ -148,19 +153,16 @@ module Bioinform
     end
 
     def reverse_complement
-      dup.reverse_complement!
+      self.class.new( matrix: matrix.reverse.map(&:reverse), name: name, background: background )
     end
     def left_augment(n)
-      dup.left_augment!(n)
+      self.class.new( matrix: Array.new(n){self.class.zero_column} + matrix, name: name, background: background )
     end
     def right_augment(n)
-      dup.right_augment!(n)
+      self.class.new( matrix: matrix + Array.new(n){self.class.zero_column}, name: name, background: background )
     end
     def discrete(rate)
-      dup.discrete!(rate)
-    end
-    def dup
-      deep_dup
+      self.class.new( matrix: matrix.map{|position| position.map{|element| (element * rate).ceil}}, name: name, background: background )
     end
   end
 end

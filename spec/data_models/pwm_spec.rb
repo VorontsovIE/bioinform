@@ -62,12 +62,12 @@ module Bioinform
         @pwm.best_suffix(2).should == (-1.0)
         @pwm.best_suffix(3).should == (0.0)
       end
-      it 'should give right results after left(right)_augment, discrete, reverse_complement etc' do
-        pwm = PWM.new([[1, 2, 3, 4], [10,10.5,11,11.5]])
-        pwm.best_suffix(1).should == 11.5
-        pwm.left_augment!(1)
-        pwm.best_suffix(1).should == 15.5
-      end
+      # it 'should give right results after left(right)_augment, discrete, reverse_complement etc' do
+      #   pwm = PWM.new([[1, 2, 3, 4], [10,10.5,11,11.5]])
+      #   pwm.best_suffix(1).should == 11.5
+      #   pwm.left_augment!(1)
+      #   pwm.best_suffix(1).should == 15.5
+      # end
     end
     describe '#worst_suffix' do
       it 'should return minimal score of suffices from i-th position inclusively i.e. [i..end]' do

@@ -6,7 +6,6 @@ require_relative 'support/delete_many'
 require_relative 'support/multiline_squish'
 require_relative 'support/same_by'
 require_relative 'support/inverf'
-require_relative 'support/deep_dup'
 
 require_relative 'support/partial_sums'
 

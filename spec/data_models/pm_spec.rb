@@ -247,61 +247,60 @@ module Bioinform
       end
     end
 
-    describe '#reverse_complement!' do
+    describe '#reverse_complement' do
       before :each do
         @pm = PM.new( [[1, 2, 3, 4], [1, 4, 5, 6.5]] )
       end
-      it 'should return pm object itself' do
-        @pm.reverse_complement!.should be_equal(@pm)
+      it 'should return copy of object not object itself' do
+        @pm.reverse_complement.should_not be_equal(@pm)
+        @pm.matrix.should == [[1, 2, 3, 4], [1, 4, 5, 6.5]]
       end
       it 'should reverse matrix rows and columns' do
-        @pm.reverse_complement!
-        @pm.matrix.should == [[6.5, 5, 4, 1], [4, 3, 2, 1]]
+        @pm.reverse_complement.matrix.should == [[6.5, 5, 4, 1], [4, 3, 2, 1]]
       end
     end
 
-    describe '#left_augment!' do
+    describe '#left_augment' do
       before :each do
         @pm = PM.new( [[1, 2, 3, 4], [1, 4, 5, 6.5]] )
       end
-      it 'should return pm object itself' do
-        @pm.left_augment!(2).should be_equal(@pm)
+      it 'should return copy of object not object itself' do
+        @pm.left_augment(2).should_not be_equal(@pm)
+        @pm.matrix.should == [[1, 2, 3, 4], [1, 4, 5, 6.5]]
       end
       it 'should add number of zero columns from the left' do
-        @pm.left_augment!(2)
-        @pm.matrix.should == [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [1, 2, 3, 4], [1, 4, 5, 6.5]]
+        @pm.left_augment(2).matrix.should == [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [1, 2, 3, 4], [1, 4, 5, 6.5]]
       end
     end
 
-    describe '#right_augment!' do
+    describe '#right_augment' do
       before :each do
         @pm = PM.new( [[1, 2, 3, 4], [1, 4, 5, 6.5]] )
       end
-      it 'should return pm object itself' do
-        @pm.right_augment!(2).should be_equal(@pm)
+      it 'should return copy of object not object itself' do
+        @pm.right_augment(2).should_not be_equal(@pm)
+        @pm.matrix.should == [[1, 2, 3, 4], [1, 4, 5, 6.5]]
       end
       it 'should add number of zero columns from the right' do
-        @pm.right_augment!(2)
-        @pm.matrix.should == [[1, 2, 3, 4], [1, 4, 5, 6.5], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]]
+        @pm.right_augment(2).matrix.should == [[1, 2, 3, 4], [1, 4, 5, 6.5], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]]
       end
     end
 
-    describe '#discrete!' do
+    describe '#discrete' do
       before :each do
         @pm = PM.new( [[1.3, 2.0, 3.2, 4.9], [6.51, 6.5, 3.25, 4.633]] )
       end
-      it 'should return pm object itself' do
-        @pm.discrete!(10).should be_equal(@pm)
+      it 'should return copy of object not object itself' do
+        @pm.discrete(10).should_not be_equal(@pm)
+        @pm.matrix.should == [[1.3, 2.0, 3.2, 4.9], [6.51, 6.5, 3.25, 4.633]]
       end
       context 'rate is 1' do
         it 'should discrete each element of matrix' do
-          @pm.discrete!(1)
-          @pm.matrix.should == [[2, 2, 4, 5], [7, 7, 4, 5]]
+          @pm.discrete(1).matrix.should == [[2, 2, 4, 5], [7, 7, 4, 5]]
         end
       end
       it 'should discrete each element of matrix multiplied by rate' do
-        @pm.discrete!(10)
-        @pm.matrix.should == [[13, 20, 32, 49], [66, 65, 33, 47]]
+        @pm.discrete(10).matrix.should == [[13, 20, 32, 49], [66, 65, 33, 47]]
       end
     end
 
@@ -327,35 +326,35 @@ module Bioinform
       end
     end
 
-    [:reverse_complement].each do |meth|
-      describe "nonbang method #{meth}" do
-        before :each do
-          @pm = PM.new( [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -1.0, -1.5, -1.0]] )
-          @pm_2 = PM.new( [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -1.0, -1.5, -1.0]] )
-        end
-        it 'should return copy of object not object itself' do
-          @pm.send(meth).should_not be_equal @pm
-        end
-        it 'should == to bang-method' do
-          @pm.send(meth).to_s.should == @pm_2.send("#{meth}!").to_s
-        end
-      end
-    end
+    # [:reverse_complement].each do |meth|
+    #   describe "nonbang method #{meth}" do
+    #     before :each do
+    #       @pm = PM.new( [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -1.0, -1.5, -1.0]] )
+    #       @pm_2 = PM.new( [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -1.0, -1.5, -1.0]] )
+    #     end
+    #     it 'should return copy of object not object itself' do
+    #       @pm.send(meth).should_not be_equal @pm
+    #     end
+    #     it 'should == to bang-method' do
+    #       @pm.send(meth).to_s.should == @pm_2.send("#{meth}!").to_s
+    #     end
+    #   end
+    # end
 
-    [:discrete , :left_augment, :right_augment].each do |meth|
-      describe "nonbang method #{meth}" do
-        before :each do
-          @pm = PM.new( [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -1.0, -1.5, -1.0]] )
-          @pm_2 = PM.new( [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -1.0, -1.5, -1.0]] )
-        end
-        it 'should return copy of object not object itself' do
-          @pm.send(meth, 2).should_not be_equal @pm
-        end
-        it 'should == to bang-method' do
-          @pm.send(meth, 2).to_s.should == @pm_2.send("#{meth}!", 2).to_s
-        end
-      end
-    end
+    # [:discrete , :left_augment, :right_augment].each do |meth|
+    #   describe "nonbang method #{meth}" do
+    #     before :each do
+    #       @pm = PM.new( [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -1.0, -1.5, -1.0]] )
+    #       @pm_2 = PM.new( [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -1.0, -1.5, -1.0]] )
+    #     end
+    #     it 'should return copy of object not object itself' do
+    #       @pm.send(meth, 2).should_not be_equal @pm
+    #     end
+    #     it 'should == to bang-method' do
+    #       @pm.send(meth, 2).to_s.should == @pm_2.send("#{meth}!", 2).to_s
+    #     end
+    #   end
+    # end
 
     describe '#consensus' do
       let(:pm) { PM.new( [[1.3, 2.0, 4.9, 3.2], [7.13, 6.5, 3.25, 4.633], [-1.0, -0.5, -1.5, -1.0]] ) }
