@@ -10,22 +10,14 @@ module Bioinform
   LetterByIndex = {0 => :A, 1 => :C, 2 => :G, 3 => :T}
 
   class PM
-    attr_accessor :matrix, :parameters
-
-    include Parameters
-    make_parameters  :name, :background # , :tags
-
-#    def mark(tag)
-#      tags << tag
-#    end
-
-#    def tagged?(tag)
-#      tags.any?{|t| (t.eql? tag) || (t.respond_to?(:name) && t.name && (t.name == tag)) }
-#    end
+    attr_accessor :matrix, :name, :background
 
     def self.choose_parser(input)
       # [TrivialParser, YAMLParser, Parser, StringParser, Bioinform::MatrixParser.new(has_name: false).wrapper, Bioinform::MatrixParser.new(has_name: true).wrapper, StringFantomParser, JasparParser, TrivialCollectionParser, YAMLCollectionParser].find do |parser|
-      [TrivialParser.new, YAMLParser.new, Parser.new, StringParser.new, Bioinform::MatrixParser.new(has_name: false), Bioinform::MatrixParser.new(has_name: true), StringFantomParser.new, JasparParser.new, TrivialCollectionParser.new, YAMLCollectionParser.new].find do |parser|
+      [ TrivialParser.new, YAMLParser.new, Parser.new, StringParser.new,
+        Bioinform::MatrixParser.new(has_name: false), Bioinform::MatrixParser.new(has_name: true),
+        StringFantomParser.new, JasparParser.new, TrivialCollectionParser.new, YAMLCollectionParser.new
+      ].find do |parser|
         self.new(input, parser) rescue nil
       end
     end
@@ -37,11 +29,10 @@ module Bioinform
     end
 
     def initialize(input, parser = nil)
-      @parameters = OpenStruct.new
       parser ||= self.class.choose_parser(input)
       raise 'No one parser can process input'  unless parser
       result = parser.parse(input)
-      @matrix = result.matrix
+      self.matrix = result.matrix
       raise 'Non valid matrix' unless self.class.valid_matrix?(@matrix)
       self.name = result.name
 #      self.tags = result.tags || []
@@ -53,6 +44,7 @@ module Bioinform
       raise 'matrix not valid'  unless obj.valid?
       obj
     end
+
     def ==(other)
       matrix == other.matrix && background == other.background && name == other.name
     rescue

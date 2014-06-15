@@ -36,7 +36,7 @@ describe Bioinform::CLI::MergeIntoCollection do
       it 'collects motifs into file <collection name>.yaml' do
         run_merge_into_collection('--name my_collection GABPA_f1.pwm KLF4_f2.pwm SP1_f1.pwm')
         File.exist?('my_collection.yaml').should be_truthy
-        YAML.load(File.read('my_collection.yaml')).should == YAML.load(File.read('collection.yaml.result')).set_parameters(name: 'my_collection')
+        YAML.load(File.read('my_collection.yaml')).should == YAML.load(File.read('collection.yaml.result')).tap{|x| x.name = 'my_collection' }
       end
     end
     

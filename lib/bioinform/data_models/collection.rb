@@ -4,15 +4,11 @@ require_relative 'motif'
 module Bioinform
   class Collection
     attr_accessor :container
-
-    include Parameters
-    make_parameters :name
+    attr_accessor :name
 
     # collection name is a tag name for each motif in a collection. But motif can be included in several collections so have several tags
     def initialize(parameters = {})
       @container = []
-      @parameters = OpenStruct.new(parameters)
-      yield @parameters  if block_given?
     end
 
     def size
@@ -66,7 +62,7 @@ module Bioinform
     include Enumerable
 
     def ==(other)
-      (parameters == other.parameters) && (container == other.container)
+      (self.class == other.class) && (name == other.name) && (container == other.container)
     rescue
       false
     end

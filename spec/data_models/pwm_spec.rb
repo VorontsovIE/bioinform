@@ -9,7 +9,7 @@ module Bioinform
         pwm.score_mean.should == 1.5 + 6 + 2
       end
       it 'should be equal to a mean score of pwm by measure induced from background probability mean' do
-        pwm = PWM.new( [[1,2,1,2],[4,6,8,6],[2,2,2,2]] ).set_parameters(background: [0.2, 0.3, 0.3, 0.2])
+        pwm = PWM.new( [[1,2,1,2],[4,6,8,6],[2,2,2,2]] ).tap{|x| x.background = [0.2, 0.3, 0.3, 0.2] }
         pwm.score_mean.should == ((0.2*1+0.3*2+0.3*1+0.2*2) + (0.2*4+0.3*6+0.3*8+0.2*6) + (0.2*2+0.3*2+0.3*2+0.2*2)) / (0.2+0.3+0.3+0.2)
       end
     end
@@ -31,7 +31,7 @@ module Bioinform
       end
       it 'should give score average score(considering probabilities) for a position for a N-letter' do
         pwm.score('AANAA').should == (11011 + 250)
-        pwm.set_parameters(background: [0.1,0.4,0.1,0.4]).score('AANAA').should == (11011 + 0.1*100 + 0.4*200 + 0.1*300 + 0.4*400)
+        pwm.tap{|x| x.background = [0.1,0.4,0.1,0.4]}.score('AANAA').should == (11011 + 0.1*100 + 0.4*200 + 0.1*300 + 0.4*400)
       end
       it 'should raise an ArgumentError if word contain bad letter' do
         expect{ pwm.score('AAAAV') }.to raise_error(ArgumentError)

@@ -3,7 +3,7 @@ require_relative '../data_models'
 
 module Bioinform
   class PPM < PM
-    make_parameters :effective_count, :pseudocount
+    attr_accessor :effective_count, :pseudocount
     def to_ppm
       self
     end

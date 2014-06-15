@@ -115,7 +115,7 @@ module Bioinform
       pm_eq = PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'First motif')
       pm_neq_matrix = PM.new(matrix: [[1,2,3,4],[15,16,17,18]], name: 'First motif')
       pm_neq_name = PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'Second motif')
-      pm_neq_background = PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'First motif').set_parameters(background: [1,2,2,1])
+      pm_neq_background = PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'First motif').tap{|x| x.background = [1,2,2,1] }
 
       pm.should_not == pm_neq_matrix
       pm.should_not == pm_neq_name
