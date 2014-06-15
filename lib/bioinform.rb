@@ -5,6 +5,14 @@ require_relative 'bioinform/formatters'
 require_relative 'bioinform/data_models'
 require_relative 'bioinform/cli'
 
+require_relative 'bioinform/background'
+require_relative 'bioinform/alphabet'
+require_relative 'bioinform/data_models_2/pm'
+require_relative 'bioinform/data_models_2/pcm'
+require_relative 'bioinform/data_models_2/pwm'
+require_relative 'bioinform/data_models_2/ppm'
+require_relative 'bioinform/data_models_2/named_model'
+
 module Bioinform
   class Error < StandardError
   end

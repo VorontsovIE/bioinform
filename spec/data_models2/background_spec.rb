@@ -39,9 +39,9 @@ end
 
 describe Bioinform::Background do
   specify { expect(Bioinform::Background.wordwise).to eq Bioinform::WordwiseBackground.new }
-  specify { expect(Bioinform::Background::WordwiseBackground).to eq Bioinform::WordwiseBackground.new }
+  specify { expect(Bioinform::Background::Wordwise).to eq Bioinform::WordwiseBackground.new }
   specify { expect(Bioinform::Background.uniform).to eq Bioinform::Frequencies.new([0.25,0.25,0.25,0.25]) }
-  specify { expect(Bioinform::Background::UniformBackground).to eq Bioinform::Frequencies.new([0.25,0.25,0.25,0.25]) }
+  specify { expect(Bioinform::Background::Uniform).to eq Bioinform::Frequencies.new([0.25,0.25,0.25,0.25]) }
 
   specify { expect(Bioinform::Background.from_gc_content(0.5)).to eq Bioinform::Frequencies.new([0.25,0.25,0.25,0.25]) }
   specify { expect(Bioinform::Background.from_gc_content(0.6)).to eq Bioinform::Frequencies.new([0.2,0.3,0.3,0.2]) }
