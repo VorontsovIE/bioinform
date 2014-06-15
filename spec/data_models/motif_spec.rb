@@ -40,14 +40,6 @@ module Bioinform
 
       context 'when argument is a Hash' do
         subject{ described_class.new(hash) }
-        # context 'which contains usual symbolic parameters' do
-        #   let(:hash){ {:a => 123, :key => 'value', :threshold => {0.1 => 15} } }
-        #   it 'sets its content as parameters' do
-        #     subject.parameters.a.should == 123
-        #     subject.parameters.key.should == 'value'
-        #     subject.parameters.threshold.should == {0.1 => 15}
-        #   end
-        # end
         context 'which contains any combination of :pwm, :pcm and :ppm keys' do
           let(:hash) { {pcm: 'my_pcm', ppm: 'my_ppm'} }
           it 'sets corresponding attributes to specified values' do
@@ -215,10 +207,5 @@ module Bioinform
         end
       end
     end
-
-
-
-
-
   end
 end

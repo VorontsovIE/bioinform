@@ -26,16 +26,6 @@ module Bioinform
         @collection << @pm_1 << @pm_2 << @pm_3
         @collection.should include(Motif.new(pm: @pm_1), Motif.new(pm: @pm_2), Motif.new(pm: @pm_3))
       end
-#      it 'should mark motif with name' do
-#        @collection << @pm_1 << @pm_2
-#        @pm_1.should be_tagged('Main collection')
-#        @pm_2.should be_tagged('Main collection')
-#      end
-#      it 'should mark motif with self' do
-#        @collection << @pm_1 << @pm_2
-#        @pm_1.should be_tagged(@collection)
-#        @pm_2.should be_tagged(@collection)
-#      end
     end
 
     describe '#each' do
@@ -85,14 +75,6 @@ module Bioinform
         @summary_collection.should include(Motif.new(pm: @pm_1), Motif.new(pm: @pm_2), Motif.new(pm: @pm_3), 
                                           Motif.new(pm: @pm_sec_1), Motif.new(pm: @pm_sec_2))
       end
-      # it 'should leave marks on motifs' do
-        # @pm_1.should be_tagged('Main collection')
-        # @pm_sec_1.should be_tagged('Secondary collection')
-      # end
-      # it 'should not mix marks of motifs in different collections' do
-        # @pm_1.should_not be_tagged('Secondary collection')
-        # @pm_sec_1.should_not be_tagged('Main collection')
-      # end
     end
   end
 end

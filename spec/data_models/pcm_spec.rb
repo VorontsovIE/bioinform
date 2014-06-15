@@ -50,7 +50,5 @@ module Bioinform
         end
       end
     end
-
-
   end
 end

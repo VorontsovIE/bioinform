@@ -76,5 +76,4 @@ describe Bioinform::CLI::PCM2PWM do
     File.exist?('KLF4 f2 spaced name.pwm').should be_truthy
     File.read('KLF4 f2 spaced name.pwm').should == File.read('KLF4_f2.pwm.result')
   end
-
 end

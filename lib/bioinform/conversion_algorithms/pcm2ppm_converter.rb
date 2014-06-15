@@ -14,6 +14,3 @@ module Bioinform
     end
   end
 end
-
-
-      

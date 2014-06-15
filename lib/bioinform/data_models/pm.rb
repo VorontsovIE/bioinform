@@ -7,8 +7,6 @@ require_relative '../formatters/pretty_matrix_formatter'
 require_relative '../data_models_2/pm'
 require_relative '../data_models_2/named_model'
 
-# require 'yaml'
-
 module Bioinform
   IndexByLetter = { 'A' => 0, 'C' => 1, 'G' => 2, 'T' => 3, A: 0, C: 1, G: 2, T: 3,
                     'a' => 0, 'c' => 1, 'g' => 2, 't' => 3, a: 0, c: 1, g: 2, t: 3}
@@ -38,30 +36,9 @@ module Bioinform
       CollectionParser.new(parser, input).split_on_motifs(self)
     end
 
-    # def name
-    #   pm_inner.name
-    # end
-
-    # def matrix
-    #   pm_inner.matrix
-    # end
-
     def pm_inner
       MotifModel::NamedModel.new(MotifModel::PM.new(@matrix), @name)
     end
-
-    # def encode_with(coder)
-    #   coder['matrix'] = matrix
-    #   coder['name'] = name
-    #   coder['background'] = background
-    # end
-    # def init_with(coder)
-    #   @matrix = coder['matrix']
-    #   @name = coder['name']
-    #   @background = coder['background']
-    #   @pm_inner = MotifModel::NamedModel.new(MotifModel::PM.new(@matrix), @name)
-    #   p self
-    # end
 
     def initialize(input, parser = nil)
       parser ||= self.class.choose_parser(input)
@@ -136,7 +113,6 @@ module Bioinform
     def consensus
       ConsensusFormatter.by_maximal_elements.format_string(pm_inner)
     end
-
 
     def to_hash
       hsh = %w{A C G T}.each_with_index.collect_hash do |letter, letter_index|

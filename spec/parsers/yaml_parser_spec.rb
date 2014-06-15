@@ -14,7 +14,7 @@ module Bioinform
     end
     it 'can be used to create PM from yaml-string' do
       pm = Fabricate(:pm)
-      pm_copy = PM.new(pm.to_yaml, YAMLParser)
+      pm_copy = PM.new(pm.to_yaml, YAMLParser.new)
       pm_copy.should == pm
     end
 

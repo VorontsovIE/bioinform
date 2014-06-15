@@ -28,5 +28,4 @@ describe Bioinform::Support do
   specify do
     expect(Bioinform::Support.various_key_value_types({:A => :T})).to eq( {:A => :T, 'A' => 'T'} )
   end
-
 end

@@ -36,13 +36,13 @@ module Bioinform
 
     def add_pm(pm, info)
 #      pm.mark(self)
-      container << Motif.new(info.marshal_dump.merge(pm: pm))
+      container << Motif.new(info.to_h.merge(pm: pm))
       #### What if pm already is a Motif
       self
     end
 
     def <<(pm)
-      add_pm(pm, OpenStruct.new)
+      add_pm(pm, {})
     end
 
     # collection.each{|motif| ... }
