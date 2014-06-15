@@ -55,7 +55,7 @@ module Bioinform
         collection.name = name  if name
 
         filelist.each do |filename|
-          data_model.split_on_motifs(File.read(filename)).each do |pm|
+          Parser.split_on_motifs(File.read(filename), data_model).each do |pm|
             pm.name ||= File.basename(filename, File.extname(filename))
             collection << pm
           end

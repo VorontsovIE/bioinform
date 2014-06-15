@@ -40,11 +40,24 @@ module Bioinform
 
     module ClassMethods
       def choose(input, data_model = PM)
-        data_model.choose_parser(input)
+        [ TrivialParser.new, YAMLParser.new, Parser.new, StringParser.new,
+          Bioinform::MatrixParser.new(has_name: false), Bioinform::MatrixParser.new(has_name: true),
+          StringFantomParser.new, JasparParser.new
+        ].find do |parser|
+          data_model.new(input, parser) rescue nil
+        end
       end
 
       def choose_for_collection(input, data_model = PM)
-        data_model.choose_collection_parser(input)
+        [ TrivialCollectionParser.new, YAMLCollectionParser.new, StringParser.new ].find do |parser|
+          data_model.new(input, parser) rescue nil
+        end
+      end
+
+      def split_on_motifs(input, data_model = PM)
+        parser = choose_for_collection(input, data_model)
+        raise ParsingError, "No parser can parse given input"  unless parser
+        CollectionParser.new(parser, input).split_on_motifs(data_model)
       end
 
       def parse!(*input)
