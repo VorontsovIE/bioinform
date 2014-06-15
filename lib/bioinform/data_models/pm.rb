@@ -17,17 +17,23 @@ module Bioinform
   class PM
     attr_accessor :matrix, :name, :background
 
+    def self.choose_collection_parser(input)
+      [ TrivialCollectionParser.new, YAMLCollectionParser.new, StringParser.new ].find do |parser|
+        self.new(input, parser) rescue nil
+      end
+    end
+
     def self.choose_parser(input)
       [ TrivialParser.new, YAMLParser.new, Parser.new, StringParser.new,
         Bioinform::MatrixParser.new(has_name: false), Bioinform::MatrixParser.new(has_name: true),
-        StringFantomParser.new, JasparParser.new, TrivialCollectionParser.new, YAMLCollectionParser.new
+        StringFantomParser.new, JasparParser.new
       ].find do |parser|
         self.new(input, parser) rescue nil
       end
     end
 
     def self.split_on_motifs(input)
-      parser = choose_parser(input)
+      parser = choose_collection_parser(input)
       raise ParsingError, "No parser can parse given input"  unless parser
       CollectionParser.new(parser, input).split_on_motifs(self)
     end

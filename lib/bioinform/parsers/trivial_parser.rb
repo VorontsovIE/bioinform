@@ -21,8 +21,6 @@ module Bioinform
   end
 
   class TrivialCollectionParser < Parser
-    include MultipleMotifsParser
-
     def parse!(input)
       @input = input
       @input.container.shift.pm

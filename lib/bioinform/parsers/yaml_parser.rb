@@ -16,11 +16,7 @@ module Bioinform
   end
 
   class YAMLCollectionParser < Parser
-    include MultipleMotifsParser
-    # def collection
-    # end
     def parse!(input)
-      # @input = input
       @collection = YAML.load(input)
       @collection.container.shift.pm
     rescue Psych::SyntaxError

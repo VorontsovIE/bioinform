@@ -4,7 +4,6 @@ require_relative '../parsers/parser'
 
 module Bioinform
   class StringParser < Parser
-    include MultipleMotifsParser
     attr_reader :scanner, :row_acgt_markers
 
     def init_input(input)

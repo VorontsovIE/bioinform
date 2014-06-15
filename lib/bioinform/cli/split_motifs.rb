@@ -30,7 +30,7 @@ module Bioinform
         raise "File #{collection_filename} not exist"  unless File.exist? collection_filename
 
         input = File.read(collection_filename)
-        parser = Parser.choose(input)
+        parser = Parser.choose_for_collection(input)
         coll = CollectionParser.new(parser, input).split_on_motifs
 
         coll.each do |motif|

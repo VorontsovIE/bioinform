@@ -43,6 +43,10 @@ module Bioinform
         data_model.choose_parser(input)
       end
 
+      def choose_for_collection(input, data_model = PM)
+        data_model.choose_collection_parser(input)
+      end
+
       def parse!(*input)
         new.parse!(*input)
       end

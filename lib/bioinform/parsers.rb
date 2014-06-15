@@ -7,4 +7,3 @@ require_relative 'parsers/splittable_parser'
 require_relative 'parsers/jaspar_parser'
 
 require_relative 'parsers/matrix_parser'
-require_relative 'parsers/temporary_wrapper_for_matrix_parser'
