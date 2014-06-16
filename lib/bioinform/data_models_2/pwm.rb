@@ -21,13 +21,13 @@ module Bioinform
       end
       private :zero_column
 
-      def left_augment(n)
+      def left_augmented(n)
         raise Error, 'Augmenting with negative number of columns is impossible'  if n < 0
         augmented_matrix = Array.new(n, zero_column) + matrix
         self.class.new(augmented_matrix, alphabet: alphabet)
       end
 
-      def right_augment(n)
+      def right_augmented(n)
         raise Error, 'Augmenting with negative number of columns is impossible'  if n < 0
         augmented_matrix = matrix + Array.new(n, zero_column)
         self.class.new(augmented_matrix, alphabet: alphabet)

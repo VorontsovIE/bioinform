@@ -37,10 +37,14 @@ describe Bioinform::MotifModel::PPM do
     specify { expect(Bioinform::MotifModel::PWM.new(matrix)).not_to eq ppm }
     specify { expect(Bioinform::MotifModel::PCM.new(matrix)).not_to eq ppm }
 
-    describe '#reverse, #complement, #reverse_complement' do
-      specify { expect(ppm.reverse).to be_kind_of Bioinform::MotifModel::PPM }
-      specify { expect(ppm.complement).to be_kind_of Bioinform::MotifModel::PPM }
-      specify { expect(ppm.reverse_complement).to be_kind_of  Bioinform::MotifModel::PPM }
+    specify { expect(ppm.named('motif name')).to be_kind_of Bioinform::MotifModel::NamedModel }
+    specify { expect(ppm.named('motif name').model).to eq ppm }
+    specify { expect(ppm.named('motif name').name).to eq 'motif name' }
+
+    describe '#reversed, #complemented, #reverse_complemented' do
+      specify { expect(ppm.reversed).to be_kind_of Bioinform::MotifModel::PPM }
+      specify { expect(ppm.complemented).to be_kind_of Bioinform::MotifModel::PPM }
+      specify { expect(ppm.reverse_complemented).to be_kind_of  Bioinform::MotifModel::PPM }
       specify { expect(ppm.revcomp).to be_kind_of             Bioinform::MotifModel::PPM }
     end
   end

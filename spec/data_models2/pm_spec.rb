@@ -51,16 +51,16 @@ describe Bioinform::MotifModel::PM do
 
     #                                                    A C G T       AC    AG   AT   CG   CT   GT       ACG    ACT   AGT   CGT     ACGT
     #                                                    1,2,3,1.567,  12,  -11,  12,  0,  -1.1, 0.6,     0.4,   0.321,0.11,-1.23,    2.0
-    specify { expect(iupac_pm.complement.matrix).to eq [[1.567,3,2,1,  0.6, -1.1, 12,  0,  -11,  12,      -1.23, 0.11,0.321,0.4,      2.0],
+    specify { expect(iupac_pm.complemented.matrix).to eq [[1.567,3,2,1,  0.6, -1.1, 12,  0,  -11,  12,      -1.23, 0.11,0.321,0.4,      2.0],
                                                         [0,0,0,0,       0,0,0,0,0,0,                       0,0,0,0,                   0]] }
-    specify { expect(iupac_pm.complement.alphabet).to eq Bioinform::IUPACAlphabet }
+    specify { expect(iupac_pm.complemented.alphabet).to eq Bioinform::IUPACAlphabet }
 
-    specify { expect(iupac_pm.reverse.matrix).to eq [[0,0,0,0,       0,0,0,0,0,0, 0,0,0,0, 0],
+    specify { expect(iupac_pm.reversed.matrix).to eq [[0,0,0,0,       0,0,0,0,0,0, 0,0,0,0, 0],
                                                       [1,2,3,1.567,  12,-11,12,0,-1.1,0.6,  0.4,0.321,0.11,-1.23, 2.0]] }
-    specify { expect(iupac_pm.reverse.alphabet).to eq Bioinform::IUPACAlphabet }
+    specify { expect(iupac_pm.reversed.alphabet).to eq Bioinform::IUPACAlphabet }
 
-    specify { expect(iupac_pm.reverse_complement.alphabet).to eq Bioinform::IUPACAlphabet }
-    specify { expect(iupac_pm.reverse_complement.matrix).to eq  [[0,0,0,0,       0,0,0,0,0,0,                       0,0,0,0,                   0],
+    specify { expect(iupac_pm.reverse_complemented.alphabet).to eq Bioinform::IUPACAlphabet }
+    specify { expect(iupac_pm.reverse_complemented.matrix).to eq  [[0,0,0,0,       0,0,0,0,0,0,                       0,0,0,0,                   0],
                                                                 [1.567,3,2,1,  0.6, -1.1, 12,  0,  -11,  12,      -1.23, 0.11,0.321,0.4,      2.0]] }
 
   end
@@ -78,14 +78,18 @@ describe Bioinform::MotifModel::PM do
     specify { expect(pm).not_to eq Bioinform::MotifModel::PM.new( [[1,2,3,1.567],[12,-11,12,0],[1, 2, 3, 4]]) }
     specify { expect(pm).not_to eq [[1,2,3,1.567],[12,-11,12,0],[1, 2, 3, 4]] }
 
-    describe '#reverse, #complement, #reverse_complement' do
-      specify { expect(pm.reverse.matrix).to eq [[-1.1, 0.6, 0.4, 0.321],[12,-11,12,0],[1,2,3,1.567]] }
-      specify { expect(pm.complement.matrix).to eq [[1.567,3,2,1],[0,12,-11,12],[0.321,0.4,0.6,-1.1]] }
-      specify { expect(pm.reverse_complement.matrix).to eq [[0.321,0.4,0.6,-1.1],[0,12,-11,12],[1.567,3,2,1]] }
+    specify { expect(pm.named('motif name')).to be_kind_of Bioinform::MotifModel::NamedModel }
+    specify { expect(pm.named('motif name').model).to eq pm }
+    specify { expect(pm.named('motif name').name).to eq 'motif name' }
+
+    describe '#reversed, #complemented, #reverse_complemented' do
+      specify { expect(pm.reversed.matrix).to eq [[-1.1, 0.6, 0.4, 0.321],[12,-11,12,0],[1,2,3,1.567]] }
+      specify { expect(pm.complemented.matrix).to eq [[1.567,3,2,1],[0,12,-11,12],[0.321,0.4,0.6,-1.1]] }
+      specify { expect(pm.reverse_complemented.matrix).to eq [[0.321,0.4,0.6,-1.1],[0,12,-11,12],[1.567,3,2,1]] }
       specify { expect(pm.revcomp.matrix).to eq            [[0.321,0.4,0.6,-1.1],[0,12,-11,12],[1.567,3,2,1]] }
-      specify { expect(pm.reverse).to be_kind_of Bioinform::MotifModel::PM }
-      specify { expect(pm.complement).to be_kind_of Bioinform::MotifModel::PM }
-      specify { expect(pm.reverse_complement).to be_kind_of  Bioinform::MotifModel::PM }
+      specify { expect(pm.reversed).to be_kind_of Bioinform::MotifModel::PM }
+      specify { expect(pm.complemented).to be_kind_of Bioinform::MotifModel::PM }
+      specify { expect(pm.reverse_complemented).to be_kind_of  Bioinform::MotifModel::PM }
       specify { expect(pm.revcomp).to be_kind_of             Bioinform::MotifModel::PM }
     end
 

@@ -10,12 +10,12 @@ describe Bioinform::MotifModel::NamedModel do
     specify { expect(named_pwm.name).to eq name }
 
     context 'being sent a method returning a result of model type (class is Bioinform::MotifModel::*)' do
-      subject { named_pwm.reverse }
+      subject { named_pwm.reversed }
       specify 'should return a named model' do
         expect(subject).to be_kind_of Bioinform::MotifModel::NamedModel
       end
       specify 'resulting named model should wrap actual result' do
-        expect(subject.model).to eq pwm.reverse
+        expect(subject.model).to eq pwm.reversed
       end
       specify 'resulting named model should have the same name as callee' do
         expect(subject.name).to eq name

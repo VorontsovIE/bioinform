@@ -1,6 +1,8 @@
 require_relative '../error'
 require_relative '../data_models_2/pcm'
 require_relative '../data_models_2/pwm'
+require_relative '../data_models'
+require_relative '../background'
 
 module Bioinform
   module ConversionAlgorithms
@@ -23,7 +25,7 @@ module Bioinform
     end
 
     class PCM2PWMConverter_
-      def initialize(background: Bioinform::Background::Wordwise, pseudocount: :log)
+      def initialize(background: Bioinform::Background::Uniform, pseudocount: :log)
         @background = background
         @pseudocount = pseudocount
       end
@@ -44,13 +46,20 @@ module Bioinform
       end
 
       def convert(pcm)
+        raise Error, "#{self.class}#convert accepts only models acting as PCM"  unless MotifModel.acts_as_pcm?(pcm)
         actual_pseudocount = calculate_pseudocount(pcm)
         matrix = pcm.each_position.map do |pos|
+          count = pos.inject(0.0, &:+)
           pos.each_index.map do |index|
-            Math.log((pos[index] + @background.frequencies[index] * actual_pseudocount).to_f / (@background.frequencies[index]*(pcm.count + actual_pseudocount)) )
+            Math.log((pos[index] + @background.frequencies[index] * actual_pseudocount).to_f / (@background.frequencies[index]*(count + actual_pseudocount)) )
           end
         end
-        MotifModel::PWM.new(matrix)
+        pwm = MotifModel::PWM.new(matrix)
+        if pcm.respond_to? :name
+          pwm.named(pcm.name)
+        else
+          pwm
+        end
       end
     end
   end

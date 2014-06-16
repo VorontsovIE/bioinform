@@ -62,19 +62,19 @@ module Bioinform
         end
       end
 
-      def reverse
+      def reversed
         self.class.new(matrix.reverse, alphabet: alphabet)
       end
 
-      def complement
+      def complemented
         self.class.new(complement_matrix, alphabet: alphabet)
       end
 
-      def reverse_complement
+      def reverse_complemented
         self.class.new(complement_matrix.reverse, alphabet: alphabet)
       end
 
-      alias_method :revcomp, :reverse_complement
+      alias_method :revcomp, :reverse_complemented
 
       def complement_matrix
         matrix.map{|pos|
@@ -86,6 +86,10 @@ module Bioinform
       # def consensus
       #   ConsensusFormatter.by_maximal_elements.format_string(self)
       # end
+
+      def named(name)
+        NamedModel.new(self, name)
+      end
 
     end
   end
