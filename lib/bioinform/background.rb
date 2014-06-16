@@ -32,6 +32,10 @@ module Bioinform
     def mean_square(values)
       4.times.map{|i| values[i] * values[i] * frequencies[i] }.inject(0.0, &:+)
     end
+
+    def symmetric?
+      frequencies == frequencies.reverse
+    end
   end
 
   class Frequencies

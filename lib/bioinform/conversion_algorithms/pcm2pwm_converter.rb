@@ -1,3 +1,7 @@
+require_relative '../error'
+require_relative '../data_models_2/pcm'
+require_relative '../data_models_2/pwm'
+
 module Bioinform
   module ConversionAlgorithms
     # s_{\alpha,j} = ln(\frac{x_{\alpha,j} + \cappa p_{\alpha}}{(N+\cappa)p_{\alpha}})
@@ -15,6 +19,38 @@ module Bioinform
           end
         end
         PWM.new(matrix: matrix, name: pcm.name, background: pcm.background)
+      end
+    end
+
+    class PCM2PWMConverter_
+      def initialize(background: Bioinform::Background::Wordwise, pseudocount: :log)
+        @background = background
+        @pseudocount = pseudocount
+      end
+
+      def calculate_pseudocount(pcm)
+        case @pseudocount
+        when Numeric
+          @pseudocount
+        when :log
+          Math.log(pcm.count)
+        when :sqrt
+          Math.sqrt(pcm.count)
+        when Proc
+          @pseudocount.call(pcm)
+        else
+          raise Error, 'Unknown pseudocount type use numeric or :log or :sqrt or Proc with taking pcm parameter'
+        end
+      end
+
+      def convert(pcm)
+        actual_pseudocount = calculate_pseudocount(pcm)
+        matrix = pcm.each_position.map do |pos|
+          pos.each_index.map do |index|
+            Math.log((pos[index] + @background.frequencies[index] * actual_pseudocount).to_f / (@background.frequencies[index]*(pcm.count + actual_pseudocount)) )
+          end
+        end
+        MotifModel::PWM.new(matrix)
       end
     end
   end

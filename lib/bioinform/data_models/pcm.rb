@@ -17,10 +17,12 @@ module Bioinform
 
     def to_pwm(pseudocount = Math.log(count))
       ConversionAlgorithms::PCM2PWMConverter.convert(self, pseudocount: pseudocount)
+      # ConversionAlgorithms::PCM2PWMConverter_.new(pseudocount: pseudocount, background: (background == [1,1,1,1]) ? Background.wordwise : Frequencies.new(background) ).convert(self)
     end
 
     def to_ppm
       ConversionAlgorithms::PCM2PPMConverter.convert(self)
+      # ConversionAlgorithms::PCM2PPMConverter_.new.convert(self)
     end
 
     def self.valid_matrix?(matrix, options = {})
