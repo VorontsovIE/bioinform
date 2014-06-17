@@ -1,6 +1,3 @@
-require_relative 'support/third_part/active_support/core_ext/string/filters'
-require_relative 'support/third_part/active_support/core_ext/hash/indifferent_access'
-
 require_relative 'support/collect_hash'
 require_relative 'support/delete_many'
 require_relative 'support/multiline_squish'

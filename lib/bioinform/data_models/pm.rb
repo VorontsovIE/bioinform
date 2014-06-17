@@ -1,4 +1,3 @@
-require 'ostruct'
 require_relative '../support'
 require_relative '../parsers'
 require_relative '../formatters'
@@ -94,10 +93,10 @@ module Bioinform
     end
 
     def to_hash
-      hsh = %w{A C G T}.each_with_index.collect_hash do |letter, letter_index|
-        [ letter, matrix.map{|pos| pos[letter_index]} ]
+      hash_with_indiff_acc = Hash.new{|h,k| k.is_a?(String) ? nil : h[k.to_s] }
+      %w[A C G T].each_with_index.each_with_object(hash_with_indiff_acc) do |(letter, letter_index), hsh|
+        hsh[letter] = matrix.map{|pos| pos[letter_index]}
       end
-      hsh.with_indifferent_access
     end
 
     def self.zero_column

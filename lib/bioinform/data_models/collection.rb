@@ -15,29 +15,8 @@ module Bioinform
       container.size
     end
 
-    def to_s(with_name = true)
-      result = (with_name) ? "Collection: #{name.to_s}\n" : ''
-      each do |pm, infos|
-        result << pm.to_s << "\n\n"
-      end
-      result
-    end
-
-    def +(other)
-      result = self.class.new
-      container.each do |motif|
-        result.container << motif
-      end
-      other.container.each do |motif|
-        result.container << motif
-      end
-      result
-    end
-
     def add_pm(pm, info)
-#      pm.mark(self)
       container << Motif.new(info.to_h.merge(pm: pm))
-      #### What if pm already is a Motif
       self
     end
 

@@ -13,7 +13,7 @@ module Bioinform
     def parse!(input)
       case input
       when PM then input
-      when Motif then input.pm
+      # when Motif then input.pm
       when OpenStruct then input
       when Hash then OpenStruct.new(input)
       end

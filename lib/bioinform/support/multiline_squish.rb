@@ -1,5 +1,23 @@
-require_relative 'third_part/active_support/core_ext/string/filters'
 class String
+  # Returns the string, first removing all whitespace on both ends of
+  # the string, and then changing remaining consecutive whitespace
+  # groups into one space each.
+  #
+  # Examples:
+  #   %{ Multi-line
+  #      string }.squish                   # => "Multi-line string"
+  #   " foo   bar    \n   \t   boo".squish # => "foo bar boo"
+  def squish
+    dup.squish!
+  end
+
+  # Performs a destructive squish. See String#squish.
+  def squish!
+    strip!
+    gsub!(/\s+/, ' ')
+    self
+  end
+
   def multiline_squish
     split("\n").map(&:squish).join("\n").gsub(/\A\n+/,'').gsub(/\n+\z/,'')
   end

@@ -1,5 +1,3 @@
-require 'ostruct'
-require_relative '../support/third_part/active_support/core_ext/object/try'
 module Bioinform
   class Motif
     attr_accessor :pm, :pcm, :pwm, :ppm, :name, :original_data_model
@@ -37,9 +35,8 @@ module Bioinform
     end
 
     def pm; ((@original_data_model || :pm).to_sym == :pm) ? @pm : send(@original_data_model); end
-    #def pcm; parameters.pcm; end
-    def pwm; @pwm || @pcm.try(:to_pwm); end
-    def ppm; @ppm || @pcm.try(:to_ppm); end
+    def pwm; @pwm || @pcm && @pcm.to_pwm; end
+    def ppm; @ppm || @pcm && @pcm.to_ppm; end
     def name; @name || pm.name; end
 
     def ==(other)
@@ -51,9 +48,5 @@ module Bioinform
       @name == other.instance_variable_get("@name") &&
       @original_data_model == other.instance_variable_get("@original_data_model")
     end
-
-    # def to_s
-    #   parameters.to_s
-    # end
   end
 end
