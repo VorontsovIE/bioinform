@@ -25,6 +25,5 @@ module Bioinform
   end
 end
 
-require_relative 'cli/merge_into_collection'
 require_relative 'cli/pcm2pwm'
 require_relative 'cli/split_motifs'
