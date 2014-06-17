@@ -12,21 +12,9 @@ module Bioinform
     def parse!(input)
       case input
       when PM then input
-      # when Motif then input.pm
       when OpenStruct then input
       when Hash then OpenStruct.new(input)
       end
-    end
-  end
-
-  class TrivialCollectionParser < Parser
-    def parse!(input)
-      @input = input
-      @input.container.shift.pm
-    end
-
-    def rest_input
-      !@input.container.empty? ? @input : nil
     end
   end
 end
