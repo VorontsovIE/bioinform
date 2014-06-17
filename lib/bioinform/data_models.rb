@@ -5,8 +5,6 @@ require_relative 'data_models/pcm'
 require_relative 'data_models/ppm'
 require_relative 'data_models/pwm'
 
-require_relative 'data_models/collection'
-
 module Bioinform
   module MotifModel
     def self.acts_as_pcm?(pcm)
