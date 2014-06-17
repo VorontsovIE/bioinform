@@ -82,7 +82,7 @@ module Bioinform
 
       # {a: 1, C: 2, 'g' => 3, 'T' => 4} --> {A: 1, C: 2, G: 3, T: 4}
       def normalize_hash_keys(hsh)
-        hsh.collect_hash{|key,value| [key.to_s.upcase.to_sym, value] }
+        hsh.each_with_object({}){|(key,value),hsh| hsh[key.to_s.upcase.to_sym] = value }
       end
 
       # [[1,2,3,4], [2,3,4,5]] --> [[1,2,3,4], [2,3,4,5]]
