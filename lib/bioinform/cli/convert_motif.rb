@@ -69,6 +69,7 @@ module Bioinform
             Resulting model is sent to stdout (this can be overriden with --save option).
           BANNER
           
+          cli.version = ::Bioinform::VERSION
           cli.summary_indent = ''
           cli.banner = strip_doc(banner)
           cli.separator ""

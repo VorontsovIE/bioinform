@@ -14,6 +14,4 @@ Gem::Specification.new do |gem|
   gem.name          = "bioinform"
   gem.require_paths = ["lib"]
   gem.version       = Bioinform::VERSION
-
-  gem.add_dependency('docopt', '= 0.5.0')
 end

@@ -1,33 +1,36 @@
 require_relative '../../bioinform'
-require 'docopt'
+require 'optparse'
 
 module Bioinform
   module CLI
     module SplitMotifs
       extend Bioinform::CLI::Helpers
       def self.main(argv)
-        doc = <<-DOCOPT
-          Motif splitter.
-          It get a file with a set of motifs and splits it into motifs according to their names.
+        options = {folder: '.'}
+        opt_parser = OptionParser.new do |opts|
+          opts.version = ::Bioinform::VERSION
+          opts.banner = "Motif splitter.\n" +
+                        "It gets a file with a set of motifs and splits it into motifs according to their names.\n" +
+                        "\n" +
+                        "Usage:\n" +
+                        "  split_motifs [options] <collection-file>"
+          opts.on('-e', '--extension EXT', 'Extension of output files') do |v|
+            options[:extension] = v
+          end
+          opts.on('-f', '--folder FOLDER', 'Where to save output files') do |v|
+            options[:folder] = v
+          end
+        end
 
-          Usage:
-            split_motifs [options] <collection-file>
+        opt_parser.parse!(argv)
+        folder = options[:folder]
+        extension = options[:extension]
+        collection_filename = argv.first
 
-          Options:
-            -h --help                Show this screen.
-            -e --extension EXT       Extension of output files
-            -f --folder FOLDER       Where to save output files [default: .]
-        DOCOPT
-
-        doc.gsub!(/^#{doc[/\A +/]}/,'')
-        options = Docopt::docopt(doc, argv: argv)
-
-        folder = options['--folder']
-        extension = options['--extension']
-        collection_filename = options['<collection-file>']
 
         Dir.mkdir(folder)  unless Dir.exist?(folder)
-        raise "File #{collection_filename} not exist"  unless File.exist? collection_filename
+        raise "Collection file not specified"  unless collection_filename
+        raise "File `#{collection_filename}` not exist"  unless File.exist?(collection_filename)
 
         input = File.read(collection_filename)
         coll = Parser.split_on_motifs(input)
@@ -40,7 +43,7 @@ module Bioinform
             File.open(set_folder(folder, set_extension(motif.name, extension || 'mat')), 'w'){|f| f.puts motif}
           end
         end
-      rescue Docopt::Exit => e
+      rescue => e
         puts e.message
       end
 
