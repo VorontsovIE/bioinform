@@ -46,9 +46,6 @@ module Bioinform
             f.puts pwm
           end
         end
-
-      rescue => e
-        puts e.message
       end
 
     end

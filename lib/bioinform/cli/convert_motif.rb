@@ -52,8 +52,10 @@ module Bioinform
           end
         end
         puts output_motifs.join("\n\n")
-      rescue
+      rescue => e
         $stderr.puts "Error! Conversion wasn't performed"
+        $stderr.puts e
+        $stderr.puts e.backtrace
       end
 
       def option_parser

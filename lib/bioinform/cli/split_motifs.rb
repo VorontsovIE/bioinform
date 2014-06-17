@@ -43,8 +43,6 @@ module Bioinform
             File.open(set_folder(folder, set_extension(motif.name, extension || 'mat')), 'w'){|f| f.puts motif}
           end
         end
-      rescue => e
-        puts e.message
       end
 
     end
