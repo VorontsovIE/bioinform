@@ -16,7 +16,7 @@ module Bioinform
     attr_accessor :matrix, :name, :background
 
     def pm_inner
-      MotifModel::NamedModel.new(MotifModel::PM.new(@matrix), @name)
+      MotifModel::PM.new(@matrix).named(@name)
     end
 
     def initialize(input, parser = nil)
