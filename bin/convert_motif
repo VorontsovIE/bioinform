@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/bioinform/cli/convert_motif'
+Bioinform::CLI::ConvertMotif.main(ARGV)
