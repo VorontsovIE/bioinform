@@ -39,9 +39,9 @@ module Bioinform
             raise "Unknown value of model-from parameter: `#{options[:model_from]}`"
           end
         end
-        pcm2pwm_converter = ConversionAlgorithms::PCM2PWMConverter_.new(pseudocount: :log, background: Background::Uniform)
-        pcm2ppm_converter = ConversionAlgorithms::PCM2PPMConverter_.new
-        ppm2pcm_converter = ConversionAlgorithms::PPM2PCMConverter_.new(count: 100)
+        pcm2pwm_converter = ConversionAlgorithms::PCM2PWMConverter.new(pseudocount: :log, background: Background::Uniform)
+        pcm2ppm_converter = ConversionAlgorithms::PCM2PPMConverter.new
+        ppm2pcm_converter = ConversionAlgorithms::PPM2PCMConverter.new(count: 100)
         motifs.each do |motif|
           begin
             case options[:model_to]

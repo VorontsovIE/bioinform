@@ -1,6 +1,6 @@
 require 'bioinform/conversion_algorithms/pcm2ppm_converter'
 
-describe Bioinform::ConversionAlgorithms::PCM2PPMConverter_ do
+describe Bioinform::ConversionAlgorithms::PCM2PPMConverter do
   let(:pcm) { Bioinform::MotifModel::PCM.new([[1,2,3,4],[2,2,2,4]]) }
   let(:pwm) { Bioinform::MotifModel::PWM.new([[1,2,3,4],[2,2,2,4]]) }
   let(:ppm) { Bioinform::MotifModel::PPM.new([[0.1,0.2,0.3,0.4],[0.2,0.2,0.2,0.4]]) }
@@ -9,7 +9,7 @@ describe Bioinform::ConversionAlgorithms::PCM2PPMConverter_ do
   let(:named_pcm) { Bioinform::MotifModel::NamedModel.new(pcm, 'motif name') }
   let(:named_pwm) { Bioinform::MotifModel::NamedModel.new(pwm, 'motif name') }
 
-  let(:converter) { Bioinform::ConversionAlgorithms::PCM2PPMConverter_.new }
+  let(:converter) { Bioinform::ConversionAlgorithms::PCM2PPMConverter.new }
 
   specify { expect(converter.convert(pcm)).to be_kind_of Bioinform::MotifModel::PPM }
 

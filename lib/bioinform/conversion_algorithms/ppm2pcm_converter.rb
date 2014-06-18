@@ -4,7 +4,7 @@ require_relative '../data_models_2/ppm'
 
 module Bioinform
   module ConversionAlgorithms
-    class PPM2PCMConverter_
+    class PPM2PCMConverter
       def initialize(count: 100)
         @count = count
       end

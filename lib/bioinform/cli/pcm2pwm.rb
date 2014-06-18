@@ -35,7 +35,7 @@ module Bioinform
         Dir.mkdir(folder)  unless Dir.exist?(folder)
         filelist = (pcm_files.empty?)  ?  $stdin.read.shellsplit  :  pcm_files
 
-        converter = ConversionAlgorithms::PCM2PWMConverter_.new()
+        converter = ConversionAlgorithms::PCM2PWMConverter.new()
 
         filelist.each do |filename|
           input = File.read(filename)

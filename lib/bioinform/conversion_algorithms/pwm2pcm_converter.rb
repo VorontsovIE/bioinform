@@ -6,7 +6,11 @@ module Bioinform
     # pwm --> pcm:
     #   x_{\alpha,j} = (N + \cappa) p_{\alpha} \exp{ s_{\alpha,j} - \beta_j } - \cappa p_{\alpha}
     #   \beta_j = log(\sum_{\alpha}p_{\alpha}s_{\alpha,j})  because \sum_{\alpha} x_{\alpha,j} = N
-    module PWM2PCMConverter
+    class PWM2PCMConverter
+
+      def initialize(pseudocount: :default)
+        # TODO -- rewrite this module to be usable as a class, not as a module with class-methods
+      end
 
       # \sum p_{\alpha} s_{\alpha,j}
       def self.weighted_position_exponent(pos, probability)

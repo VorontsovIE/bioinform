@@ -1,6 +1,6 @@
 require 'bioinform/conversion_algorithms/pcm2pwm_converter'
 
-describe Bioinform::ConversionAlgorithms::PCM2PWMConverter_ do
+describe Bioinform::ConversionAlgorithms::PCM2PWMConverter do
   let(:pcm) { Bioinform::MotifModel::PCM.new([[1,2,3,4],[2,2,2,4]]) }
   let(:pwm) { Bioinform::MotifModel::PWM.new([[1,2,3,4],[2,2,2,4]]) }
   let(:ppm) { Bioinform::MotifModel::PPM.new([[0.1,0.2,0.3,0.4],[0.2,0.2,0.2,0.4]]) }
@@ -10,7 +10,7 @@ describe Bioinform::ConversionAlgorithms::PCM2PWMConverter_ do
   let(:named_pwm) { Bioinform::MotifModel::NamedModel.new(pwm, 'motif name') }
 
   context 'with default converter' do
-    let(:converter) { Bioinform::ConversionAlgorithms::PCM2PWMConverter_.new }
+    let(:converter) { Bioinform::ConversionAlgorithms::PCM2PWMConverter.new }
 
     specify { expect(converter.convert(pcm)).to be_kind_of Bioinform::MotifModel::PWM }
     specify { expect(converter.calculate_pseudocount(pcm)).to eq Math.log(10) }
@@ -36,7 +36,7 @@ describe Bioinform::ConversionAlgorithms::PCM2PWMConverter_ do
 
   context 'with specified explicitly pseudocount' do
     let(:specified_pseudocount) { 5 }
-    let(:converter) { Bioinform::ConversionAlgorithms::PCM2PWMConverter_.new(pseudocount: specified_pseudocount) }
+    let(:converter) { Bioinform::ConversionAlgorithms::PCM2PWMConverter.new(pseudocount: specified_pseudocount) }
 
     specify 'allows PCM-s with different column counts (because pseudocount specified, pcm\'s count not used for pseudocount calculation)' do
       k = specified_pseudocount
@@ -50,7 +50,7 @@ describe Bioinform::ConversionAlgorithms::PCM2PWMConverter_ do
   end
 
   context 'with specified explicitly background' do
-    let(:converter) { Bioinform::ConversionAlgorithms::PCM2PWMConverter_.new(background: Bioinform::Frequencies.new([0.1, 0.4, 0.4, 0.1])) }
+    let(:converter) { Bioinform::ConversionAlgorithms::PCM2PWMConverter.new(background: Bioinform::Frequencies.new([0.1, 0.4, 0.4, 0.1])) }
 
     specify 'allows PCM-s with different column counts (because pseudocount specified, pcm\'s count not used for pseudocount calculation)' do
       k = Math.log(10)

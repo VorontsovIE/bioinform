@@ -4,20 +4,7 @@ require_relative '../data_models'
 
 module Bioinform
   module ConversionAlgorithms
-    module PCM2PPMConverter
-    
-      # parameters hash is ignored
-      def self.convert(pcm, parameters = {})
-        matrix = pcm.each_position.map do |pos|
-          pos.map do |el|
-            el.to_f / pcm.count
-          end
-        end
-        PPM.new(matrix: matrix, name: pcm.name, background: pcm.background, pseudocount: pcm.pseudocount)
-      end
-    end
-
-    class PCM2PPMConverter_
+    class PCM2PPMConverter
       def convert(pcm)
         raise Error, "#{self.class}#convert accepts only models acting as PCM"  unless MotifModel.acts_as_pcm?(pcm)
         matrix = pcm.each_position.map do |pos|
