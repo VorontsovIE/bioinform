@@ -17,16 +17,16 @@ module Bioinform
       pm.should == pm_eq
       end
     end
-    describe '::valid_matrix?' do
-      it 'should be true iff an argument is an array of arrays of 4 numerics in a column' do
-        PM.valid_matrix?( [[1,2,3,4],[1,4,5,6.5]] ).should be_truthy
-        PM.valid_matrix?( {A: [1,1], C: [2,4], G: [3,5], T: [4, 6.5]} ).should be_falsy
-        PM.valid_matrix?( [{A:1,C:2,G:3,T:4},{A:1,C:4,G:5,T: 6.5}] ).should be_falsy
-        PM.valid_matrix?( [[1,2,3,4],[1,4,6.5]] ).should be_falsy
-        PM.valid_matrix?( [[1,2,3],[1,4,6.5]] ).should be_falsy
-        PM.valid_matrix?( [[1,2,'3','4'],[1,'4','5',6.5]] ).should be_falsy
-      end
-    end
+    # describe '::valid_matrix?' do
+    #   it 'should be true iff an argument is an array of arrays of 4 numerics in a column' do
+    #     PM.valid_matrix?( [[1,2,3,4],[1,4,5,6.5]] ).should be_truthy
+    #     PM.valid_matrix?( {A: [1,1], C: [2,4], G: [3,5], T: [4, 6.5]} ).should be_falsy
+    #     PM.valid_matrix?( [{A:1,C:2,G:3,T:4},{A:1,C:4,G:5,T: 6.5}] ).should be_falsy
+    #     PM.valid_matrix?( [[1,2,3,4],[1,4,6.5]] ).should be_falsy
+    #     PM.valid_matrix?( [[1,2,3],[1,4,6.5]] ).should be_falsy
+    #     PM.valid_matrix?( [[1,2,'3','4'],[1,'4','5',6.5]] ).should be_falsy
+    #   end
+    # end
 
     describe '#to_s' do
       before :each do

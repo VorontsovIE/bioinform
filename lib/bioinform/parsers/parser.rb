@@ -25,8 +25,8 @@ module Bioinform
 
     def parse!(*input)
       init_input(*input)
-      matrix = self.class.transform_input(@input)
-      raise InvalidMatrix unless self.class.valid_matrix?(matrix)
+      matrix = Parser.transform_input(@input)
+      raise InvalidMatrix unless Parser.valid_matrix?(matrix)
       OpenStruct.new(matrix: matrix)
     end
 
@@ -60,7 +60,13 @@ module Bioinform
       end
 
       def valid_matrix?(matrix)
-        PM.valid_matrix?(matrix)
+        matrix.is_a?(Array) &&
+        ! matrix.empty? &&
+        matrix.all?{|pos| pos.is_a?(Array)} &&
+        matrix.all?{|pos| pos.size == 4} &&
+        matrix.all?{|pos| pos.all?{|el| el.is_a?(Numeric)}}
+      rescue
+        false
       end
 
       # {A: 1, C: 2, G: 3, T: 4}  -->  [1,2,3,4]
