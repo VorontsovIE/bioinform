@@ -39,17 +39,17 @@ module Bioinform
     end
 
     module ClassMethods
-      def choose(input, data_model = PM)
+      def choose(input)
         [ TrivialParser.new, Parser.new, StringParser.new,
           Bioinform::MatrixParser.new(has_name: false), Bioinform::MatrixParser.new(has_name: true),
           StringFantomParser.new, JasparParser.new
         ].find do |parser|
-          data_model.new(input, parser) rescue nil
+          PM.new(input, parser) rescue nil
         end
       end
 
-      def split_on_motifs(input, data_model = PM)
-        CollectionParser.new(StringParser.new, input).split_on_motifs(data_model)
+      def split_on_motifs(input)
+        CollectionParser.new(StringParser.new, input).split_on_motifs
       end
 
       def parse!(*input)

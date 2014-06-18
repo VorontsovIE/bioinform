@@ -41,10 +41,6 @@ module Bioinform
         result = CollectionParser.new(StringParser.new, "1 2 3 4 \n 5 6 7 8 \n 9 10 11 12 \nName\n 9 10 11 12 \n 1 2 3 4 \n 5 6 7 8").split_on_motifs
         result.each{|pm| pm.class.should == PM}
       end
-      it 'should create PM subclass when it\'s specified' do
-        result = CollectionParser.new(StringParser.new, "1 2 3 4 \n 5 6 7 8 \n 9 10 11 12 \nName\n 9 10 11 12 \n 1 2 3 4 \n 5 6 7 8").split_on_motifs(PWM)
-        result.each{|pm| pm.class.should == PWM}
-      end
     end
 
     good_cases = {

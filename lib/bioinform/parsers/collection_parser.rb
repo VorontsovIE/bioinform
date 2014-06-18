@@ -29,12 +29,12 @@ module Bioinform
     include Enumerable
     alias_method :split, :to_a
 
-    def split_on_motifs(pm_klass = PM)
+    def split_on_motifs
       to_a.map{|el|
-        if el.is_a?(pm_klass)
+        if el.is_a?(PM)
           el
         else
-          pm_klass.new(el)
+          PM.new(matrix:el.matrix, name:el.name)
         end
       }
     end

@@ -21,7 +21,7 @@ module Bioinform
 
     context '.split_on_motifs' do
       it 'should be able to get a single PM' do
-        CollectionParser.new(TrivialParser.new, {matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name'}).split_on_motifs(PM).should == [ PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name:'Name') ]
+        CollectionParser.new(TrivialParser.new, {matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name'}).split_on_motifs.should == [ PM.new(matrix: [[1,2,3,4],[5,6,7,8]], name:'Name') ]
       end
     end
 

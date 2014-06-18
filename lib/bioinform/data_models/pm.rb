@@ -19,7 +19,7 @@ module Bioinform
     end
 
     def initialize(input, parser = nil)
-      parser ||= Parser.choose(input, self.class)
+      parser ||= Parser.choose(input)
       raise 'No one parser can process input'  unless parser
       result = parser.parse(input)
       self.matrix = result.matrix
