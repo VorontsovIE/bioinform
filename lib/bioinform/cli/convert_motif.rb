@@ -7,14 +7,14 @@ $logger = Logger.new('convert_motif.log')
 module Bioinform
   module CLI
     class ConvertMotif
-      
+
       def arguments
        @arguments ||= []
       end
       def options
         @options ||= {}
       end
-      
+
       def main(argv)
         parse!(argv, filename_format: './{name}.{ext}')
         motif_files = arguments
@@ -23,28 +23,60 @@ module Bioinform
           puts option_parser.help()
           return
         end
-        
+
         output_motifs = []
         motifs = motif_files.map do |filename|
+          input = File.read(filename)
+          motif_info = Parser.choose(input).parse(input)
           case options[:model_from]
           when 'pwm'
-            PWM.new(File.read(filename))
+            MotifModel::PWM.new(motif_info.matrix).named(motif_info.name)
           when 'pcm'
-            PCM.new(File.read(filename))
+            MotifModel::PCM.new(motif_info.matrix).named(motif_info.name)
           when 'ppm'
-            PPM.new(File.read(filename))
+            MotifModel::PPM.new(motif_info.matrix).named(motif_info.name)
+          else
+            raise "Unknown value of model-from parameter: `#{options[:model_from]}`"
           end
         end
-        
+        pcm2pwm_converter = ConversionAlgorithms::PCM2PWMConverter_.new(pseudocount: :log, background: Background::Uniform)
+        pcm2ppm_converter = ConversionAlgorithms::PCM2PPMConverter_.new
+        ppm2pcm_converter = ConversionAlgorithms::PPM2PCMConverter_.new(count: 100)
         motifs.each do |motif|
           begin
             case options[:model_to]
             when 'pwm'
-              output_motifs << motif.to_pwm
+              if MotifModel.acts_as_pcm?(motif)
+                output_motifs << pcm2pwm_converter.convert(motif)
+              elsif MotifModel.acts_as_ppm?(motif)
+                output_motifs << pcm2pwm_converter.convert(ppm2pcm_converter.convert(motif))
+              elsif MotifModel.acts_as_pwm?(motif)
+                output_motifs << motif
+              else
+                raise "Can't be here"
+              end
             when 'pcm'
-              output_motifs << motif.to_pcm
+              if MotifModel.acts_as_pcm?(motif)
+                output_motifs << motif
+              elsif MotifModel.acts_as_ppm?(motif)
+                output_motifs << ppm2pcm_converter.convert(motif)
+              elsif MotifModel.acts_as_pwm?(motif)
+                raise 'Not yet implemented'
+              else
+                raise "Can't be here"
+              end
             when 'ppm'
-              output_motifs << motif.to_ppm
+              if MotifModel.acts_as_pcm?(motif)
+                output_motifs << pcm2ppm_converter.convert(motif)
+              elsif MotifModel.acts_as_ppm?(motif)
+                output_motifs << motif
+              elsif MotifModel.acts_as_pwm?(motif)
+                raise 'Not yet implemented'
+              else
+                raise "Can't be here"
+              end
+            else
+              raise "Unknown value of model-to parameter: `#{options[:model_to]}`"
             end
           rescue
             $stderr.puts "One can't convert from #{options[:model_from]} data-model to #{options[:model_to]} data-model"
@@ -64,13 +96,13 @@ module Bioinform
             Usage:
               convert_motif [options] <motif-files>...
               ls | convert_motif [options]
-              
+
             convert_motif - tool for converting motifs from different input formats
                                                        to different output formats.
             It can change both formatting style and motif models.
             Resulting model is sent to stdout (this can be overriden with --save option).
           BANNER
-          
+
           cli.version = ::Bioinform::VERSION
           cli.summary_indent = ''
           cli.banner = strip_doc(banner)
@@ -100,12 +132,12 @@ module Bioinform
         option_parser.parse!(argv)
         @arguments = argv
       end
-      
-      
+
+
       def self.main(argv)
         self.new.main(argv)
       end
-      
+
     end
   end
 end

@@ -35,10 +35,6 @@ module Bioinform
       end.inject(0, &:+).to_f
     end
 
-    def to_pwm
-      self
-    end
-
     def best_score
       best_suffix(0)
     end
