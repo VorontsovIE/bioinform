@@ -1,3 +1,5 @@
+make use of ValidationError-s
+
 ! Make matrices immutable  - it will allow more safe interface and better caching 
 
 Collection contain Motif-s, each Motif can contain any of list: pcm,pwm,ppm.

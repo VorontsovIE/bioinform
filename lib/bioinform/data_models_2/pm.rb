@@ -4,18 +4,6 @@ require_relative '../alphabet'
 
 module Bioinform
   module MotifModel
-    # VOCABULARY = ['A','C','G','T'].freeze
-    # IndexByLetter = { 'A' => 0, 'C' => 1, 'G' => 2, 'T' => 3,
-    #                   'a' => 0, 'c' => 1, 'g' => 2, 't' => 3,
-    #                   A: 0, C: 1, G: 2, T: 3,
-    #                   a: 0, c: 1, g: 2, t: 3}.freeze
-
-    # CONSENSUS = {'A' => 'A', 'C' => 'C', 'G' => 'G', 'T' => 'T',
-    #              'AC' => 'M', 'AG' => 'R', 'AT' => 'W', 'CG' => 'S', 'CT' => 'Y', 'GT' => 'K',
-    #              'CGT' => 'B', 'AGT' => 'D', 'ACT' => 'H', 'ACG' => 'V',
-    #              'ACGT' => 'N' }
-    # LetterByIndex = {0 => :A, 1 => :C, 2 => :G, 3 => :T}.freeze
-
     class PM
       attr_reader :matrix, :alphabet
       def initialize(matrix, alphabet: NucleotideAlphabet)
