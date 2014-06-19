@@ -44,7 +44,8 @@ module Bioinform
           Bioinform::MatrixParser.new(has_name: false), Bioinform::MatrixParser.new(has_name: true),
           StringFantomParser.new, JasparParser.new
         ].find do |parser|
-          PM.new(input, parser) rescue nil
+          result = parser.parse(input)
+          result && valid_matrix?(result.matrix)
         end
       end
 
