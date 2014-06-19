@@ -25,16 +25,10 @@ module Bioinform
       end
     end
 
-    it 'can be used to create PM with {matrix: ..., name: ...} form' do
-      pm = PM.new({matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name'}, TrivialParser)
-      pm.matrix.should == [[1,2,3,4],[5,6,7,8]]
-      pm.name.should == 'Name'
-    end
-
-    it 'can be used to create PM from PM (make copy)' do
-      pm = Fabricate(:pm)
-      pm_copy = PM.new(pm, TrivialParser)
-      pm_copy.should == pm
-    end
+    # it 'can be used to create PM with {matrix: ..., name: ...} form' do
+    #   pm = PM.new({matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name'}, TrivialParser)
+    #   pm.matrix.should == [[1,2,3,4],[5,6,7,8]]
+    #   pm.name.should == 'Name'
+    # end
   end
 end

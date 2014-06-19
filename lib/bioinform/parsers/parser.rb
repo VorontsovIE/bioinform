@@ -1,6 +1,5 @@
 require 'ostruct'
 require_relative '../support'
-require_relative '../data_models/pm'
 require_relative 'collection_parser'
 
 module Bioinform

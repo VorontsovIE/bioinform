@@ -68,13 +68,13 @@ module Bioinform
 
     good_cases = {
       'Array Nx4' => {input: [[1,2,3,4],[5,6,7,8]],
-                      result: Fabricate(:pm_unnamed) },
+                      result: OpenStruct.new(name:nil, matrix: [[1,2,3,4],[5,6,7,8]]) },
 
       'Array 4xN' => {input: [[1,5],[2,6],[3,7],[4,8]],
-                      result: Fabricate(:pm_unnamed) },
+                      result: OpenStruct.new(name:nil, matrix: [[1,2,3,4],[5,6,7,8]]) },
 
       'Array 4x4 (rows treated as positions, columns are treated as letter)' => { input: [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]],
-                                                                                  result: Fabricate(:pm_4x4_unnamed) },
+                                                                                  result: OpenStruct.new(name:nil, matrix: [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]]) },
     }
 
     bad_cases = {
