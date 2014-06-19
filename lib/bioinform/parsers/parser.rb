@@ -69,34 +69,8 @@ module Bioinform
         false
       end
 
-      # {A: 1, C: 2, G: 3, T: 4}  -->  [1,2,3,4]
-      # {A: [1,2], C: [3,4], G: [5,6], T: [7,8]}  --> [[1,3,5,7],[2,4,6,8]] ( == [[1,2], [3,4], [5,6], [7,8]].transpose)
-      def array_from_acgt_hash(hsh)
-        hsh = normalize_hash_keys(hsh)
-        raise 'some of hash keys A,C,G,T are missing or hash has excess keys' unless hsh.keys.sort == [:A,:C,:G,:T]
-        result = [:A,:C,:G,:T].collect{|letter| hsh[letter] }
-        result.all?{|el| el.is_a?(Array)} ? result.transpose : result
-      end
-
-      # {a: 1, C: 2, 'g' => 3, 'T' => 4} --> {A: 1, C: 2, G: 3, T: 4}
-      def normalize_hash_keys(hsh)
-        hsh.each_with_object({}){|(key,value),hsh| hsh[key.to_s.upcase.to_sym] = value }
-      end
-
-      # [[1,2,3,4], [2,3,4,5]] --> [[1,2,3,4], [2,3,4,5]]
-      # [{A:1, C:2, G:3, T:4}, {A:2, C:3, G:4, T:5}] --> [{A:1, C:2, G:3, T:4}, {A:2, C:3, G:4, T:5}]
-      # {:A => [1,2,3], :c => [2,3,4], 'g' => [3,4,5], 'T' => [4,5,6]} --> [[1,2,3],[2,3,4],[3,4,5],[4,5,6]].transpose
-      def try_convert_to_array(input)
-        case input
-        when Array then input
-        when Hash then array_from_acgt_hash(input)
-        else raise TypeError, 'input of Bioinform::Parser::array_from_acgt_hash should be Array or Hash'
-        end
-      end
-
       def transform_input(input)
-        result = try_convert_to_array(input).map{|el| try_convert_to_array(el)}
-        need_tranpose?(result) ? result.transpose : result
+        need_tranpose?(input) ? input.transpose : input
       end
 
       # point whether matrix input positions(need not be transposed -- false) or letters(need -- true) as first index
