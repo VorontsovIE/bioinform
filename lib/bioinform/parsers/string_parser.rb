@@ -1,76 +1,31 @@
 require 'strscan'
+require 'ostruct'
 require_relative '../support'
-require_relative '../parsers/parser'
+require_relative 'parser'
+require_relative 'motif_splitter'
+require_relative 'matrix_parser'
 
 module Bioinform
   class StringParser < Parser
-    attr_reader :scanner, :row_acgt_markers
-
-    def init_input(input)
-      raise ArgumentError, 'StringParser should be initialized with a String'  unless input.is_a?(String)
-      super
-      @scanner = StringScanner.new(input.gsub(/[[:blank:]]/,' ').multiline_squish)
-    end
-
-    def number_pat
-      /[+-]?\d+(\.\d+)?([eE][+-]?\d{1,3})?/
-    end
-
-    def header_pat
-      />?\s*(?<name>\S+)\n/
-    end
-
-    def row_pat
-      /([ACGT]\s*[:|]?\s*)?(?<row>(#{number_pat} )*#{number_pat})\n?/
-    end
-
-    def scan_row
-      match = scanner.advanced_scan(row_pat)
-      match && match[:row]
-    end
-
-    def split_row(row_string)
-      row_string.split.map(&:to_f)
-    end
-
-    def scan_any_spaces
-      scanner.scan(/\s+/)
-    end
-
-    def parse_name
-      match = scanner.advanced_scan(header_pat)
-      match && match[:name]
-    end
-
-    def parse_matrix
-      matrix = []
-      @row_acgt_markers = true  if scanner.check(/A.*\nC.*\nG.*\nT.*\n?/)
-      while row_string = scan_row
-        matrix << split_row(row_string)
-      end
-      matrix
-    end
-
-    def parse_acgt_header
-      scanner.scan(/A\s*C\s*G\s*T\s*\n/i)
-    end
-
     def parse!(input)
-      init_input(input)
-      scan_any_spaces
-      name = parse_name
-      parse_acgt_header
-      matrix = parse_matrix
-      matrix = matrix.transpose if row_acgt_markers
-      Parser.parse!(matrix).tap{|result| result.name = name}
+      raise ArgumentError, 'StringParser should be initialized with a String'  unless input.is_a?(String)
+      @input = input
+      scanner_reset
+      # fix_nucleotides_number is false because we don't know yet where
+      # nucleotides are: in rows or in columns we do this check here in
+      # Parser.transform_input, thus don't want to raise before normalization
+      motif_data = MatrixParser.new(with_name: nil, fix_nucleotides_number: false).parse!(@motifs.shift)
+      matrix = Parser.transform_input(motif_data.matrix)
+      raise InvalidMatrix unless Parser.valid_matrix?(matrix)
+      OpenStruct.new(matrix: matrix, name: motif_data.name)
     end
 
     def scanner_reset
-      scanner.reset
+      @motifs = MotifSplitter.new.split(@input)
     end
 
     def rest_input
-      scanner.rest? ? scanner.rest : nil
+      @motifs.empty? ? nil : @motifs.join("\n\n")
     end
   end
 end

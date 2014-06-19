@@ -2,35 +2,24 @@ require_relative '../support'
 require_relative '../parsers/string_parser'
 
 module Bioinform
-  class StringFantomParser < StringParser
-    def header_pat
-      /NA (?<name>[\w.+:-]+)\n[\w\d]+ A C G T.*\n/
-    end
-
-    def row_pat
-      /[\w\d]+ (?<row>(#{number_pat} )*#{number_pat})\n?/
-    end
-
-    def scan_splitter
-      scanner.scan(/(\/\/\n)+/)
-    end
-
-    def parse_matrix
-      matrix = []
-      while row_string = scan_row
-        matrix << split_row(row_string)[0,4]
-      end
-      matrix.transpose
-    end
-
+  class StringFantomParser < Parser
     def parse!(input)
-      init_input(input)
-      scan_any_spaces
-      scan_splitter
-      name = parse_name
-      matrix = parse_matrix
-      Parser.parse!(matrix).tap{|result| result.name = name}
+      raise ArgumentError, 'StringParser should be initialized with a String'  unless input.is_a?(String)
+      @input = input
+      scanner_reset
+      parser = MatrixParser.new(has_name: true, name_pattern: /^NA\s+(?<name>.+)$/, has_header_row: true, has_header_column: true, nucleotide_in: :columns, reduce_to_n_nucleotides: 4)
+      motif_data = parser.parse!(@motifs.shift)
+      matrix = Parser.transform_input(motif_data.matrix)
+      raise InvalidMatrix unless Parser.valid_matrix?(matrix)
+      OpenStruct.new(matrix: matrix, name: motif_data.name)
     end
 
+    def scanner_reset
+      @motifs = @input.split(/^\s*\/\/\s*$/).map(&:strip).reject(&:empty?)
+    end
+
+    def rest_input
+      @motifs.empty? ? nil : @motifs.join("\n" + '//' + "\n")
+    end
   end
 end

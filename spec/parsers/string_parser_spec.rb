@@ -55,12 +55,6 @@ module Bioinform
       'string with multiple spaces and tabs' => {input: "1 \t\t 2 3 4\n 5 6   7 8",  result: Fabricate(:pm_unnamed) },
       'string with preceeding and terminating newlines' => {input: "\n\n\t 1 2 3 4\n5 6 7 8  \n\t\n",  result: Fabricate(:pm_unnamed) },
       'string with windows crlf' => {input: "1 2 3 4\r\n5 6 7 8",  result: Fabricate(:pm_unnamed) },
-      'Nx4 string with acgt-header' => {input: "A C G T\n1 2 3 4\n5 6 7 8",  result: Fabricate(:pm_unnamed) },
-      'Nx4 string with name and acgt-header' => {input: "PM_name\nA C G T\n1 2 3 4\n5 6 7 8",  result: Fabricate(:pm)},
-      'Nx4 string with acgt-row-markers' => {input: "A 1 5\nC : 2 6\nG3 7\nT |4 8",  result: Fabricate(:pm_unnamed) },
-      '4x4 string with acgt-header' => {input: "A C G T\n1 2 3 4\n5 6 7 8\n9 10 11 12\n13 14 15 16",  result: Fabricate(:pm_4x4_unnamed) },
-      '4x4 string with acgt-row-markers' => {input: "A|1 5 9 13\nC|2 6 10 14\nG|3 7 11 15\nT|4 8 12 16",  result: Fabricate(:pm_4x4_unnamed) },
-      '4x4 string with name and acgt-row-markers' => {input: "PM_name\nA:1 5 9 13\nC:2 6 10 14\nG:3 7 11 15\nT:4 8 12 16",  result: Fabricate(:pm_4x4) }
     }
 
     bad_cases = {
