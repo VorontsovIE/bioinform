@@ -1,5 +1,5 @@
-require 'bioinform/data_models_2/pwm'
-require 'bioinform/data_models_2/named_model'
+require 'bioinform/data_models/pwm'
+require 'bioinform/data_models/named_model'
 
 describe Bioinform::MotifModel::NamedModel do
   context 'with PWM-model' do

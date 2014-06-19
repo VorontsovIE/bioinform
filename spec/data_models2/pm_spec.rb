@@ -1,4 +1,4 @@
-require 'bioinform/data_models_2/pm'
+require 'bioinform/data_models/pm'
 
 describe Bioinform::MotifModel::PM do
 

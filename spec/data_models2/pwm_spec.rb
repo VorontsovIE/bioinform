@@ -1,4 +1,4 @@
-require 'bioinform/data_models_2/pwm'
+require 'bioinform/data_models/pwm'
 
 describe Bioinform::MotifModel::PWM do
 

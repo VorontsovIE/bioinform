@@ -1,4 +1,4 @@
-require 'bioinform/data_models_2/ppm'
+require 'bioinform/data_models/ppm'
 
 describe Bioinform::MotifModel::PPM do
 

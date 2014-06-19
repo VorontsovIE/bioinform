@@ -1,6 +1,5 @@
 require_relative '../error'
-require_relative '../data_models_2/pcm'
-require_relative '../data_models_2/ppm'
+require_relative '../data_models'
 
 module Bioinform
   module ConversionAlgorithms

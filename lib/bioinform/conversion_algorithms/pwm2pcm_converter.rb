@@ -1,3 +1,5 @@
+require_relative '../data_models'
+
 module Bioinform
   module ConversionAlgorithms
     # pcm --> pwm:
@@ -52,9 +54,13 @@ module Bioinform
           end
           pwm_pos
         end
-        # TODO: should we use background or probability?
-        # It's yet unused code, change it safely
-        PCM.new(matrix: matrix, name: pwm.name, background: pwm.background, probability: probability, pseudocount: pseudocount)
+
+        pcm = MotifModel::PCM.new(matrix)
+        if pwm.respond_to? :name
+          pcm.named(pwm.name)
+        else
+          pcm
+        end
       end
     end
   end

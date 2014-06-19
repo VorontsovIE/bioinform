@@ -1,6 +1,4 @@
 require_relative '../error'
-require_relative '../data_models_2/pcm'
-require_relative '../data_models_2/pwm'
 require_relative '../data_models'
 require_relative '../background'
 

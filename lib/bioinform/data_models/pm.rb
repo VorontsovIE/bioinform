@@ -1,6 +1,7 @@
 require_relative '../formatters/raw_formatter'
 require_relative '../error'
 require_relative '../alphabet'
+require_relative 'named_model'
 
 module Bioinform
   module MotifModel
