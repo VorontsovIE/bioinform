@@ -32,16 +32,14 @@ module Bioinform
         raise "Collection file not specified"  unless collection_filename
         raise "File `#{collection_filename}` not exist"  unless File.exist?(collection_filename)
 
-        input = File.read(collection_filename)
-        coll = MotifSplitter.new.split(input).map{|x| PM.new(Parser.choose(x).parse(x)) }
+        motif_list_string = File.read(collection_filename)
+        coll = MotifSplitter.new.split(motif_list_string).map do |motif_string|
+          motif_info = Parser.choose(motif_string).parse(motif_string)
+          MotifModel::PM.new(motif_info.matrix).named(motif_info.name)
+        end
 
         coll.each do |motif|
-          if motif.is_a?(PM) && motif.class != PM
-            File.open(set_folder(folder, set_extension(motif.name, extension || motif.class.name.gsub(/^.*::/,'').downcase)), 'w'){|f| f.puts motif}
-          else
-            motif = PM.new(motif)
-            File.open(set_folder(folder, set_extension(motif.name, extension || 'mat')), 'w'){|f| f.puts motif}
-          end
+          File.open(set_folder(folder, set_extension(motif.name, extension || 'mat')), 'w'){|f| f.puts motif }
         end
       end
 
