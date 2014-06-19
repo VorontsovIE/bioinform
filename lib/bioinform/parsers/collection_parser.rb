@@ -29,16 +29,6 @@ module Bioinform
     include Enumerable
     alias_method :split, :to_a
 
-    def split_on_motifs
-      to_a.map{|el|
-        if el.is_a?(PM)
-          el
-        else
-          PM.new(matrix:el.matrix, name:el.name)
-        end
-      }
-    end
-
     def scanner_reset
       @input = @original_input
     end

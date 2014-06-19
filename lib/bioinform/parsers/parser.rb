@@ -27,7 +27,7 @@ module Bioinform
       init_input(*input)
       matrix = Parser.transform_input(@input)
       raise InvalidMatrix unless Parser.valid_matrix?(matrix)
-      OpenStruct.new(matrix: matrix)
+      OpenStruct.new(matrix: matrix, name: nil)
     end
 
     def parse(*input)
@@ -47,10 +47,6 @@ module Bioinform
           result = parser.parse(input)
           result && valid_matrix?(result.matrix)
         end
-      end
-
-      def split_on_motifs(input)
-        CollectionParser.new(StringParser.new, input).split_on_motifs
       end
 
       def parse!(*input)

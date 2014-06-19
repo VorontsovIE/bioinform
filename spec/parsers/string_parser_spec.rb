@@ -21,25 +21,28 @@ module Bioinform
       end
     end
 
-    context '::split_on_motifs' do ########################3
+    context 'CollectionParser#to_a' do
       it 'should be able to get a single PM' do
-        CollectionParser.new(StringParser.new, "1 2 3 4 \n 5 6 7 8").split_on_motifs.should == [ Fabricate(:pm_unnamed) ]
+        CollectionParser.new(StringParser.new, "1 2 3 4 \n 5 6 7 8").to_a.should == [ OpenStruct.new(matrix: [[1,2,3,4],[5,6,7,8]], name: nil) ]
       end
       it 'should be able to split several PMs separated with an empty line' do
-        CollectionParser.new(StringParser.new, "1 2 3 4 \n 5 6 7 8 \n\n 15 16 17 18 \n 11 21 31 41").split_on_motifs.should ==
-                                                                [ Fabricate(:pm_first, name: nil), Fabricate(:pm_second, name: nil) ]
+        CollectionParser.new(StringParser.new, "1 2 3 4 \n 5 6 7 8 \n\n 15 16 17 18 \n 11 21 31 41").to_a.should ==
+                                                                [ OpenStruct.new(matrix: [[1,2,3,4],[5,6,7,8]], name: nil),
+                                                                  OpenStruct.new(matrix: [[15,16,17,18],[11,21,31,41]], name: nil) ]
       end
       it 'should be able to split several PMs separated with name' do
-        CollectionParser.new(StringParser.new, "1 2 3 4 \n 5 6 7 8 \nPM_second\n 15 16 17 18 \n 11 21 31 41").split_on_motifs.should ==
-                                                                [ Fabricate(:pm_first, name: nil), Fabricate(:pm_second) ]
+        CollectionParser.new(StringParser.new, "1 2 3 4 \n 5 6 7 8 \nPM_second\n 15 16 17 18 \n 11 21 31 41").to_a.should ==
+                                                                [ OpenStruct.new(matrix: [[1,2,3,4],[5,6,7,8]], name: nil),
+                                                                  OpenStruct.new(matrix: [[15,16,17,18],[11,21,31,41]], name: 'PM_second') ]
       end
       it 'should be able to split several PMs separated with both name and empty line' do
-        CollectionParser.new(StringParser.new, "PM_first\n1 2 3 4 \n 5 6 7 8 \n\nPM_second\n 15 16 17 18 \n 11 21 31 41\n\n\n").split_on_motifs.should ==
-                                                                [ Fabricate(:pm_first), Fabricate(:pm_second) ]
+        CollectionParser.new(StringParser.new, "PM_first\n1 2 3 4 \n 5 6 7 8 \n\nPM_second\n 15 16 17 18 \n 11 21 31 41\n\n\n").to_a.should ==
+                                                                [ OpenStruct.new(matrix: [[1,2,3,4],[5,6,7,8]], name: 'PM_first'),
+                                                                  OpenStruct.new(matrix: [[15,16,17,18],[11,21,31,41]], name: 'PM_second')]
       end
       it 'should create PMs by default' do
-        result = CollectionParser.new(StringParser.new, "1 2 3 4 \n 5 6 7 8 \n 9 10 11 12 \nName\n 9 10 11 12 \n 1 2 3 4 \n 5 6 7 8").split_on_motifs
-        result.each{|pm| pm.class.should == PM}
+        result = CollectionParser.new(StringParser.new, "1 2 3 4 \n 5 6 7 8 \n 9 10 11 12 \nName\n 9 10 11 12 \n 1 2 3 4 \n 5 6 7 8").to_a
+        result.each{|pm| pm.class.should == OpenStruct}
       end
     end
 

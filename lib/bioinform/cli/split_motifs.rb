@@ -33,7 +33,7 @@ module Bioinform
         raise "File `#{collection_filename}` not exist"  unless File.exist?(collection_filename)
 
         input = File.read(collection_filename)
-        coll = Parser.split_on_motifs(input)
+        coll = MotifSplitter.new.split(input).map{|x| PM.new(Parser.choose(x).parse(x)) }
 
         coll.each do |motif|
           if motif.is_a?(PM) && motif.class != PM
