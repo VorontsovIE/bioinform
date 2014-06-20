@@ -1,5 +1,3 @@
-require_relative 'support/partial_sums'
-
 require_relative 'support/strip_doc'
 
 module Bioinform
