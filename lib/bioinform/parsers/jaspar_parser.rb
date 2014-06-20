@@ -29,7 +29,7 @@ module Bioinform
       scan_splitter
       name = parse_name
       matrix = parse_matrix
-      Parser.parse!(matrix).tap{|result| result.name = name}
+      Parser.parse!(matrix).tap{|result| result[:name] = name}
     end
 
   end

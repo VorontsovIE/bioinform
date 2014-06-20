@@ -1,4 +1,3 @@
-require 'ostruct'
 require_relative '../support'
 require_relative '../error'
 require_relative 'collection_parser'
@@ -23,7 +22,7 @@ module Bioinform
       init_input(*input)
       matrix = Parser.transform_input(@input)
       raise Error unless Parser.valid_matrix?(matrix)
-      OpenStruct.new(matrix: matrix, name: nil)
+      {matrix: matrix, name: nil}
     end
 
     def parse(*input)
@@ -41,7 +40,7 @@ module Bioinform
           StringFantomParser.new, JasparParser.new
         ].find do |parser|
           result = parser.parse(input)
-          result && valid_matrix?(result.matrix)
+          result && valid_matrix?(result[:matrix])
         end
       end
 

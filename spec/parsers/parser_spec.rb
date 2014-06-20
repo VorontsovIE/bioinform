@@ -5,7 +5,7 @@ module Bioinform
   describe Parser do
     context '#initialize' do
       it 'should accept an array correctly' do
-        expect( Parser.new.parse([[1,2,3,4],[5,6,7,8]]).matrix ).to eq( [[1,2,3,4],[5,6,7,8]] )
+        expect( Parser.new.parse([[1,2,3,4],[5,6,7,8]])[:matrix] ).to eq( [[1,2,3,4],[5,6,7,8]] )
       end
       it 'should treat several arguments as an array composed of them' do
         expect( Parser.new.parse([1,2,3,4],[5,6,7,8]) ).to eq Parser.new.parse([[1,2,3,4],[5,6,7,8]])
@@ -42,7 +42,7 @@ module Bioinform
 
     context 'CollectionParser#to_a' do
       it 'should be able to get a single PM' do
-        expect( CollectionParser.new(Parser.new, [[1,2,3,4],[5,6,7,8]]).to_a ).to eq( [ OpenStruct.new(matrix: [[1,2,3,4],[5,6,7,8]], name: nil) ] )
+        expect( CollectionParser.new(Parser.new, [[1,2,3,4],[5,6,7,8]]).to_a ).to eq( [ {matrix: [[1,2,3,4],[5,6,7,8]], name: nil} ] )
       end
     end
 
@@ -68,13 +68,13 @@ module Bioinform
 
     good_cases = {
       'Array Nx4' => {input: [[1,2,3,4],[5,6,7,8]],
-                      result: OpenStruct.new(name:nil, matrix: [[1,2,3,4],[5,6,7,8]]) },
+                      result: {name:nil, matrix: [[1,2,3,4],[5,6,7,8]]} },
 
       'Array 4xN' => {input: [[1,5],[2,6],[3,7],[4,8]],
-                      result: OpenStruct.new(name:nil, matrix: [[1,2,3,4],[5,6,7,8]]) },
+                      result: {name:nil, matrix: [[1,2,3,4],[5,6,7,8]]} },
 
       'Array 4x4 (rows treated as positions, columns are treated as letter)' => { input: [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]],
-                                                                                  result: OpenStruct.new(name:nil, matrix: [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]]) },
+                                                                                  result: {name:nil, matrix: [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]]} },
     }
 
     bad_cases = {

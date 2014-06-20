@@ -35,7 +35,7 @@ module Bioinform
         motif_list_string = File.read(collection_filename)
         coll = MotifSplitter.new.split(motif_list_string).map do |motif_string|
           motif_info = Parser.choose(motif_string).parse(motif_string)
-          MotifModel::PM.new(motif_info.matrix).named(motif_info.name)
+          MotifModel::PM.new(motif_info[:matrix]).named(motif_info[:name])
         end
 
         coll.each do |motif|

@@ -10,18 +10,18 @@ module Bioinform
     end
 
     context '#parse!' do
-      it 'should return OpenStruct based on input of that was passed to initialize when input is a Hash' do
-        TrivialParser.new.parse!(matrix: 'stub matrix', name: 'stub name').should == OpenStruct.new(matrix: 'stub matrix', name: 'stub name')
+      it 'should return a hash based on input of that was passed to initialize when input is a Hash' do
+        TrivialParser.new.parse!(matrix: 'stub matrix', name: 'stub name').should == {matrix: 'stub matrix', name: 'stub name'}
       end
 
-      it 'should return OpenStruct based on input of that was passed to initialize when input is a OpenStruct' do
-        TrivialParser.new.parse!(OpenStruct.new(matrix: 'stub matrix', name: 'stub name')).should == OpenStruct.new(matrix: 'stub matrix', name: 'stub name')
-      end
+      # it 'should return a hash based on input of that was passed to initialize when input is a OpenStruct' do
+      #   TrivialParser.new.parse!(OpenStruct.new(matrix: 'stub matrix', name: 'stub name')).should == {matrix: 'stub matrix', name: 'stub name'}
+      # end
     end
 
     context 'CollectionParser#to_a' do
       it 'should be able to get a single PM' do
-        CollectionParser.new(TrivialParser.new, {matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name'}).to_a.should == [ OpenStruct.new(matrix: [[1,2,3,4],[5,6,7,8]], name:'Name') ]
+        CollectionParser.new(TrivialParser.new, {matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name'}).to_a.should == [ {matrix: [[1,2,3,4],[5,6,7,8]], name:'Name'} ]
       end
     end
 

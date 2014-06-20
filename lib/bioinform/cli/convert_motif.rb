@@ -30,11 +30,11 @@ module Bioinform
           motif_info = Parser.choose(input).parse(input)
           case options[:model_from]
           when 'pwm'
-            MotifModel::PWM.new(motif_info.matrix).named(motif_info.name)
+            MotifModel::PWM.new(motif_info[:matrix]).named(motif_info[:name])
           when 'pcm'
-            MotifModel::PCM.new(motif_info.matrix).named(motif_info.name)
+            MotifModel::PCM.new(motif_info[:matrix]).named(motif_info[:name])
           when 'ppm'
-            MotifModel::PPM.new(motif_info.matrix).named(motif_info.name)
+            MotifModel::PPM.new(motif_info[:matrix]).named(motif_info[:name])
           else
             raise "Unknown value of model-from parameter: `#{options[:model_from]}`"
           end

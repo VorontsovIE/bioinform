@@ -9,9 +9,9 @@ module Bioinform
       scanner_reset
       parser = MatrixParser.new(has_name: true, name_pattern: /^NA\s+(?<name>.+)$/, has_header_row: true, has_header_column: true, nucleotide_in: :columns, reduce_to_n_nucleotides: 4)
       motif_data = parser.parse!(@motifs.shift)
-      matrix = Parser.transform_input(motif_data.matrix)
+      matrix = Parser.transform_input(motif_data[:matrix])
       raise InvalidMatrix unless Parser.valid_matrix?(matrix)
-      OpenStruct.new(matrix: matrix, name: motif_data.name)
+      {matrix: matrix, name: motif_data[:name]}
     end
 
     def scanner_reset

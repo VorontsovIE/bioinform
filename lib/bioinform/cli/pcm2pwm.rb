@@ -40,7 +40,7 @@ module Bioinform
         filelist.each do |filename|
           input = File.read(filename)
           motif_data = Parser.choose(input).parse(input)
-          pcm = MotifModel::PCM.new(motif_data.matrix).named(motif_data.name)
+          pcm = MotifModel::PCM.new(motif_data[:matrix]).named(motif_data[:name])
           pwm = converter.convert(pcm)
           File.open(change_folder_and_extension(filename, extension, folder), 'w') do |f|
             f.puts pwm

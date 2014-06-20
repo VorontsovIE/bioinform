@@ -10,10 +10,7 @@ module Bioinform
   class TrivialParser < Parser
 
     def parse!(input)
-      case input
-      when OpenStruct then input
-      when Hash then OpenStruct.new(input)
-      end
+      input.is_a?(Hash) ? input : nil
     end
   end
 end

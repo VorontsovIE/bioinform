@@ -1,4 +1,3 @@
-require 'ostruct'
 require_relative '../error'
 
 module Bioinform
@@ -42,7 +41,7 @@ module Bioinform
         raise Error, 'Not enough nucleotides in a matrix'  unless matrix.all?{|pos| pos.size >= @fix_nucleotides_number}
         matrix = matrix.map{|pos| pos.first(@fix_nucleotides_number) }
       end
-      OpenStruct.new(matrix: matrix, name: name)
+      {matrix: matrix, name: name}
     rescue => e
       raise Error, e.message
     end

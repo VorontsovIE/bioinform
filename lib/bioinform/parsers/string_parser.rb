@@ -1,5 +1,4 @@
 require 'strscan'
-require 'ostruct'
 require_relative '../support'
 require_relative 'parser'
 require_relative 'motif_splitter'
@@ -15,9 +14,9 @@ module Bioinform
       # nucleotides are: in rows or in columns we do this check here in
       # Parser.transform_input, thus don't want to raise before normalization
       motif_data = MatrixParser.new(with_name: nil, fix_nucleotides_number: false).parse!(@motifs.shift)
-      matrix = Parser.transform_input(motif_data.matrix)
+      matrix = Parser.transform_input(motif_data[:matrix])
       raise InvalidMatrix unless Parser.valid_matrix?(matrix)
-      OpenStruct.new(matrix: matrix, name: motif_data.name)
+      {matrix: matrix, name: motif_data[:name]}
     end
 
     def scanner_reset
