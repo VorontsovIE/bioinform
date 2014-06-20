@@ -12,6 +12,9 @@ describe Bioinform::ConversionAlgorithms::PCM2PWMConverter do
   context 'with default converter' do
     let(:converter) { Bioinform::ConversionAlgorithms::PCM2PWMConverter.new }
 
+    specify { expect(converter.pseudocount).to eq :log }
+    specify { expect(converter.background).to eq Bioinform::Background::Uniform }
+
     specify { expect(converter.convert(pcm)).to be_kind_of Bioinform::MotifModel::PWM }
     specify { expect(converter.calculate_pseudocount(pcm)).to eq Math.log(10) }
 
@@ -38,6 +41,8 @@ describe Bioinform::ConversionAlgorithms::PCM2PWMConverter do
     let(:specified_pseudocount) { 5 }
     let(:converter) { Bioinform::ConversionAlgorithms::PCM2PWMConverter.new(pseudocount: specified_pseudocount) }
 
+    specify { expect(converter.pseudocount).to eq 5 }
+
     specify 'allows PCM-s with different column counts (because pseudocount specified, pcm\'s count not used for pseudocount calculation)' do
       k = specified_pseudocount
       den_1_2 = 0.25 * (10 + k)
@@ -50,8 +55,10 @@ describe Bioinform::ConversionAlgorithms::PCM2PWMConverter do
   end
 
   context 'with specified explicitly background' do
-    let(:converter) { Bioinform::ConversionAlgorithms::PCM2PWMConverter.new(background: Bioinform::Frequencies.new([0.1, 0.4, 0.4, 0.1])) }
+    let(:background_to_set) { Bioinform::Frequencies.new([0.1, 0.4, 0.4, 0.1]) }
+    let(:converter) { Bioinform::ConversionAlgorithms::PCM2PWMConverter.new(background: background_to_set) }
 
+    specify { expect(converter.background).to eq background_to_set }
     specify 'allows PCM-s with different column counts (because pseudocount specified, pcm\'s count not used for pseudocount calculation)' do
       k = Math.log(10)
       den_at = 0.1 * (10 + k)

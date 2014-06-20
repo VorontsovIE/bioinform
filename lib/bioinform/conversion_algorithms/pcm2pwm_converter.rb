@@ -6,6 +6,7 @@ module Bioinform
   module ConversionAlgorithms
     # s_{\alpha,j} = ln(\frac{x_{\alpha,j} + \cappa p_{\alpha}}{(N+\cappa)p_{\alpha}})
     class PCM2PWMConverter
+      attr_reader :background, :pseudocount
       def initialize(background: Bioinform::Background::Uniform, pseudocount: :log)
         @background = background
         @pseudocount = pseudocount

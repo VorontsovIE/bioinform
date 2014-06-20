@@ -56,3 +56,24 @@ end
 def make_model_file(motif, model_type)
   make_file(motif_filename(motif, model_type), motif.send(model_type))
 end
+
+RSpec::Matchers.define :be_within_range_from_matrix do |expected, range|
+  match do |actual|
+    expected.alphabet == actual.alphabet && matrices_within_range?(actual.matrix, expected.matrix, range)
+  end
+
+  def matrices_within_range?(actual, expected, range)
+    (actual.length == expected.length) && actual.each_index.all?{|pos_index| postions_within_range?(actual[pos_index], expected[pos_index], range) }
+  end
+
+  def postions_within_range?(actual, expected, range)
+    (actual.length == expected.length) && actual.each_index.all?{|letter_index| (actual[letter_index] - expected[letter_index]).abs <= range }
+  end
+
+  description do
+    "\nbe in range #{range} from\n#{expected}\n"
+  end
+  failure_message do |actual|
+    "expected that\n#{actual}\nwould be in range #{range} from\n#{expected}\n"
+  end
+end
