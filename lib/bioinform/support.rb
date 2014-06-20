@@ -1,7 +1,5 @@
-require_relative 'support/multiline_squish'
 require_relative 'support/partial_sums'
 
-require_relative 'support/advanced_scan'
 require_relative 'support/strip_doc'
 
 module Bioinform
