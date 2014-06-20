@@ -1,8 +1,11 @@
 require_relative 'pm'
-require_relative '../alphabet'
 
 module Bioinform
   module MotifModel
+    def self.acts_as_pwm?(pwm)
+      pwm.is_a?(MotifModel::PWM) || pwm.is_a?(MotifModel::NamedModel) && acts_as_pwm?(pwm.model)
+    end
+
     class PWM < PM
       def score(word)
         raise Error, 'Word length should be the same as PWM length'  unless word.length == length
@@ -43,7 +46,6 @@ module Bioinform
         end
         PWM.new(iupac_matrix, alphabet: IUPACAlphabet)
       end
-
     end
   end
 end

@@ -1,5 +1,5 @@
 require_relative '../support'
-require_relative '../parsers/string_parser'
+require_relative 'string_parser'
 
 module Bioinform
   class StringFantomParser < Parser

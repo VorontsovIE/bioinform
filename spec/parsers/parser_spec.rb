@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-require_relative '../../lib/bioinform/parsers/parser'
+require 'bioinform/parsers/parser'
 
 module Bioinform
   describe Parser do

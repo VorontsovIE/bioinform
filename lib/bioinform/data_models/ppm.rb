@@ -2,6 +2,10 @@ require_relative 'pm'
 
 module Bioinform
   module MotifModel
+    def self.acts_as_ppm?(ppm)
+      ppm.is_a?(MotifModel::PPM) || ppm.is_a?(MotifModel::NamedModel) && acts_as_ppm?(ppm.model)
+    end
+
     class PPM < PM
       def validation_errors
         errors = super

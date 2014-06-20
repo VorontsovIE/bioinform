@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-require_relative '../../lib/bioinform/support/advanced_scan'
+require 'bioinform/support/advanced_scan'
 
 describe StringScanner do
   context '#advanced_scan' do

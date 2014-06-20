@@ -1,5 +1,5 @@
 require_relative '../support'
-require_relative '../parsers/parser'
+require_relative 'parser'
 require 'yaml'
 
 module Bioinform

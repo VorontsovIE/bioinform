@@ -10,9 +10,6 @@ require_relative 'bioinform/background'
 require_relative 'bioinform/alphabet'
 
 module Bioinform
-  class Error < StandardError
-  end
-
   def self.get_model(data_model, matrix, name)
     Bioinform::MotifModel.const_get(data_model).new(matrix).named(name)
   end

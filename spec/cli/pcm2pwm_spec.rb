@@ -1,6 +1,6 @@
 require 'shellwords'
 require_relative '../spec_helper'
-require_relative '../../lib/bioinform/cli/pcm2pwm'
+require 'bioinform/cli/pcm2pwm'
 
 
 def run_pcm2pwm(cmd)

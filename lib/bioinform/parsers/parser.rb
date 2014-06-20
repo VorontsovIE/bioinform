@@ -1,12 +1,9 @@
 require 'ostruct'
 require_relative '../support'
+require_relative '../error'
 require_relative 'collection_parser'
 
 module Bioinform
-  class Error < StandardError; end
-  class ParsingError < Error; end
-  class InvalidMatrix < Error; end
-  
   class Parser
     attr_reader :input
 
@@ -25,7 +22,7 @@ module Bioinform
     def parse!(*input)
       init_input(*input)
       matrix = Parser.transform_input(@input)
-      raise InvalidMatrix unless Parser.valid_matrix?(matrix)
+      raise Error unless Parser.valid_matrix?(matrix)
       OpenStruct.new(matrix: matrix, name: nil)
     end
 

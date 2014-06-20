@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-require_relative '../../lib/bioinform/support/partial_sums'
+require 'bioinform/support/partial_sums'
 
 describe 'Array#partial_sums' do
   context 'when no initial value given' do

@@ -1,6 +1,6 @@
 # require 'shellwords'
 # require_relative '../spec_helper'
-# require_relative '../../lib/bioinform/cli/convert_motif'
+# require 'bioinform/cli/convert_motif'
 # require_relative 'shared_examples/convert_motif/single_motif_specified'
 # require_relative 'shared_examples/convert_motif/several_motifs_specified'
 # require_relative 'shared_examples/convert_motif/motif_list_empty'

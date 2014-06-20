@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-require_relative '../../lib/bioinform/parsers/string_fantom_parser'
+require 'bioinform/parsers/string_fantom_parser'
 
 module Bioinform
   describe StringFantomParser do

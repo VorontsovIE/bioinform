@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-require_relative '../../lib/bioinform/cli'
+require 'bioinform/cli'
 
 describe Bioinform::CLI do
   describe '.change_folder_and_extension' do

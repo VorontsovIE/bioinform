@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-require_relative '../../lib/bioinform/cli/split_motifs'
+require 'bioinform/cli/split_motifs'
 
 def run_split_motifs(cmd)
   Bioinform::CLI::SplitMotifs.main(cmd.shellsplit)
