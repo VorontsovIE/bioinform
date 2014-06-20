@@ -66,13 +66,6 @@ describe Bioinform::MotifModel::PWM do
       specify { expect(pwm.right_augmented(0)).to eq pwm }
       specify { expect(pwm.right_augmented(2)).to eq Bioinform::MotifModel::PWM.new( [[1,2,3,1.567],[12,-11,12,0],[-1.1, 0.6, 0.4, 0.321],[0,0,0,0],[0,0,0,0]]) }
     end
-
-    specify { expect( pwm.to_IUPAC_PWM ).to be_kind_of Bioinform::MotifModel::PWM }
-    specify { expect( pwm.to_IUPAC_PWM.alphabet ).to eq Bioinform::IUPACAlphabet }
-    specify { expect( pwm.to_IUPAC_PWM.matrix ).to eq [[1,2,3,1.567, (1+2)/2.0, (1+3)/2.0, (1+1.567)/2.0, (2+3)/2.0, (2+1.567)/2.0, (3+1.567)/2.0, (1+2+3)/3.0, (1+2+1.567)/3.0, (1+3+1.567)/3.0, (2+3+1.567)/3.0, (1+2+3+1.567)/4.0],
-                                                      [12,-11,12,0, (12-11)/2.0, (12+12)/2.0, (12+0)/2.0, (-11+12)/2.0, (-11+0)/2.0, (12+0)/2.0, (12-11+12)/3.0, (12-11+0)/3.0, (12+12+0)/3.0, (-11+12+0)/3.0, (12-11+12+0)/4.0],
-                                                      [-1.1, 0.6, 0.4, 0.321, (-1.1+0.6)/2.0, (-1.1+0.4)/2.0, (-1.1+0.321)/2.0, (0.6+0.4)/2.0, (0.6+0.321)/2.0, (0.4+0.321)/2.0, (-1.1+0.6+0.4)/3.0, (-1.1+0.6+0.321)/3.0, (-1.1+0.4+0.321)/3.0, (0.6+0.4+0.321)/3.0, (-1.1+0.6+0.4+0.321)/4.0]] }
-
   end
 
   context 'with different alphabet' do

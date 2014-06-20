@@ -35,17 +35,6 @@ module Bioinform
         augmented_matrix = matrix + Array.new(n, zero_column)
         self.class.new(augmented_matrix, alphabet: alphabet)
       end
-
-      def to_IUPAC_PWM
-        raise Error, 'this conversion is possible only for ACGT-nucleotide motifs'  unless alphabet.equal? NucleotideAlphabet
-        iupac_matrix = matrix.map do |pwm_pos|
-          IUPACAlphabet.each_letter.map do |letter|
-            nucleotide_indices = IUPAC::NucleotideIndicesByIUPACLetter[letter]
-            nucleotide_indices.inject(0.0){|sum, nucleotide_index| sum + pwm_pos[nucleotide_index] } / nucleotide_indices.size
-          end
-        end
-        PWM.new(iupac_matrix, alphabet: IUPACAlphabet)
-      end
     end
   end
 end
