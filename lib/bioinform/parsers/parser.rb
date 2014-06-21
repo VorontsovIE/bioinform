@@ -1,5 +1,5 @@
 require_relative '../support'
-require_relative '../error'
+require_relative '../errors'
 
 module Bioinform
   class Parser

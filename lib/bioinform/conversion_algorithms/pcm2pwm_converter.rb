@@ -1,4 +1,4 @@
-require_relative '../error'
+require_relative '../errors'
 require_relative '../data_models'
 require_relative '../background'
 

@@ -1,5 +1,5 @@
 require_relative '../formatters/raw_formatter'
-require_relative '../error'
+require_relative '../errors'
 require_relative '../alphabet'
 require_relative 'named_model'
 
