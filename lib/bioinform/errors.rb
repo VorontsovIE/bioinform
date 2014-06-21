@@ -4,10 +4,12 @@ module Bioinform
 
   class ValidationError < Error
     attr_reader :validation_errors
-    def initialize(msg, errors)
+
+    def initialize(msg, validation_errors: [])
       super(msg)
-      @validation_errors = errors
+      @validation_errors = validation_errors
     end
+
     def to_s
       "#{super} (#{@validation_errors.join('; ')})"
     end
