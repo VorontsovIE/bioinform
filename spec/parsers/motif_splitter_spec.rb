@@ -29,7 +29,7 @@ describe Bioinform::MotifSplitter do
   end
 
   context 'with specified pattern' do
-    let(:motif_splitter) { Bioinform::MotifSplitter.new(start_motif_pattern: /^NA\s+\w+$/, splitter: /^\/\/\s$/) }
+    let(:motif_splitter) { Bioinform::MotifSplitter.new(start_motif_pattern: /^NA\s+\w+$/, splitter_pattern: /^\/\/\s$/) }
 
     let(:input_1) {
       "NA  motif_1\n" +
