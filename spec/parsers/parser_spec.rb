@@ -33,7 +33,7 @@ module Bioinform
       it 'should create parser of appropriate type' do
         expect( Parser.choose([[1,2,3,4],[5,6,7,8]]) ).to be_kind_of(Parser)
         # expect( Parser.choose([[1,2,3,4],[5,6,7,8]]).input ).to eq([[1,2,3,4],[5,6,7,8]])  ###################
-        expect( Parser.choose(matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name') ).to be_kind_of(TrivialParser)
+        # expect( Parser.choose(matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name') ).to be_kind_of(TrivialParser)
         # expect( Parser.choose(matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name').input ).to eq({matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name'})  ###########
         # expect( Parser.choose("1 2 3 4\n5 6 7 8") ).to be_kind_of(StringParser)
         # expect( Parser.choose("1 2 3 4\n5 6 7 8").input ).to eq "1 2 3 4\n5 6 7 8" #############

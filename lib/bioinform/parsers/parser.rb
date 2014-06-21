@@ -3,23 +3,20 @@ require_relative '../error'
 
 module Bioinform
   class Parser
-    attr_reader :input
-
     def init_input(*input)
       if input.size == 1  # [ [1,2,3,4] ],  [  [[1,2,3,4],[5,6,7,8]] ]
         if input.first.is_a?(Array) && input.first.all?{|el| el.is_a? Numeric}  # [ [1,2,3,4] ]
-          @input = input
+          input
         else  # [  [[1,2,3,4],[5,6,7,8]] ]
-          @input = input.first
+          input.first
         end
       else #[ [1,2,3,4], [5,6,7,8] ], [   ]
-        @input = input
+        input
       end
     end
 
     def parse!(*input)
-      init_input(*input)
-      matrix = Parser.transform_input(@input)
+      matrix = Parser.transform_input(init_input(*input))
       raise Error unless Parser.valid_matrix?(matrix)
       {matrix: matrix, name: nil}
     end
@@ -28,13 +25,9 @@ module Bioinform
       parse!(*input) rescue nil
     end
 
-    def rest_input
-      nil
-    end
-
     module ClassMethods
       def choose(input)
-        [ TrivialParser.new, Parser.new, StringParser.new,
+        [ Parser.new, StringParser.new,
           Bioinform::MatrixParser.new(has_name: false), Bioinform::MatrixParser.new(has_name: true),
           StringFantomParser.new, JasparParser.new
         ].find do |parser|
