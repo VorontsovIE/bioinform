@@ -31,7 +31,7 @@ def parser_specs(parser_klass, good_cases, bad_cases)
   context '#parse!' do
     good_cases.each do |case_description, input_and_result|
       it "should be able to parse #{case_description} (input #{input_and_result[:input].inspect} --> result #{input_and_result[:result].inspect})" do
-        parser_klass.new.parse(input_and_result[:input]).should == input_and_result[:result]
+        expect(parser_klass.new.parse(input_and_result[:input])).to eq input_and_result[:result]
       end
     end
 

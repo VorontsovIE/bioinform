@@ -23,14 +23,14 @@ describe Bioinform::CLI::SplitMotifs do
   it 'splits plain text into separate files' do
     run_split_motifs('plain_collection.txt')
     @motifs_in_collection.each do |motif_name|
-      File.exist?("#{motif_name}.mat").should be_truthy
+      expect(File.exist?("#{motif_name}.mat")).to be_truthy
       File.read("#{motif_name}.mat") == File.read("#{motif_name}.mat.result")
     end
   end
   it 'create files with specified extension' do
     run_split_motifs('plain_collection.txt -e pwm')
     @motifs_in_collection.each do |motif_name|
-      File.exist?("#{motif_name}.pwm").should be_truthy
+      expect(File.exist?("#{motif_name}.pwm")).to be_truthy
       File.read("#{motif_name}.pwm") == File.read("#{motif_name}.mat.result")
     end
   end
@@ -42,7 +42,7 @@ describe Bioinform::CLI::SplitMotifs do
     it 'create files in specified folder' do
       run_split_motifs('plain_collection.txt -f result_folder')
       @motifs_in_collection.each do |motif_name|
-        File.exist?(File.join('result_folder', "#{motif_name}.mat")).should be_truthy
+        expect(File.exist?(File.join('result_folder', "#{motif_name}.mat"))).to be_truthy
         File.read(File.join('result_folder', "#{motif_name}.mat")) == File.read("#{motif_name}.mat.result")
       end
     end
@@ -54,7 +54,7 @@ describe Bioinform::CLI::SplitMotifs do
     it 'create files in specified folder' do
       run_split_motifs('plain_collection.txt -f result_folder')
       @motifs_in_collection.each do |motif_name|
-        File.exist?(File.join('result_folder', "#{motif_name}.mat")).should be_truthy
+        expect(File.exist?(File.join('result_folder', "#{motif_name}.mat"))).to be_truthy
         File.read(File.join('result_folder', "#{motif_name}.mat")) == File.read("#{motif_name}.mat.result")
       end
     end

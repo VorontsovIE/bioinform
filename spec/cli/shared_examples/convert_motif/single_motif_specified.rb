@@ -12,12 +12,12 @@ shared_examples 'single motif specified' do
 
       context 'pwm conversion invoked' do
         Given(:model_to) { 'pwm' }
-        Then { resulting_stdout.should == sp1_f1.pwm }
+        Then { expect(resulting_stdout).to eq sp1_f1.pwm }
       end
 
       context 'ppm conversion invoked' do
         Given(:model_to) { 'ppm' }
-        Then { resulting_stdout.should == sp1_f1.ppm }
+        Then { expect(resulting_stdout).to eq sp1_f1.ppm }
       end
     end
     
@@ -42,8 +42,8 @@ shared_examples 'single motif specified' do
       }
       Given(:model_from) { 'pcm' }
       Given(:model_to) { 'pwm' }
-      Then { resulting_stdout.should == sp1_f1.pwm }
-      Then { resulting_stdout.should_not match(klf4_f2.pwm) }
+      Then { expect(resulting_stdout).to eq sp1_f1.pwm }
+      Then { expect(resulting_stdout).not_to match(klf4_f2.pwm) }
     end
     
   end

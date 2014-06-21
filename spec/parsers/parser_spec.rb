@@ -50,12 +50,12 @@ module Bioinform
     context '#parse' do
       it 'should give the same result as #parse!' do
         parser = Parser.new
-        parser.stub(:parse!).and_return('stub result')
+        allow(parser).to receive(:parse!) { 'stub result' }
         expect(parser.parse).to eq 'stub result'
       end
       it 'should return nil if #parse! raised an exception' do
         parser = Parser.new
-        parser.stub(:parse!).and_raise
+        allow(parser).to receive(:parse!).and_raise
         expect(parser.parse).to be_nil
       end
     end

@@ -10,7 +10,7 @@ module Bioinform
       def initialize(matrix, alphabet: NucleotideAlphabet)
         @matrix = matrix
         @alphabet = alphabet
-        raise ValidationError.new('invalid matrix', validation_errors)  unless valid?
+        raise ValidationError.new('invalid matrix', validation_errors: validation_errors)  unless valid?
       end
 
       def validation_errors

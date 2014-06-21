@@ -9,6 +9,6 @@ shared_examples 'several motifs specified' do
     Given(:motif_list) { [sp1_f1, klf4_f2] }  
     Given(:model_from) { 'pcm' }
     Given(:model_to) { 'pwm' }
-    Then { resulting_stdout.should == [sp1_f1.pwm, klf4_f2.pwm].join("\n") }
+    Then { expect(resulting_stdout).to eq [sp1_f1.pwm, klf4_f2.pwm].join("\n") }
   end
 end
