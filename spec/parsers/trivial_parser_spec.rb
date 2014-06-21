@@ -13,22 +13,6 @@ module Bioinform
       it 'should return a hash based on input of that was passed to initialize when input is a Hash' do
         TrivialParser.new.parse!(matrix: 'stub matrix', name: 'stub name').should == {matrix: 'stub matrix', name: 'stub name'}
       end
-
-      # it 'should return a hash based on input of that was passed to initialize when input is a OpenStruct' do
-      #   TrivialParser.new.parse!(OpenStruct.new(matrix: 'stub matrix', name: 'stub name')).should == {matrix: 'stub matrix', name: 'stub name'}
-      # end
     end
-
-    context 'CollectionParser#to_a' do
-      it 'should be able to get a single PM' do
-        CollectionParser.new(TrivialParser.new, {matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name'}).to_a.should == [ {matrix: [[1,2,3,4],[5,6,7,8]], name:'Name'} ]
-      end
-    end
-
-    # it 'can be used to create PM with {matrix: ..., name: ...} form' do
-    #   pm = PM.new({matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name'}, TrivialParser)
-    #   pm.matrix.should == [[1,2,3,4],[5,6,7,8]]
-    #   pm.name.should == 'Name'
-    # end
   end
 end

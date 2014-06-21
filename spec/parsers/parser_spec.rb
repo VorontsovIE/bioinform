@@ -40,12 +40,6 @@ module Bioinform
       end
     end
 
-    context 'CollectionParser#to_a' do
-      it 'should be able to get a single PM' do
-        expect( CollectionParser.new(Parser.new, [[1,2,3,4],[5,6,7,8]]).to_a ).to eq( [ {matrix: [[1,2,3,4],[5,6,7,8]], name: nil} ] )
-      end
-    end
-
     context '::need_transpose?' do
       it 'should point whether matrix have positions(need not be transposed -- false) or letters(true) as first index' do
         expect( Parser.need_tranpose?([[1,3,5,7], [2,4,6,8]]) ).to be_falsy

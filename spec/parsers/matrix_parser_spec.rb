@@ -125,4 +125,15 @@ describe Bioinform::MatrixParser do
     let(:input) {">PM name\n" + "1\t2\t3\n" + "11\t12\t13" }
     specify { expect{ parser.parse!(input) }.to raise_error Bioinform::Error }
   end
+
+  context 'parser with both headers? max number of nucleotides and custom name pattern' do
+    subject(:parser) { Bioinform::MatrixParser.new(has_name: true, has_header_row: true, has_header_column: true, fix_nucleotides_number: 4, name_pattern: /^NA\s+(?<name>\w+)$/) }
+    let(:input) {
+      "NA  PM_name\n" +
+      "P0  A C G T S P\n" +
+      "P1  1 2 3 4 5 10\n" +
+      "P2  5 6 7 8 5 11"
+    }
+    specify {expect(parser.parse(input)).to eq({matrix: [[1,2,3,4],[5,6,7,8]], name: 'PM_name'}) }
+  end
 end
