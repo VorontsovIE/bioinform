@@ -29,7 +29,7 @@ module Bioinform
       def choose(input)
         [ Parser.new, StringParser.new,
           Bioinform::MatrixParser.new(has_name: false), Bioinform::MatrixParser.new(has_name: true),
-          StringFantomParser.new, JasparParser.new
+          StringFantomParser.new
         ].find do |parser|
           result = parser.parse(input)
           result && valid_matrix?(result[:matrix])
