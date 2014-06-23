@@ -36,13 +36,6 @@ module Bioinform
         end
       end
 
-      def parse!(*input)
-        new.parse!(*input)
-      end
-      def parse(*input)
-        new.parse(*input)
-      end
-
       def valid_matrix?(matrix)
         matrix.is_a?(Array) &&
         ! matrix.empty? &&

@@ -15,20 +15,6 @@ module Bioinform
       end
     end
 
-    context '::parse!' do
-      it 'should behave like Parser.new(input).parse!' do
-        expect( Parser.parse!([1,2,3,4],[5,6,7,8]) ).to eq Parser.new.parse!([1,2,3,4],[5,6,7,8])
-        expect{ Parser.parse!([1,2,3],[4,5,6]) }.to raise_error
-      end
-    end
-
-    context '::parse' do
-      it 'should behave like Parser.new(input).parse!' do
-        expect( Parser.parse([1,2,3,4],[5,6,7,8]) ).to eq Parser.new.parse([1,2,3,4],[5,6,7,8])
-        expect( Parser.parse([1,2,3],[4,5,6]) ).to be_nil
-      end
-    end
-
     context '::choose' do
       it 'should create parser of appropriate type' do
         expect( Parser.choose([[1,2,3,4],[5,6,7,8]]) ).to be_kind_of(Parser)
