@@ -20,8 +20,7 @@ module Bioinform
     module ClassMethods
       def choose(input)
         [ Parser.new(nucleotides_in: :columns), Parser.new(nucleotides_in: :rows), StringParser.new,
-          Bioinform::MatrixParser.new(has_name: false), Bioinform::MatrixParser.new(has_name: true),
-          StringFantomParser.new
+          Bioinform::MatrixParser.new(has_name: false), Bioinform::MatrixParser.new(has_name: true)
         ].find do |parser|
           result = parser.parse(input)
           result && valid_matrix?(result[:matrix])

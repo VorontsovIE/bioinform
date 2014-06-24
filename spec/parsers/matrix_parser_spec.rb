@@ -130,14 +130,46 @@ describe Bioinform::MatrixParser do
     specify { expect{ parser.parse!(input) }.to raise_error Bioinform::Error }
   end
 
-  context 'parser with both headers? max number of nucleotides and custom name pattern' do
-    subject(:parser) { Bioinform::MatrixParser.new(has_name: true, has_header_row: true, has_header_column: true, fix_nucleotides_number: 4, name_pattern: /^NA\s+(?<name>\w+)$/) }
-    let(:input) {
-      "NA  PM_name\n" +
-      "P0  A C G T S P\n" +
-      "P1  1 2 3 4 5 10\n" +
-      "P2  5 6 7 8 5 11"
-    }
-    specify {expect(parser.parse(input)).to eq({matrix: [[1,2,3,4],[5,6,7,8]], name: 'PM_name'}) }
+  context 'FANTOM-formatted motifs' do
+    let(:parser) do
+      Bioinform::MatrixParser.new( has_name: true, name_pattern: /^NA\s+(?<name>.+)$/,
+                        has_header_row: true, has_header_column: true, nucleotides_in: :columns,
+                        reduce_to_n_nucleotides: 4 )
+    end
+
+    specify 'parse strings in FANTOM format' do
+      input = "NA  PM_name\n" +
+              "P0  A C G T\n" +
+              "P1  1 2 3 4\n" +
+              "P2  5 6 7 8"
+      expect(parser.parse(input)).to eq({matrix: [[1,2,3,4],[5,6,7,8]], name: 'PM_name'})
+    end
+
+
+    specify 'ignores additional columns' do
+      input = "NA  PM_name\n" +
+              "P0  A C G T S P\n" +
+              "P1  1 2 3 4 5 10\n" +
+              "P2  5 6 7 8 5 11"
+      expect(parser.parse(input)).to eq({matrix: [[1,2,3,4],[5,6,7,8]], name: 'PM_name'})
+    end
+
+    specify 'parses string with more than 10 positions(2-digit row numbers)' do
+      input = "NA  PM_name\n" +
+              "P0  A C G T\n" +
+              "P1  1 2 3 4\n" +
+              "P2  5 6 7 8\n" +
+              "P3  1 2 3 4\n" +
+              "P4  5 6 7 8\n" +
+              "P5  1 2 3 4\n" +
+              "P6  5 6 7 8\n" +
+              "P7  1 2 3 4\n" +
+              "P8  5 6 7 8\n" +
+              "P9  1 2 3 4\n" +
+              "P10 5 6 7 8\n" +
+              "P11 1 2 3 4\n" +
+              "P12 5 6 7 8"
+      expect(parser.parse(input)).to eq({matrix: [[1,2,3,4],[5,6,7,8]]*6, name: 'PM_name'})
+    end
   end
 end
