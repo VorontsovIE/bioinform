@@ -22,6 +22,6 @@ module Bioinform
       'string with empty exponent sign' => {input: "1.23 4.56 7.8 9.0\n 9e -8.7 6.54 3210" }
     }
 
-    parser_specs(StringParser, good_cases, bad_cases)
+    parser_specs(StringParser.new, good_cases, bad_cases)
   end
 end

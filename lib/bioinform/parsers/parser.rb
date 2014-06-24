@@ -3,31 +3,23 @@ require_relative '../errors'
 
 module Bioinform
   class Parser
-    def init_input(*input)
-      if input.size == 1  # [ [1,2,3,4] ],  [  [[1,2,3,4],[5,6,7,8]] ]
-        if input.first.is_a?(Array) && input.first.all?{|el| el.is_a? Numeric}  # [ [1,2,3,4] ]
-          input
-        else  # [  [[1,2,3,4],[5,6,7,8]] ]
-          input.first
-        end
-      else #[ [1,2,3,4], [5,6,7,8] ], [   ]
-        input
-      end
+    def initialize(nucleotides_in: :columns)
+      raise Error, 'Unknown value of `nucleotides_in` parameter'  unless [:columns, :rows].include?(nucleotides_in.to_sym)
+      @nucleotides_in = nucleotides_in.to_sym
     end
-
-    def parse!(*input)
-      matrix = Parser.transform_input(init_input(*input))
+    def parse!(input)
+      matrix = (@nucleotides_in == :rows) ? input.transpose : input
       raise Error unless Parser.valid_matrix?(matrix)
       {matrix: matrix, name: nil}
     end
 
-    def parse(*input)
-      parse!(*input) rescue nil
+    def parse(input)
+      parse!(input) rescue nil
     end
 
     module ClassMethods
       def choose(input)
-        [ Parser.new, StringParser.new,
+        [ Parser.new(nucleotides_in: :columns), Parser.new(nucleotides_in: :rows), StringParser.new,
           Bioinform::MatrixParser.new(has_name: false), Bioinform::MatrixParser.new(has_name: true),
           StringFantomParser.new
         ].find do |parser|
@@ -42,8 +34,6 @@ module Bioinform
         matrix.all?{|pos| pos.is_a?(Array)} &&
         matrix.all?{|pos| pos.size == 4} &&
         matrix.all?{|pos| pos.all?{|el| el.is_a?(Numeric)}}
-      rescue
-        false
       end
 
       def transform_input(input)

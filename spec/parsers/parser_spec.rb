@@ -4,25 +4,18 @@ require 'bioinform/parsers/parser'
 module Bioinform
   describe Parser do
     context '#initialize' do
-      it 'should accept an array correctly' do
-        expect( Parser.new.parse([[1,2,3,4],[5,6,7,8]])[:matrix] ).to eq( [[1,2,3,4],[5,6,7,8]] )
+      it 'should accept nucleotides_in correctly' do
+        expect{ Parser.new(nucleotides_in: :rows) }.not_to raise_error
+        expect{ Parser.new(nucleotides_in: :columns) }.not_to raise_error
       end
-      it 'should treat several arguments as an array composed of them' do
-        expect( Parser.new.parse([1,2,3,4],[5,6,7,8]) ).to eq Parser.new.parse([[1,2,3,4],[5,6,7,8]])
-      end
-      it 'should treat one Array of numbers as an Array(with 1 element) of Arrays' do
-        expect( Parser.new.parse([1,2,3,4]) ).to eq Parser.new.parse([[1,2,3,4]])
+      it 'should fail if `nucleotides_in` has unknown value' do
+        expect{ Parser.new(nucleotides_in: :somewhere) }.to raise_error Bioinform::Error
       end
     end
 
     context '::choose' do
       it 'should create parser of appropriate type' do
         expect( Parser.choose([[1,2,3,4],[5,6,7,8]]) ).to be_kind_of(Parser)
-        # expect( Parser.choose([[1,2,3,4],[5,6,7,8]]).input ).to eq([[1,2,3,4],[5,6,7,8]])  ###################
-        # expect( Parser.choose(matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name') ).to be_kind_of(TrivialParser)
-        # expect( Parser.choose(matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name').input ).to eq({matrix: [[1,2,3,4],[5,6,7,8]], name: 'Name'})  ###########
-        # expect( Parser.choose("1 2 3 4\n5 6 7 8") ).to be_kind_of(StringParser)
-        # expect( Parser.choose("1 2 3 4\n5 6 7 8").input ).to eq "1 2 3 4\n5 6 7 8" #############
       end
     end
 
@@ -36,13 +29,13 @@ module Bioinform
     context '#parse' do
       it 'should give the same result as #parse!' do
         parser = Parser.new
-        allow(parser).to receive(:parse!) { 'stub result' }
-        expect(parser.parse).to eq 'stub result'
+        allow(parser).to receive(:parse!).with('stub input') { 'stub result' }
+        expect(parser.parse('stub input')).to eq 'stub result'
       end
       it 'should return nil if #parse! raised an exception' do
         parser = Parser.new
-        allow(parser).to receive(:parse!).and_raise
-        expect(parser.parse).to be_nil
+        allow(parser).to receive(:parse!).with('stub input').and_raise
+        expect(parser.parse('stub input')).to be_nil
       end
     end
 
@@ -50,12 +43,17 @@ module Bioinform
       'Array Nx4' => {input: [[1,2,3,4],[5,6,7,8]],
                       result: {name:nil, matrix: [[1,2,3,4],[5,6,7,8]]} },
 
+      'Array 4x4 (rows treated as positions, columns are treated as letter)' => { input: [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]],
+                                                                                  result: {name:nil, matrix: [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]]} }
+    }
+
+    good_cases_transposed = {
       'Array 4xN' => {input: [[1,5],[2,6],[3,7],[4,8]],
                       result: {name:nil, matrix: [[1,2,3,4],[5,6,7,8]]} },
-
-      'Array 4x4 (rows treated as positions, columns are treated as letter)' => { input: [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]],
-                                                                                  result: {name:nil, matrix: [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]]} },
+      'Array 4x4 (rows treated as letters, columns are treated as positions)' => { input: [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]],
+                                                                                  result: {name:nil, matrix: [[1,5,9,13],[2,6,10,14],[3,7,11,15],[4,8,12,16]]} }
     }
+
 
     bad_cases = {
       'Nil object on input' => {input: nil},
@@ -65,7 +63,10 @@ module Bioinform
       'No one dimension have size 4' => {input: [[0,1,2,3,4],[10,11,12,13,14], [0,1,2,3,4]] },
     }
 
-    parser_specs(Parser, good_cases, bad_cases)
+
+    parser_specs(Parser.new, good_cases, bad_cases)
+    parser_specs(Parser.new(nucleotides_in: :rows), good_cases_transposed, bad_cases)
+
     context '#parser!' do
       it "should raise an exception on parsing empty list to parser" do
         expect{ Parser.new.parse!() }.to raise_error

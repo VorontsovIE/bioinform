@@ -27,17 +27,17 @@ def capture_stderr(&block)
   capture_io(&block)[:stderr]
 end
 
-def parser_specs(parser_klass, good_cases, bad_cases)
+def parser_specs(parser, good_cases, bad_cases)
   context '#parse!' do
     good_cases.each do |case_description, input_and_result|
       it "should be able to parse #{case_description} (input #{input_and_result[:input].inspect} --> result #{input_and_result[:result].inspect})" do
-        expect(parser_klass.new.parse(input_and_result[:input])).to eq input_and_result[:result]
+        expect(parser.parse(input_and_result[:input])).to eq input_and_result[:result]
       end
     end
 
     bad_cases.each do |case_description, input|
       it "should raise an exception on parsing #{case_description}" do
-        expect{ parser_klass.new.parse!(input[:input]) }.to raise_error
+        expect{ parser.parse!(input[:input]) }.to raise_error
       end
     end
   end

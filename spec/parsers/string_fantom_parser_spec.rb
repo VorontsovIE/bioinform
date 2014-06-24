@@ -41,6 +41,6 @@ module Bioinform
 
     bad_cases = { }
 
-    parser_specs(StringFantomParser, good_cases, bad_cases)
+    parser_specs(StringFantomParser.new, good_cases, bad_cases)
   end
 end
