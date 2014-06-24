@@ -28,6 +28,10 @@ describe Bioinform::MatrixParser do
     subject(:parser) { Bioinform::MatrixParser.new(has_name: true) }
     let(:input) {">PM name\n" + "1\t2\t3\t4\n" + "11\t12\t13\t14" }
     specify { expect( parser.parse!(input) ).to eq( {name: "PM name", matrix: [[1,2,3,4],[11,12,13,14]]} ) }
+
+    specify 'trims empty lines' do
+      expect( parser.parse!("\n   \t  \n" + input + "\n\n") ).to eq( {name: "PM name", matrix: [[1,2,3,4],[11,12,13,14]]} )
+    end
   end
   context 'parser having neither name nor header' do
     subject(:parser) { Bioinform::MatrixParser.new(has_name: false) }

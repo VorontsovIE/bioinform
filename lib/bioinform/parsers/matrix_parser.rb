@@ -16,7 +16,7 @@ module Bioinform
     end
 
     def parse!(input)
-      lines = input.lines
+      lines = input.strip.lines
       if @has_name == nil
         match = lines.first.match(@name_pattern)
         if match
