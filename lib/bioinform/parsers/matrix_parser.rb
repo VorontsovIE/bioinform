@@ -5,19 +5,24 @@ module Bioinform
     # fix_nucleotides_number -- raises if matrix has not enough nucleotide columns
     attr_reader :has_name, :name_pattern, :has_header_row, :has_header_column, :nucleotides_in, :fix_nucleotides_number
     def initialize(options = {})
-      @has_name = options.fetch(:has_name, nil)
+      @has_name = options.fetch(:has_name, :auto)
       @name_pattern = options.fetch(:name_pattern, /^>?\s*(?<name>[^-+\d.\t\r\n][^\t\r\n]*).*$/)
       @has_header_row = options.fetch(:has_header_row, false)
       @has_header_column = options.fetch(:has_header_column, false)
-      @nucleotides_in = options.fetch(:nucleotides_in, :columns)
+      @nucleotides_in = options.fetch(:nucleotides_in, :auto)
       @fix_nucleotides_number = options.fetch(:fix_nucleotides_number, 4)
 
-      raise Error, ':nucleotides_in option should be either :rows or :columns' unless  [:rows, :columns].include?(@nucleotides_in)
+      raise Error, ':nucleotides_in option should be either :rows or :columns' unless  [:rows, :columns, :auto].include?(@nucleotides_in)
     end
+
+    def need_transpose?(matrix)
+      (matrix.size == @fix_nucleotides_number) && (matrix.first.size != 4)
+    end
+    private :need_transpose?
 
     def parse!(input)
       lines = input.strip.lines
-      if @has_name == nil
+      if @has_name == :auto
         match = lines.first.match(@name_pattern)
         if match
           lines.shift
@@ -35,8 +40,17 @@ module Bioinform
       matrix = matrix.map{|row| row.drop(1) }  if @has_header_column
       matrix = matrix.map{|row| row.map{|el| Float(el) } }
 
-      matrix = matrix.transpose  if @nucleotides_in == :rows
-      # raise 'Matrix not valid' unless ! matrix.empty? && matrix.all?{|pos| pos.size == 4 }
+      case @nucleotides_in
+      when :columns
+        matrix = matrix
+      when :rows
+        matrix = matrix.transpose
+      when :auto
+        if @fix_nucleotides_number && need_transpose?(matrix)
+          matrix = matrix.transpose
+        end
+      end
+
       if @fix_nucleotides_number
         raise Error, 'Not enough nucleotides in a matrix'  unless matrix.all?{|pos| pos.size >= @fix_nucleotides_number}
         matrix = matrix.map{|pos| pos.first(@fix_nucleotides_number) }
