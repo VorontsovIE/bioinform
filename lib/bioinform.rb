@@ -16,7 +16,7 @@ module Bioinform
   end
 
   def self.get_model_from_string(data_model, matrix_string)
-    motif_infos = Parser.choose(matrix_string).parse(matrix_string)
+    motif_infos = MatrixParser.new.parse(matrix_string)
     get_model(data_model, motif_infos.matrix, name)
   end
 

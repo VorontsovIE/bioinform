@@ -27,7 +27,7 @@ module Bioinform
         output_motifs = []
         motifs = motif_files.map do |filename|
           input = File.read(filename)
-          motif_info = Parser.choose(input).parse(input)
+          motif_info = MotifParser.new.parse(input)
           case options[:model_from]
           when 'pwm'
             MotifModel::PWM.new(motif_info[:matrix]).named(motif_info[:name])

@@ -13,19 +13,6 @@ module Bioinform
       end
     end
 
-    context '::choose' do
-      it 'should create parser of appropriate type' do
-        expect( Parser.choose([[1,2,3,4],[5,6,7,8]]) ).to be_kind_of(Parser)
-      end
-    end
-
-    context '::need_transpose?' do
-      it 'should point whether matrix have positions(need not be transposed -- false) or letters(true) as first index' do
-        expect( Parser.need_tranpose?([[1,3,5,7], [2,4,6,8]]) ).to be_falsy
-        expect( Parser.need_tranpose?([[1,2],[3,4],[5,6],[7,8]]) ).to be_truthy
-      end
-    end
-
     context '#parse' do
       it 'should give the same result as #parse!' do
         parser = Parser.new
