@@ -1,4 +1,4 @@
-require_relative 'raw_formatter'
+require_relative 'motif_formatter'
 
 module Bioinform
   class PrettyMatrixFormatter
@@ -25,9 +25,9 @@ module Bioinform
       matrix_str = matrix_rows.join("\n")
     end
 
-    def format_string(motif)
+    def format(motif)
       raise  Error, "PM doesn't respond to #name. Use formatter with option `with_name: false`"  if @with_name && !motif.respond_to?(:name)
-      return RawFormatter.new(with_name: @with_name, letters_as_rows: @letters_as_rows).format_string(motif)  if @letters_as_rows
+      return MotifFormatter.new(with_name: @with_name, nucleotides_in: (@letters_as_rows ? :rows : :columns)).format(motif)  if @letters_as_rows
       optional_name(motif) + header + matrix_string(motif)
     end
 

@@ -1,4 +1,4 @@
-require_relative '../formatters/raw_formatter'
+require_relative '../formatters/motif_formatter'
 require_relative '../errors'
 require_relative '../alphabet'
 require_relative 'named_model'
@@ -36,7 +36,7 @@ module Bioinform
       end
 
       def to_s
-        RawFormatter.new(with_name: false).format_string(self)
+        MotifFormatter.new.format(self)
       end
 
       def ==(other)

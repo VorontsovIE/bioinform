@@ -22,7 +22,7 @@ module Bioinform
       }.join("\n")
     end
 
-    def format_string(motif)
+    def format(motif)
       header(motif) + matrix_string(motif) + "\nXX\n//"
     end
 

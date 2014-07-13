@@ -25,8 +25,9 @@ module Bioinform
         end
       end
 
+      # should not be delegated to self (because in that case name won't be displayed)
       def to_s
-        ">#{name}\n#{model.to_s}"
+        MotifFormatter.new.format(self)
       end
 
       def ==(other)
