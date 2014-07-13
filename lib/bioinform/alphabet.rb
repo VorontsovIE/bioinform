@@ -11,7 +11,7 @@ module Bioinform
       @alphabet = alphabet.map{|letter| letter.upcase.to_sym }
       @complement_alphabet = complements.map{|letter| letter.upcase.to_sym }
 
-      @complements_by_letters = Support.various_key_value_case_types( @alphabet.zip(@complement_alphabet).to_h )
+      @complements_by_letters = Support.various_key_value_case_types( Hash[ @alphabet.zip(@complement_alphabet) ] )
 
       @index_by_letter = Support.various_key_case_types(Support.element_indices(@alphabet))
       raise Error, "Complement's complement should be original letter"  unless valid?

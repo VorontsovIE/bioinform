@@ -19,9 +19,9 @@ module Bioinform
   class MotifSplitter
     attr_reader :start_motif_pattern, :spliiter
 
-    def initialize(start_motif_pattern: /^\s*([^-+\s\d.]+|>.*)/, splitter_pattern: /^\s*$/)
-      @start_motif_pattern = start_motif_pattern
-      @splitter_pattern = splitter_pattern
+    def initialize(options={})
+      @start_motif_pattern = options.fetch(:start_motif_pattern, /^\s*([^-+\s\d.]+|>.*)/)
+      @splitter_pattern = options.fetch(:splitter_pattern, /^\s*$/)
     end
 
     def parts_divided_by_splitter(input)

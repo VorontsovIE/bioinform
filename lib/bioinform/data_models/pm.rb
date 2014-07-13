@@ -7,9 +7,9 @@ module Bioinform
   module MotifModel
     class PM
       attr_reader :matrix, :alphabet
-      def initialize(matrix, alphabet: NucleotideAlphabet)
+      def initialize(matrix, options = {})
         @matrix = matrix
-        @alphabet = alphabet
+        @alphabet = options.fetch(:alphabet, NucleotideAlphabet)
         raise ValidationError.new('invalid matrix', validation_errors: validation_errors)  unless valid?
       end
 

@@ -6,8 +6,8 @@ module Bioinform
     class PPM2PCMConverter
       attr_reader :count
 
-      def initialize(count: 100)
-        @count = count
+      def initialize(options = {})
+        @count = options.fetch(:count, 100)
       end
 
       def convert(ppm)

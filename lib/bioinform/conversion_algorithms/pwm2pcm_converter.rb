@@ -14,10 +14,10 @@ module Bioinform
     class PWM2PCMConverter
       attr_reader :pseudocount, :count, :background
 
-      def initialize(pseudocount: :default, count: 100.0, background: Bioinform::Background::Uniform)
-        @pseudocount = pseudocount
-        @count = count
-        @background = background
+      def initialize(options = {})
+        @pseudocount = options.fetch(:pseudocount, :default)
+        @count = options.fetch(:count, 100.0)
+        @background = options.fetch(:background, Bioinform::Background::Uniform)
       end
 
       def calculate_pseudocount(pwm)

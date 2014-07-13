@@ -21,7 +21,7 @@ module Bioinform
     private :need_transpose?
 
     def parse!(input)
-      lines = input.strip.lines
+      lines = input.strip.lines.to_a
       if @has_name == :auto
         match = lines.first.match(@name_pattern)
         if match

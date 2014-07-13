@@ -19,7 +19,7 @@ Or install it yourself as:
 
 ## Usage
 
-Usage is under construction. I don't recommend use this gem for a while: syntax is on the way to change to more simple and concise. But stay tuned
+Usage is under construction. I don't recommend to use this gem for a while: syntax is on the way to change to more simple and concise. But stay tuned
 
 ### Command-line applications
   * pcm2pwm
