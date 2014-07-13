@@ -1,3 +1,5 @@
+require_relative 'errors'
+
 # TODO: generalize for the case of different alphabet
 module Bioinform
   # it also tags Frequencies and WordwiseBackground classes so that .is_a?(Bioinform::Background) is true for them

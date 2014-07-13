@@ -1,4 +1,4 @@
-require 'bioinform/conversion_algorithms/pcm2ppm_converter'
+require 'bioinform/conversion_algorithms/ppm2pcm_converter'
 
 describe Bioinform::ConversionAlgorithms::PPM2PCMConverter do
   let(:pcm) { Bioinform::MotifModel::PCM.new([[1,2,3,4],[2,2,2,4]]) }
