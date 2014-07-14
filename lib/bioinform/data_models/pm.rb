@@ -20,7 +20,7 @@ module Bioinform
         self.new(info[:matrix], alphabet: alphabet).named( info[:name] )
       end
 
-      def from_file(filename, options = {})
+      def self.from_file(filename, options = {})
         parser = options.fetch(:parser, MatrixParser.new)
         alphabet = options.fetch(:alphabet, NucleotideAlphabet)
         info = parser.parse!(File.read(filename))

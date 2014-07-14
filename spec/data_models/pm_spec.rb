@@ -76,6 +76,30 @@ describe Bioinform::MotifModel::PM do
     end
   end
 
+  describe '.from_file' do
+    include FakeFS::SpecHelpers
+    context 'with default configuration' do
+      before :each do
+        File.write 'motif.pwm', ">motif name inside\n1 2 3 4\n5 6 7 8"
+        File.write 'motifNameOutside.pwm', "1 2 3 4\n5 6 7 8"
+      end
+
+      specify 'obtains motif name from file content when available' do
+        expect(Bioinform::MotifModel::PM.from_file('motif.pwm').name).to eq 'motif name inside'
+      end
+
+      specify 'obtains motif name from filename when it is not available in file content' do
+        expect(Bioinform::MotifModel::PM.from_file('motifNameOutside.pwm').name).to eq 'motifNameOutside'
+      end
+
+      specify 'obtains motif matrix correct' do
+        expect(Bioinform::MotifModel::PM.from_file('motif.pwm').matrix).to eq [[1,2,3,4],[5,6,7,8]]
+        expect(Bioinform::MotifModel::PM.from_file('motifNameOutside.pwm').matrix).to eq [[1,2,3,4],[5,6,7,8]]
+      end
+    end
+
+  end
+
   context 'with different alphabet' do
     let(:matrix_4) { [[1,2,3,1.567],[12,-11,12,0],[-1.1, 0.6, 0.4, 0.321]] }
     let(:matrix_15) { [[1,2,3,1.567,  12,-11,12,0,-1.1,0.6,  0.4,0.321,0.11,-1.23, 2.0],
