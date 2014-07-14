@@ -11,48 +11,21 @@
   конвертер мары должен быть вынесен отдельно
   конвертеры хорошо быть отрефакторить (но не ясно как это сделать хорошо)
   посмотреть, совместимы ли конвертеры с идеей разных алфавитов
-включить модели сиквенсов/снипов/алигнментов/геномных позиций-интервалов
-скоринг IUPAC-сиквенсов делается при помощи IUPAC-алфавитных матриц. Написать описание.
+включить модели сиквенсов (оптимизировать их: нуклекотид-число; не забыть про разные алфавиты)/снипов/алигнментов/геномных позиций-интервалов
+скоринг IUPAC-сиквенсов сейчас делается при помощи IUPAC-алфавитных матриц (см. конвертер PWM2IupacPWM). Написать хелпы.
 утащить CLI из пакета куда-нибудь
 утащить из bioinform.rb get_pcm
 починить convert_motif
 
+PM#equal? и PM#hash
 
-! Make matrices immutable  - it will allow more safe interface and better caching 
-
-Collection contain Motif-s, each Motif can contain any of list: pcm,pwm,ppm.
-Name, background, tags and any other parameters should be removed from PM class to be placed in Motif
-
-
-
-ToDo:
-  how to make PM#equal? and PM#hash so that using PMs in Sets wouldn't destroy comparability of Sets and two sets with the same PMs(but different objects) would be equal. (also using pm as a hash-key)
-  Make specs and fix code in such a way that Parser.split_on_motifs and so on returned consistent result. E.g. Parser.parse! raised an error on multiple times invocation
-
-  refactor CLI::SplitMotifs in place where it splits collection file and choose real data models or makes PM
-  
-  Make Collection convenient way to store both pwm and pcm for a single motif (may be both should be in parameters of motif?). Also make methods like sort! that can change collection inner structure without working with @collection-variable directly. For example collection.sort!{|a,b| a.length<=>b.length} (here sort yielded only motif, but now it yields both motif and infos - it's inconvenient)
-
-Make parser exception print out text where parsing was broken (processing line +- 2 nearest lines and command and line numbers)
-Prevent parser going into infinity loop
+? Make parser exception print out text where parsing was broken (processing line +- 2 nearest lines and command and line numbers)
 
 Create CLI-apps:
--- to merge many files(or whole folder) to a Collection (in a way that makes able to give collection a name)
-
-Make Parsers to be switcheable in runtime so that one could parse string composed of two motifs in different formats.
+? -- to merge many files(or whole folder) to a Collection (in a way that makes able to give collection a name)
 
 Decide:
--- Whether PPM should have `words_count`/`weight`?
-   PPM format such that parser got both matrix and count (if PPM have `word_count`)
--- can_parse?
 -- Whether to cache suffices:  cache :best_suffix, obsolete: [:discrete!, :background!, ...]
--- behaviour of PM#== for PMs with different tags
--- should background be in PM by default?
--- refactor PM.new #== and so on to make possible consistently introduce or remove a variable at a single line
--- Make PCM#valid? and PPM#valid? more specific. This shouldn't destroy functionality to load arbitrary data as matrix, but only in force mode (I don't understand yet where should it be: in a constructor or where? And which validation-"severity" levels should be? Strong validation - size-only-validation - size-and-type-validation - no validation ???  or may be  options: valid_strictness: 'strict', 'usual', 'strict_with_name' ??? It should be considered)
--- PM#to_pcm and friends have unintuitive behavior. E.g. pm.to_pcm.to_pwm != pm.to_pwm  First is matrix treated as pcm and then converted, while second is matrix treated as pwm from start
--- Should parser be reloadable or not? May be delete #reset_scanner?
--- Should Collection has infos for each motif if it already has parameters? (see also discussion above about Collection#sort! and so on)
 
 Specs
 -- PWM#probabilities, #score_variance, #gauss_estimation
