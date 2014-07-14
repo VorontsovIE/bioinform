@@ -47,10 +47,21 @@ end
 describe Bioinform::NucleotideAlphabet do
   specify { expect( Bioinform::NucleotideAlphabet.size ).to eq 4 }
   specify { expect( Bioinform::NucleotideAlphabet.complement_letter(:A) ).to eq :T }
+  specify { expect( Bioinform::NucleotideAlphabet.complement_letter(:C) ).to eq :G }
   specify { expect{ Bioinform::NucleotideAlphabet.complement_letter(:N) }.to raise_error Bioinform::Error }
 
   specify { expect(Bioinform::NucleotideAlphabet.complement_index(0)).to eq 3 }
-  specify { expect{Bioinform::NucleotideAlphabet.complement_index(5)}.to raise_error Bioinform::Error}
+  specify { expect{Bioinform::NucleotideAlphabet.complement_index(4)}.to raise_error Bioinform::Error}
+end
+
+describe Bioinform::NucleotideAlphabetWithN do
+  specify { expect( Bioinform::NucleotideAlphabetWithN.size ).to eq 5 }
+  specify { expect( Bioinform::NucleotideAlphabetWithN.complement_letter(:A) ).to eq :T }
+  specify { expect( Bioinform::NucleotideAlphabetWithN.complement_letter(:C) ).to eq :G }
+  specify { expect( Bioinform::NucleotideAlphabetWithN.complement_letter(:N) ).to eq :N }
+
+  specify { expect( Bioinform::NucleotideAlphabetWithN.complement_index(0) ).to eq 3 }
+  specify { expect( Bioinform::NucleotideAlphabetWithN.complement_index(4) ).to eq 4 }
 end
 
 describe Bioinform::IUPACAlphabet do

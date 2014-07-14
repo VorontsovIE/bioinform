@@ -79,6 +79,7 @@ module Bioinform
   iupac_letters = [:A, :C, :G, :T, :M, :R, :W, :S, :Y, :K, :V, :H, :D, :B, :N]
 
   NucleotideAlphabet = ComplementableAlphabet.new([:A,:C,:G,:T], [:T,:G,:C,:A])
+  NucleotideAlphabetWithN = ComplementableAlphabet.new([:A,:C,:G,:T,:N], [:T,:G,:C,:A,:N])
   IUPACAlphabet = ComplementableAlphabet.new( iupac_letters,
                                               iupac_letters.map{|letter| IUPAC.complement_iupac_letter(letter) } )
 end
