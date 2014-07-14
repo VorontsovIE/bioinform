@@ -95,4 +95,10 @@ describe Bioinform::MotifModel::PWM do
 
     specify { expect{ pwm.to_IUPAC_PWM }.to raise_error }
   end
+
+  describe '.from_string' do
+    specify {
+      expect( Bioinform::MotifModel::PWM.from_string("1 2 3 4\n5 6 7 8").model.class ).to eq Bioinform::MotifModel::PWM
+    }
+  end
 end

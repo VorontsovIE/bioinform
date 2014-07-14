@@ -13,6 +13,21 @@ module Bioinform
         raise ValidationError.new('invalid matrix', validation_errors: validation_errors)  unless valid?
       end
 
+      def self.from_string(input, options = {})
+        parser = options.fetch(:parser, MatrixParser.new)
+        alphabet = options.fetch(:alphabet, NucleotideAlphabet)
+        info = parser.parse!(input)
+        self.new(info[:matrix], alphabet: alphabet).named( info[:name] )
+      end
+
+      def from_file(filename, options = {})
+        parser = options.fetch(:parser, MatrixParser.new)
+        alphabet = options.fetch(:alphabet, NucleotideAlphabet)
+        info = parser.parse!(File.read(filename))
+        name = (info[:name] && !info[:name].strip.empty?) ? info[:name] : File.basename(filename, File.extname(filename))
+        self.new(info[:matrix], alphabet: alphabet).named( name )
+      end
+
       def validation_errors
         errors = []
         errors << "matrix should be an Array"  unless matrix.is_a? Array
@@ -22,6 +37,7 @@ module Bioinform
         errors << "each matrix element should be Numeric"  unless matrix.all?{|pos| pos.all?{|el| el.is_a?(Numeric) } }
         errors
       end
+      private :validation_errors
 
       def valid?
        validation_errors.empty?

@@ -23,6 +23,12 @@ describe Bioinform::MotifModel::PPM do
     end
   end
 
+  describe '.from_string' do
+    specify {
+      expect( Bioinform::MotifModel::PPM.from_string("0.1 0.2 0.3 0.4\n0.4 0.2 0.2 0.2").model.class ).to eq Bioinform::MotifModel::PPM
+    }
+  end
+
   context 'valid PPM' do
     let(:ppm) { Bioinform::MotifModel::PPM.new(matrix) }
     let(:matrix) { [[0.4, 0.1, 0.1, 0.4],[0.3, 0.2, 0.2, 0.3],[0.25, 0.25, 0.25, 0.25]] }

@@ -34,6 +34,48 @@ describe Bioinform::MotifModel::PM do
     end
   end
 
+  describe '.from_string' do
+    specify {
+      expect( Bioinform::MotifModel::PM.from_string("1 2 3 4\n5 6 7 8").model.class ).to eq Bioinform::MotifModel::PM
+    }
+    specify {
+      expect( Bioinform::MotifModel::PM.from_string("1 2 3 4\n5 6 7 8").name ).to be_nil
+    }
+    specify {
+      expect( Bioinform::MotifModel::PM.from_string("1 2 3 4\n5 6 7 8").matrix ).to eq [[1,2,3,4],[5,6,7,8]]
+    }
+    specify {
+      expect( Bioinform::MotifModel::PM.from_string("1 2 3 4\n5 6 7 8") ).to be_kind_of Bioinform::MotifModel::NamedModel
+    }
+
+    specify {
+      expect( Bioinform::MotifModel::PM.from_string(">Motif name\n1 2 3 4\n5 6 7 8").name ).to eq 'Motif name'
+    }
+    specify {
+      expect( Bioinform::MotifModel::PM.from_string(">Motif name\n1 2 3 4\n5 6 7 8").matrix ).to eq [[1,2,3,4],[5,6,7,8]]
+    }
+    specify {
+      expect( Bioinform::MotifModel::PM.from_string(">Motif name\n1 2 3 4\n5 6 7 8") ).to be_kind_of Bioinform::MotifModel::NamedModel
+    }
+
+    context 'with custom parser' do
+      let(:parser) { Bioinform::MatrixParser.new(nucleotides_in: :rows) }
+      specify{
+        expect( Bioinform::MotifModel::PM.from_string("1 5\n2 6\n3 7\n4 8", parser: parser).matrix ).to eq [[1,2,3,4],[5,6,7,8]]
+      }
+    end
+    context 'with custom alphabet' do
+      let(:alphabet) { Bioinform::NucleotideAlphabetWithN }
+      let(:parser) { Bioinform::MatrixParser.new(fix_nucleotides_number: alphabet.size) }
+      specify {
+        expect( Bioinform::MotifModel::PM.from_string("1 2 3 4 10\n5 6 7 8 100", alphabet: alphabet, parser: parser).matrix ).to eq [[1,2,3,4,10],[5,6,7,8,100]]
+      }
+      specify {
+        expect( Bioinform::MotifModel::PM.from_string("1 2 3 4 10\n5 6 7 8 100", alphabet: alphabet, parser: parser).alphabet ).to eq alphabet
+      }
+    end
+  end
+
   context 'with different alphabet' do
     let(:matrix_4) { [[1,2,3,1.567],[12,-11,12,0],[-1.1, 0.6, 0.4, 0.321]] }
     let(:matrix_15) { [[1,2,3,1.567,  12,-11,12,0,-1.1,0.6,  0.4,0.321,0.11,-1.23, 2.0],

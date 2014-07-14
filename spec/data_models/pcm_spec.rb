@@ -30,6 +30,12 @@ describe Bioinform::MotifModel::PCM do
     end
   end
 
+  describe '.from_string' do
+    specify {
+      expect( Bioinform::MotifModel::PCM.from_string("1 2 3 4\n4 2 2 2").model.class ).to eq Bioinform::MotifModel::PCM
+    }
+  end
+
   context 'valid PCM' do
     let(:pcm) { Bioinform::MotifModel::PCM.new(matrix) }
     context 'with equal counts in different positions' do
