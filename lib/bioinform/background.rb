@@ -11,9 +11,14 @@ module Bioinform
       Bioinform::Background::Uniform
     end
 
+    def self.from_frequencies(frequencies)
+      Frequencies.new(frequencies)
+    end
+
     def self.from_gc_content(gc_content)
-      p_at = (1.0 - gc_content) / 2.0;
-      p_cg = gc_content / 2.0;
+      raise Error, 'GC-content should be withing range [0;1]'  unless (0..1).include?(gc_content)
+      p_at = (1.0 - gc_content) / 2.0
+      p_cg = gc_content / 2.0
       Frequencies.new([p_at, p_cg, p_cg, p_at])
     end
 
@@ -79,7 +84,7 @@ module Bioinform
     end
 
     def to_s
-      counts.join(',')
+      'wordwise'
     end
   end
 

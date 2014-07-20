@@ -1,3 +1,5 @@
+PCM2PWM не имеет возможности вычислить псевдокаунт для матриц с разными каунтами в столбцах. Может быть брать логарифм и корень максимума. Или конкретной колонки?
+
 сделать работу с ValidationError
 сделать ошибки тэгированными
 обобщить модели фона на разные алфавиты
@@ -29,3 +31,5 @@ Decide:
 
 Specs
 -- PWM#probabilities, #score_variance, #gauss_estimation
+
+background#to_s and WordwiseBackground#to_s
