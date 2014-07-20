@@ -30,6 +30,8 @@ describe Bioinform::MotifSplitter do
 
   context 'with specified pattern' do
     let(:motif_splitter) { Bioinform::MotifSplitter.new(start_motif_pattern: /^NA\s+\w+$/, splitter_pattern: /^\/\/\s$/) }
+    specify{ expect(motif_splitter.splitter_pattern).to eq(/^\/\/\s$/) }
+    specify{ expect(motif_splitter.start_motif_pattern).to eq(/^NA\s+\w+$/) }
 
     let(:input_1) {
       "NA  motif_1\n" +

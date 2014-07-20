@@ -17,7 +17,7 @@ module Bioinform
   # and by lines which will be retained.
   #
   class MotifSplitter
-    attr_reader :start_motif_pattern, :spliiter
+    attr_reader :start_motif_pattern, :splitter_pattern
 
     def initialize(options={})
       @start_motif_pattern = options.fetch(:start_motif_pattern, /^\s*([^-+\s\d.]+|>.*)/)
