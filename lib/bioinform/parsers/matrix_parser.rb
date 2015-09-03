@@ -16,7 +16,7 @@ module Bioinform
     end
 
     def need_transpose?(matrix)
-      (matrix.size == @fix_nucleotides_number) && (matrix.first.size != 4)
+      (matrix.size == @fix_nucleotides_number) && (matrix.first.size != @fix_nucleotides_number)
     end
     private :need_transpose?
 
