@@ -27,14 +27,13 @@ module Bioinform
         output_motifs = []
         motifs = motif_files.map do |filename|
           input = File.read(filename)
-          motif_info = MotifParser.new.parse(input)
           case options[:model_from]
           when 'pwm'
-            MotifModel::PWM.new(motif_info[:matrix]).named(motif_info[:name])
+            MotifModel::PWM.from_string(input)
           when 'pcm'
-            MotifModel::PCM.new(motif_info[:matrix]).named(motif_info[:name])
+            MotifModel::PCM.from_string(input)
           when 'ppm'
-            MotifModel::PPM.new(motif_info[:matrix]).named(motif_info[:name])
+            MotifModel::PPM.from_string(input)
           else
             raise "Unknown value of model-from parameter: `#{options[:model_from]}`"
           end
