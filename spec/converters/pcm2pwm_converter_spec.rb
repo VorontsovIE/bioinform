@@ -32,9 +32,9 @@ describe Bioinform::ConversionAlgorithms::PCM2PWMConverter do
     specify { expect(converter.convert(named_pcm)).to be_kind_of Bioinform::MotifModel::NamedModel }
     specify { expect(converter.convert(named_pcm).model).to be_kind_of Bioinform::MotifModel::PWM }
     specify { expect(converter.convert(named_pcm).name).to eq 'motif name' }
-    specify { expect{ converter.convert(pwm) }.to raise_error Bioinform::Error }
-    specify { expect{ converter.convert(named_pwm) }.to raise_error Bioinform::Error }
-    specify { expect{ converter.convert(ppm) }.to raise_error Bioinform::Error }
+    specify { expect{ converter.convert(pwm) }.to raise_error(Bioinform::Error) }
+    specify { expect{ converter.convert(named_pwm) }.to raise_error(Bioinform::Error) }
+    specify { expect{ converter.convert(ppm) }.to raise_error(Bioinform::Error) }
   end
 
   context 'with specified explicitly pseudocount' do

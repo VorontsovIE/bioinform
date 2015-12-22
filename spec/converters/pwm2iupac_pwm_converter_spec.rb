@@ -8,7 +8,7 @@ describe Bioinform::ConversionAlgorithms::PWM2IupacPWMConverter do
     specify{ expect(converter.iupac_alphabet).to eq Bioinform::NucleotideAlphabetWithN }
     specify 'can convert only PWMs' do
       pcm = Bioinform::MotifModel::PCM.new([[1,2,3,4],[2,2,2,4]])
-      expect { converter.convert(pcm) }.to raise_error Bioinform::Error
+      expect { converter.convert(pcm) }.to raise_error(Bioinform::Error)
     end
   end
 
@@ -28,12 +28,12 @@ describe Bioinform::ConversionAlgorithms::PWM2IupacPWMConverter do
       custom_alphabet = Bioinform::ComplementableAlphabet.new([:A,:C,:G,:T,:N], [:T,:G,:C,:A,:N])
       custom_matrix = [[1,2,3,1.567, 0.1],[12,-11,12,0, 0.1],[-1.1, 0.6, 0.4, 0.321, 0.1]]
       pwm_w_custom_alphabet = Bioinform::MotifModel::PWM.new(custom_matrix, alphabet: custom_alphabet)
-      expect { converter.convert(pwm_w_custom_alphabet) }.to raise_error Bioinform::Error
+      expect { converter.convert(pwm_w_custom_alphabet) }.to raise_error(Bioinform::Error)
     end
     specify do
       custom_alphabet = Bioinform::ComplementableAlphabet.new([:A,:X,:Y,:T], [:T,:Y,:X,:A])
       pwm_w_custom_alphabet = Bioinform::MotifModel::PWM.new(matrix, alphabet: custom_alphabet)
-      expect { converter.convert(pwm_w_custom_alphabet) }.to raise_error Bioinform::Error
+      expect { converter.convert(pwm_w_custom_alphabet) }.to raise_error(Bioinform::Error)
     end
 
   end
@@ -54,12 +54,12 @@ describe Bioinform::ConversionAlgorithms::PWM2IupacPWMConverter do
       custom_alphabet = Bioinform::ComplementableAlphabet.new([:A,:C,:G,:T,:N], [:T,:G,:C,:A,:N])
       custom_matrix = [[1,2,3,1.567, 0.1],[12,-11,12,0, 0.1],[-1.1, 0.6, 0.4, 0.321, 0.1]]
       pwm_w_custom_alphabet = Bioinform::MotifModel::PWM.new(custom_matrix, alphabet: custom_alphabet)
-      expect { converter.convert(pwm_w_custom_alphabet) }.to raise_error Bioinform::Error
+      expect { converter.convert(pwm_w_custom_alphabet) }.to raise_error(Bioinform::Error)
     end
     specify do
       custom_alphabet = Bioinform::ComplementableAlphabet.new([:A,:X,:Y,:T], [:T,:Y,:X,:A])
       pwm_w_custom_alphabet = Bioinform::MotifModel::PWM.new(matrix, alphabet: custom_alphabet)
-      expect { converter.convert(pwm_w_custom_alphabet) }.to raise_error Bioinform::Error
+      expect { converter.convert(pwm_w_custom_alphabet) }.to raise_error(Bioinform::Error)
     end
   end
 end

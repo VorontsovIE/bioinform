@@ -57,12 +57,12 @@ describe Bioinform::MotifModel::PWM do
     end
 
     describe '#left_augmented' do
-      specify { expect{pwm.left_augmented(-1)}.to raise_error Bioinform::Error }
+      specify { expect{pwm.left_augmented(-1)}.to raise_error(Bioinform::Error) }
       specify { expect(pwm.left_augmented(0)).to eq pwm }
       specify { expect(pwm.left_augmented(2)).to eq Bioinform::MotifModel::PWM.new( [[0,0,0,0],[0,0,0,0],[1,2,3,1.567],[12,-11,12,0],[-1.1, 0.6, 0.4, 0.321]]) }
     end
     describe '#right_augmented' do
-      specify { expect{pwm.right_augmented(-1)}.to raise_error Bioinform::Error }
+      specify { expect{pwm.right_augmented(-1)}.to raise_error(Bioinform::Error) }
       specify { expect(pwm.right_augmented(0)).to eq pwm }
       specify { expect(pwm.right_augmented(2)).to eq Bioinform::MotifModel::PWM.new( [[1,2,3,1.567],[12,-11,12,0],[-1.1, 0.6, 0.4, 0.321],[0,0,0,0],[0,0,0,0]]) }
     end

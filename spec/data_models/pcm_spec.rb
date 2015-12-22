@@ -4,7 +4,7 @@ describe Bioinform::MotifModel::PCM do
 
   describe '.new' do
     specify 'fails on matrix having negative elements' do
-      expect { Bioinform::MotifModel::PCM.new([[1,2,1,3],[3,3,0,1], [-2, 3, 3, 3]]) }.to raise_error (Bioinform::Error)
+      expect { Bioinform::MotifModel::PCM.new([[1,2,1,3],[3,3,0,1], [-2, 3, 3, 3]]) }.to raise_error(Bioinform::Error)
     end
 
     context 'with valid matrix' do
@@ -45,7 +45,7 @@ describe Bioinform::MotifModel::PCM do
 
     context 'with different counts in different positions' do
       let(:matrix) { [[1,2,1,3],[30,10,100,11000], [1, 0, 3, 3]] }
-        specify{ expect{ pcm.count }.to raise_error Bioinform::Error }
+        specify{ expect{ pcm.count }.to raise_error(Bioinform::Error) }
     end
   end
 

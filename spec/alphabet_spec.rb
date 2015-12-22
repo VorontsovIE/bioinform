@@ -2,9 +2,9 @@ require 'bioinform/alphabet'
 
 describe Bioinform::ComplementableAlphabet do
   specify "should raise if complement's complement is not original letter" do
-    expect{ Bioinform::ComplementableAlphabet.new([:A,:B,:X,:Y], [:X,:Y,:B,:A]) }.to raise_error Bioinform::Error
-    expect{ Bioinform::ComplementableAlphabet.new([:A,:B,:B,:C], [:C,:B,:B,:A]) }.to raise_error Bioinform::Error
-    expect{ Bioinform::ComplementableAlphabet.new([:A,:B,:X,:Y], [:X,:Y,:B,:A,:C]) }.to raise_error Bioinform::Error
+    expect{ Bioinform::ComplementableAlphabet.new([:A,:B,:X,:Y], [:X,:Y,:B,:A]) }.to raise_error(Bioinform::Error)
+    expect{ Bioinform::ComplementableAlphabet.new([:A,:B,:B,:C], [:C,:B,:B,:A]) }.to raise_error(Bioinform::Error)
+    expect{ Bioinform::ComplementableAlphabet.new([:A,:B,:X,:Y], [:X,:Y,:B,:A,:C]) }.to raise_error(Bioinform::Error)
   end
 
   context 'usage with alphabet non-symbolized, non-upcased' do
@@ -48,10 +48,10 @@ describe Bioinform::NucleotideAlphabet do
   specify { expect( Bioinform::NucleotideAlphabet.size ).to eq 4 }
   specify { expect( Bioinform::NucleotideAlphabet.complement_letter(:A) ).to eq :T }
   specify { expect( Bioinform::NucleotideAlphabet.complement_letter(:C) ).to eq :G }
-  specify { expect{ Bioinform::NucleotideAlphabet.complement_letter(:N) }.to raise_error Bioinform::Error }
+  specify { expect{ Bioinform::NucleotideAlphabet.complement_letter(:N) }.to raise_error(Bioinform::Error) }
 
   specify { expect(Bioinform::NucleotideAlphabet.complement_index(0)).to eq 3 }
-  specify { expect{Bioinform::NucleotideAlphabet.complement_index(4)}.to raise_error Bioinform::Error}
+  specify { expect{Bioinform::NucleotideAlphabet.complement_index(4)}.to raise_error(Bioinform::Error)}
 end
 
 describe Bioinform::NucleotideAlphabetWithN do

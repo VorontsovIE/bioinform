@@ -24,7 +24,7 @@ describe Bioinform::MotifFormatter do
   end
   context 'with with_name equal to true' do
     let(:formatter) { Bioinform::MotifFormatter.new(with_name: true) }
-    specify { expect{ formatter.format(motif) }.to raise_error Bioinform::Error }
+    specify { expect{ formatter.format(motif) }.to raise_error(Bioinform::Error) }
     specify { expect( formatter.format(motif.named('')) ).to eq ">\n" +
                                                               default_matrix_string }
     specify { expect( formatter.format(motif.named('Stub name')) ).to eq ">Stub name\n" +
@@ -38,7 +38,7 @@ describe Bioinform::MotifFormatter do
                                                                       default_matrix_string }
   end
   context 'with with_name value different from true/false/:auto' do
-    specify{ expect { Bioinform::MotifFormatter.new(with_name: :somewhat) }.to raise_error Bioinform::Error }
+    specify{ expect { Bioinform::MotifFormatter.new(with_name: :somewhat) }.to raise_error(Bioinform::Error) }
   end
 
   context 'with nucleotides_in :columns' do

@@ -37,7 +37,7 @@ def parser_specs(parser, good_cases, bad_cases)
 
     bad_cases.each do |case_description, input|
       it "should raise an exception on parsing #{case_description}" do
-        expect{ parser.parse!(input[:input]) }.to raise_error
+        expect{ parser.parse!(input[:input]) }.to raise_error(Bioinform::Error)
       end
     end
   end

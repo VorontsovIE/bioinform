@@ -1,7 +1,7 @@
 require 'bioinform/parsers/matrix_parser'
 
 describe Bioinform::MatrixParser do
-  specify { expect{ Bioinform::MatrixParser.new(nucleotides_in: :somewhat) }.to raise_error Bioinform::Error }
+  specify { expect{ Bioinform::MatrixParser.new(nucleotides_in: :somewhat) }.to raise_error(Bioinform::Error) }
 
   context 'with default options' do
     subject(:parser) { Bioinform::MatrixParser.new }
@@ -40,9 +40,9 @@ describe Bioinform::MatrixParser do
     let(:input_not_allowed_2) {"A\tC\tG\tT\n" + "1\t2\t3\t4\n" + "11\t12\t13\t14" }
     let(:input_not_allowed_3) {"##01\t1\t2\t3\t4\n" + "##02\t11\t12\t13\t14" }
     specify { expect( parser.parse!(input_allowed) ).to eq( {name: nil, matrix: [[1,2,3,4],[11,12,13,14]]} ) }
-    specify { expect{ parser.parse!(input_not_allowed) }.to raise_error Bioinform::Error }
-    specify { expect{ parser.parse!(input_not_allowed_2) }.to raise_error Bioinform::Error }
-    specify { expect{ parser.parse!(input_not_allowed_3) }.to raise_error Bioinform::Error }
+    specify { expect{ parser.parse!(input_not_allowed) }.to raise_error(Bioinform::Error) }
+    specify { expect{ parser.parse!(input_not_allowed_2) }.to raise_error(Bioinform::Error) }
+    specify { expect{ parser.parse!(input_not_allowed_3) }.to raise_error(Bioinform::Error) }
   end
   context 'with has_name equal to :auto parser can either have name or not' do
     subject(:parser) { Bioinform::MatrixParser.new(nucleotides_in: :columns, has_name: :auto) }
@@ -51,7 +51,7 @@ describe Bioinform::MatrixParser do
     let(:input_with_bad_name) {"-Name\n" + "1\t2\t3\t4\n" + "11\t12\t13\t14" }
     specify { expect( parser.parse!(input_without_name) ).to eq( {name: nil, matrix: [[1,2,3,4],[11,12,13,14]]} ) }
     specify { expect( parser.parse!(input_with_name) ).to eq( {name: 'PM Name', matrix: [[1,2,3,4],[11,12,13,14]]} ) }
-    specify { expect{ parser.parse!(input_with_bad_name) }.to raise_error Bioinform::Error }
+    specify { expect{ parser.parse!(input_with_bad_name) }.to raise_error(Bioinform::Error) }
   end
   context 'parser having name and header row' do
     subject(:parser) { Bioinform::MatrixParser.new(nucleotides_in: :columns, has_name: true, has_header_row: true) }
@@ -62,7 +62,7 @@ describe Bioinform::MatrixParser do
     subject(:parser) { Bioinform::MatrixParser.new(nucleotides_in: :columns, has_name: false, has_header_row: true) }
     let(:input) {"A\tC\tG\tT\n" + "1\t2\t3\t4\n" + "11\t12\t13\t14" }
     specify { expect( parser.parse!(input) ).to eq( {name: nil, matrix: [[1,2,3,4],[11,12,13,14]]} ) }
-    specify { expect{ parser.parse!("Motif name\n" + input) }.to raise_error Bioinform::Error }
+    specify { expect{ parser.parse!("Motif name\n" + input) }.to raise_error(Bioinform::Error) }
   end
   context 'parser having header column' do
     subject(:parser) { Bioinform::MatrixParser.new(nucleotides_in: :columns, has_header_column: true) }
@@ -101,7 +101,7 @@ describe Bioinform::MatrixParser do
     let(:input_allowed) {"NA>Motif name\tother info\n" + "1\t2\t3\t4\n" + "11\t12\t13\t14" }
     let(:input_not_allowed) {"Motif name\tother info\n" + "1\t2\t3\t4\n" + "11\t12\t13\t14" }
     specify { expect( parser.parse!(input_allowed) ).to eq( {name: "Motif name\tother info", matrix: [[1,2,3,4],[11,12,13,14]]} ) }
-    specify { expect{ parser.parse!(input_not_allowed) }.to raise_error Bioinform::Error }
+    specify { expect{ parser.parse!(input_not_allowed) }.to raise_error(Bioinform::Error) }
   end
 
   context 'parser reducing number of nucleotides' do
@@ -127,7 +127,7 @@ describe Bioinform::MatrixParser do
   context 'parser which hasn\'t enough number of nucleotides' do
     subject(:parser) { Bioinform::MatrixParser.new(has_name: true, fix_nucleotides_number: 4) }
     let(:input) {">PM name\n" + "1\t2\t3\n" + "11\t12\t13" }
-    specify { expect{ parser.parse!(input) }.to raise_error Bioinform::Error }
+    specify { expect{ parser.parse!(input) }.to raise_error(Bioinform::Error) }
   end
 
   context 'parser with auto transposition' do

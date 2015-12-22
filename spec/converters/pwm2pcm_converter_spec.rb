@@ -50,8 +50,8 @@ describe Bioinform::ConversionAlgorithms::PWM2PCMConverter do
     specify { expect(converter.convert(named_pwm).model).to be_kind_of Bioinform::MotifModel::PCM }
     specify { expect(converter.convert(named_pwm).name).to eq 'motif name' }
 
-    specify { expect{ converter.convert(pcm) }.to raise_error Bioinform::Error }
-    specify { expect{ converter.convert(ppm) }.to raise_error Bioinform::Error }
-    specify { expect{ converter.convert(named_pcm) }.to raise_error Bioinform::Error }
+    specify { expect{ converter.convert(pcm) }.to raise_error(Bioinform::Error) }
+    specify { expect{ converter.convert(ppm) }.to raise_error(Bioinform::Error) }
+    specify { expect{ converter.convert(named_pcm) }.to raise_error(Bioinform::Error) }
   end
 end

@@ -1,8 +1,8 @@
 require 'bioinform/background'
 
 describe Bioinform::Frequencies do
-  specify { expect{Bioinform::Frequencies.new([1,1,1,1]) }.to raise_error Bioinform::Error }
-  specify { expect{Bioinform::Frequencies.new([0.3,0.3,0.3,0.3]) }.to raise_error Bioinform::Error }
+  specify { expect{Bioinform::Frequencies.new([1,1,1,1]) }.to raise_error(Bioinform::Error) }
+  specify { expect{Bioinform::Frequencies.new([0.3,0.3,0.3,0.3]) }.to raise_error(Bioinform::Error) }
   specify { expect{Bioinform::Frequencies.new([0.25,0.25,0.25,0.25]) }.not_to raise_error }
   specify { expect{Bioinform::Frequencies.new([0.2,0.3,0.3,0.2]) }.not_to raise_error }
 
@@ -52,6 +52,6 @@ describe Bioinform::Background do
   specify { expect(Bioinform::Background.from_string('uniform')).to eq Bioinform::Frequencies.new([0.25,0.25,0.25,0.25]) }
   specify { expect(Bioinform::Background.from_string('UNIFORM')).to eq Bioinform::Frequencies.new([0.25,0.25,0.25,0.25]) }
   specify { expect(Bioinform::Background.from_string('wordwise')).to eq Bioinform::WordwiseBackground.new }
-  specify { expect{Bioinform::Background.from_string('0.25,0.25,0.25')}.to raise_error Bioinform::Error }
-  specify { expect{Bioinform::Background.from_string('unifromm')}.to raise_error Bioinform::Error }
+  specify { expect{Bioinform::Background.from_string('0.25,0.25,0.25')}.to raise_error(Bioinform::Error) }
+  specify { expect{Bioinform::Background.from_string('unifromm')}.to raise_error(Bioinform::Error) }
 end

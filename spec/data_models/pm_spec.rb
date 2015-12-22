@@ -4,19 +4,19 @@ describe Bioinform::MotifModel::PM do
 
   describe '.new' do
     specify 'with matrix having more than 4 elements in a position' do
-      expect { Bioinform::MotifModel::PM.new([[1,2,3,1.567],[10,11,12,15,10],[-1.1, 0.6, 0.4, 0.321]]) }.to raise_error (Bioinform::Error)
+      expect { Bioinform::MotifModel::PM.new([[1,2,3,1.567],[10,11,12,15,10],[-1.1, 0.6, 0.4, 0.321]]) }.to raise_error(Bioinform::Error)
     end
 
     specify 'with matrix having less than 4 elements in a position' do
-      expect { Bioinform::MotifModel::PM.new([[1,2,3,1.567],[10,11,12,15],[-1.1, 0.6]]) }.to raise_error (Bioinform::Error)
+      expect { Bioinform::MotifModel::PM.new([[1,2,3,1.567],[10,11,12,15],[-1.1, 0.6]]) }.to raise_error(Bioinform::Error)
     end
 
     specify 'with matrix having positions in rows, nucleotides in columns' do
-      expect { Bioinform::MotifModel::PM.new([[1,2,3],[10,-11,12],[-1.1, 0.6, 0.4],[5,6,7]]) }.to raise_error (Bioinform::Error)
+      expect { Bioinform::MotifModel::PM.new([[1,2,3],[10,-11,12],[-1.1, 0.6, 0.4],[5,6,7]]) }.to raise_error(Bioinform::Error)
     end
 
     specify 'with empty matrix' do
-      expect { Bioinform::MotifModel::PM.new([]) }.to raise_error (Bioinform::Error)
+      expect { Bioinform::MotifModel::PM.new([]) }.to raise_error(Bioinform::Error)
     end
 
     context 'with valid matrix' do
@@ -105,7 +105,7 @@ describe Bioinform::MotifModel::PM do
     let(:matrix_15) { [[1,2,3,1.567,  12,-11,12,0,-1.1,0.6,  0.4,0.321,0.11,-1.23, 2.0],
                        [0,0,0,0,       0,0,0,0,0,0, 0,0,0,0, 0]] }
     specify do
-      expect{ Bioinform::MotifModel::PM.new(matrix_4, alphabet: Bioinform::IUPACAlphabet) }.to raise_error Bioinform::Error
+      expect{ Bioinform::MotifModel::PM.new(matrix_4, alphabet: Bioinform::IUPACAlphabet) }.to raise_error(Bioinform::Error)
     end
     specify do
       expect{ Bioinform::MotifModel::PM.new(matrix_15, alphabet: Bioinform::IUPACAlphabet) }.not_to raise_error

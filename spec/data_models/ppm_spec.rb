@@ -4,12 +4,12 @@ describe Bioinform::MotifModel::PPM do
 
   describe '.new' do
     specify 'fails on matrix having negative elements' do
-      expect { Bioinform::MotifModel::PPM.new([[0.4, 0.1, 0.1, 0.4],[0.6, -0.1, -0.1, 0.6],[0.25, 0.25, 0.25, 0.25]]) }.to raise_error (Bioinform::Error)
+      expect { Bioinform::MotifModel::PPM.new([[0.4, 0.1, 0.1, 0.4],[0.6, -0.1, -0.1, 0.6],[0.25, 0.25, 0.25, 0.25]]) }.to raise_error(Bioinform::Error)
     end
     specify 'fails on matrix having sum of position elements different from 1' do
-      expect { Bioinform::MotifModel::PPM.new([[0.4, 0.1, 0.1, 0.4],[0.6, 0.1, 0.1, 0.6],[0.25, 0.25, 0.25, 0.25]]) }.to raise_error (Bioinform::Error)
-      expect { Bioinform::MotifModel::PPM.new([[0.4, 0.1, 0.1, 0.4],[0.3, 0.1, 0.1, 0.3],[0.25, 0.25, 0.25, 0.25]]) }.to raise_error (Bioinform::Error)
-      expect { Bioinform::MotifModel::PPM.new([[0.3, 0.1, 0.1, 0.3],[0.3, 0.1, 0.1, 0.3],[0.2, 0.2, 0.2, 0.2]]) }.to raise_error (Bioinform::Error)
+      expect { Bioinform::MotifModel::PPM.new([[0.4, 0.1, 0.1, 0.4],[0.6, 0.1, 0.1, 0.6],[0.25, 0.25, 0.25, 0.25]]) }.to raise_error(Bioinform::Error)
+      expect { Bioinform::MotifModel::PPM.new([[0.4, 0.1, 0.1, 0.4],[0.3, 0.1, 0.1, 0.3],[0.25, 0.25, 0.25, 0.25]]) }.to raise_error(Bioinform::Error)
+      expect { Bioinform::MotifModel::PPM.new([[0.3, 0.1, 0.1, 0.3],[0.3, 0.1, 0.1, 0.3],[0.2, 0.2, 0.2, 0.2]]) }.to raise_error(Bioinform::Error)
     end
 
     context 'with valid matrix' do
