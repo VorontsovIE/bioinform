@@ -11,7 +11,14 @@ module Bioinform
     end
 
     def to_s
-      "#{super} (#{@validation_errors.join('; ')})"
+      case @validation_errors
+      when Array
+        "#{super} (#{@validation_errors.join('; ')})"
+      when ValidationResult
+        "#{super}\n#{@validation_errors}"
+      else
+        "#{super} (#{@validation_errors})"
+      end
     end
   end
 end
