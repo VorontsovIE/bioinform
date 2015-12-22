@@ -21,10 +21,13 @@ describe Bioinform::MotifModel::PCM do
       context 'with different counts in different positions' do
         let(:matrix) { [[1,2,1,3],[30,10,100,11000], [1, 0, 3, 3]] }
         specify do
-          expect { Bioinform::MotifModel::PCM.new(matrix) }.not_to raise_error
+          expect { Bioinform::MotifModel::PCM.new(matrix) }.to raise_error(Bioinform::Error)
         end
         specify do
-          expect( Bioinform::MotifModel::PCM.new(matrix).matrix ).to eq matrix
+          expect { Bioinform::MotifModel::PCM.new(matrix, validator: Bioinform::MotifModel::PCM::DIFFERENT_COUNTS_VALIDATOR) }.not_to raise_error
+        end
+        specify do
+          expect( Bioinform::MotifModel::PCM.new(matrix, validator: Bioinform::MotifModel::PCM::DIFFERENT_COUNTS_VALIDATOR).matrix ).to eq matrix
         end
       end
     end

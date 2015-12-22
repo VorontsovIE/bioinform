@@ -93,7 +93,8 @@ describe Bioinform::MotifModel::PWM do
                                                     [-1, 1, 1, 1,  12,22,32,42,52,62, 702,802,902,1002, 10002 ]] }
     specify { expect(pwm.discreted(1).alphabet).to eq Bioinform::IUPACAlphabet}
 
-    specify { expect{ pwm.to_IUPAC_PWM }.to raise_error }
+    let(:iupac_converter) { Bioinform::ConversionAlgorithms::PWM2IupacPWMConverter.new }
+    specify { expect{ iupac_converter.convert(pwm) }.to raise_error(Bioinform::Error) }
   end
 
   describe '.from_string' do

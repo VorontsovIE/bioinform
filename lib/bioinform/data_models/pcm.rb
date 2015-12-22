@@ -7,20 +7,34 @@ module Bioinform
     end
 
     class PCM < PM
-      def validation_errors
-        errors = super
-        errors << "elements of PCM should be non-negative"  unless matrix.all?{|pos| pos.all?{|el| el >= 0 } }
-        errors
+      def self.count_validator(eps: 1.0e-4)
+        Validator.new{|matrix, alphabet|
+          errors = []
+          unless matrix.all?{|pos| pos.all?{|el| el >= 0 } }
+            errors << "Elements of PCM should be non-negative."
+          end
+
+          warnings = []
+          if eps
+            counts = matrix.map{|pos| pos.inject(0.0, &:+) }
+            unless (counts.max - counts.min) <= eps * counts.min
+              warnings << "PCM counts are different (discrepancy is greater than eps * MinCount; eps=#{eps}; MinCountn=#{counts.min})."
+            end
+          end
+
+          ValidationResult.new(errors: errors, warnings: warnings)
+        }
       end
 
-      def count
-        counts = each_position.map{|pos| pos.inject(0.0, &:+)}
-        count = counts.first
-        diffs = counts.map{|pos_count| (pos_count - count).abs }
-        counts_are_same = (diffs.max < count * 1e-3)
-        raise Error, 'Different columns have different count'  unless counts_are_same
-        count
+      VALIDATOR = PM::VALIDATOR * PCM.count_validator(eps: 1.0e-4).make_strict
+      DIFFERENT_COUNTS_VALIDATOR = PM::VALIDATOR * PCM.count_validator(eps: nil).make_strict
+
+      def initialize(matrix, alphabet: NucleotideAlphabet, validator: PCM::VALIDATOR)
+        super
+        # validator already checked count discrepancy. We store median count.
+        @count = matrix.map{|pos| pos.inject(0.0, &:+) }.sort[matrix.length / 2]
       end
+      attr_reader :count
     end
   end
 end

@@ -1,4 +1,5 @@
 require_relative '../formatters/motif_formatter'
+require_relative '../validator'
 require_relative '../errors'
 require_relative '../alphabet'
 require_relative 'named_model'
@@ -6,46 +7,37 @@ require_relative 'named_model'
 module Bioinform
   module MotifModel
     class PM
+      VALIDATOR = Validator.new{|matrix, alphabet|
+        errors = []
+        errors << "Matrix should be an Array."  unless matrix.is_a? Array
+        errors << "Matrix shouldn't be empty."  unless matrix.size > 0
+        errors << "Each matrix position should be an Array."  unless matrix.all?{|pos| pos.is_a?(Array) }
+        errors << "Each matrix position should be of size compatible with alphabet (=#{alphabet.size})."  unless matrix.all?{|pos| pos.size == alphabet.size }
+        errors << "Each matrix element should be Numeric."  unless matrix.all?{|pos| pos.all?{|el| el.is_a?(Numeric) } }
+        ValidationResult.new(errors: errors)
+      }
+
       attr_reader :matrix, :alphabet
-      def initialize(matrix, options = {})
+      def initialize(matrix, alphabet: NucleotideAlphabet, validator: PM::VALIDATOR)
+        validation_results = validator.validate_params(matrix, alphabet)
+        unless validation_results.valid?
+          raise ValidationError.new('Invalid matrix.', validation_errors: validation_results)
+        end
         @matrix = matrix
-        @alphabet = options.fetch(:alphabet, NucleotideAlphabet)
-        raise ValidationError.new('invalid matrix', validation_errors: validation_errors)  unless valid?
+        @alphabet = alphabet
       end
 
-      def self.from_string(input, options = {})
-        parser = options.fetch(:parser, MatrixParser.new)
-        alphabet = options.fetch(:alphabet, NucleotideAlphabet)
+      DEFAULT_PARSER = MatrixParser.new
+      def self.from_string(input, alphabet: NucleotideAlphabet, parser: DEFAULT_PARSER)
         info = parser.parse!(input)
         self.new(info[:matrix], alphabet: alphabet).named( info[:name] )
       end
 
-      def self.from_file(filename, options = {})
-        parser = options.fetch(:parser, MatrixParser.new)
-        alphabet = options.fetch(:alphabet, NucleotideAlphabet)
+      def self.from_file(filename, alphabet: NucleotideAlphabet, parser: DEFAULT_PARSER)
         info = parser.parse!(File.read(filename))
         name = (info[:name] && !info[:name].strip.empty?) ? info[:name] : File.basename(filename, File.extname(filename))
         self.new(info[:matrix], alphabet: alphabet).named( name )
       end
-
-      def validation_errors
-        errors = []
-        errors << "matrix should be an Array"  unless matrix.is_a? Array
-        errors << "matrix shouldn't be empty"  unless matrix.size > 0
-        errors << "each matrix position should be an Array"  unless matrix.all?{|pos| pos.is_a?(Array) }
-        errors << "each matrix position should be of size compatible with alphabet (=#{alphabet.size})"  unless matrix.all?{|pos| pos.size == alphabet.size }
-        errors << "each matrix element should be Numeric"  unless matrix.all?{|pos| pos.all?{|el| el.is_a?(Numeric) } }
-        errors
-      end
-      private :validation_errors
-
-      def valid?
-       validation_errors.empty?
-      rescue
-        false
-      end
-
-      private :valid?
 
       def length
         matrix.size

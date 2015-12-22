@@ -7,6 +7,11 @@ module Bioinform
     end
 
     class PWM < PM
+      VALIDATOR = PM::VALIDATOR
+      def initialize(matrix, alphabet: NucleotideAlphabet, validator: PWM::VALIDATOR)
+        super  # default validator redefined
+      end
+
       def score(word)
         raise Error, 'Word length should be the same as PWM length'  unless word.length == length
         length.times.map do |pos|

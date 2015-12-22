@@ -4,7 +4,7 @@ describe Bioinform::ConversionAlgorithms::PCM2PPMConverter do
   let(:pcm) { Bioinform::MotifModel::PCM.new([[1,2,3,4],[2,2,2,4]]) }
   let(:pwm) { Bioinform::MotifModel::PWM.new([[1,2,3,4],[2,2,2,4]]) }
   let(:ppm) { Bioinform::MotifModel::PPM.new([[0.1,0.2,0.3,0.4],[0.2,0.2,0.2,0.4]]) }
-  let(:pcm_different_counts) { Bioinform::MotifModel::PCM.new([[1,2,3,4],[2,2,2,4],[3,3,3,4]]) }
+  let(:pcm_different_counts) { Bioinform::MotifModel::PCM.new([[1,2,3,4],[2,2,2,4],[3,3,3,4]], validator: Bioinform::MotifModel::PCM::DIFFERENT_COUNTS_VALIDATOR) }
 
   let(:named_pcm) { Bioinform::MotifModel::NamedModel.new(pcm, 'motif name') }
   let(:named_pwm) { Bioinform::MotifModel::NamedModel.new(pwm, 'motif name') }
