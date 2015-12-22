@@ -16,7 +16,7 @@ describe Bioinform::ConversionAlgorithms::PCM2PWMConverter do
     specify { expect(converter.background).to eq Bioinform::Background::Uniform }
 
     specify { expect(converter.convert(pcm)).to be_kind_of Bioinform::MotifModel::PWM }
-    specify { expect(converter.calculate_pseudocount(pcm)).to eq Math.log(10) }
+    specify { expect(converter.calculate_pseudocount(pcm.matrix[0])).to eq Math.log(10) }
 
     specify do
       cnt = 10
@@ -27,7 +27,17 @@ describe Bioinform::ConversionAlgorithms::PCM2PWMConverter do
             [Math.log((2+k*0.25)/den), Math.log((2+k*0.25)/den), Math.log((2+k*0.25)/den), Math.log((4+k*0.25)/den)] ]
     end
 
-    specify { expect{ converter.convert(pcm_different_counts) }.to raise_error Bioinform::Error }
+    specify { expect{ converter.convert(pcm_different_counts) }.not_to raise_error }
+    specify {
+      counts = [10, 10, 13]
+      pseudocounts = counts.map{|el| Math.log(el) }
+      denominators = counts.zip(pseudocounts).map{|count, pseudocount|  0.25 * (count + pseudocount)  }
+      expect(converter.convert(pcm_different_counts).matrix).to eq [
+        [1,2,3,4].map{|el| Math.log((el + pseudocounts[0]*0.25) / denominators[0]) },
+        [2,2,2,4].map{|el| Math.log((el + pseudocounts[1]*0.25) / denominators[1]) },
+        [3,3,3,4].map{|el| Math.log((el + pseudocounts[2]*0.25) / denominators[2]) },
+      ]
+    }
 
     specify { expect(converter.convert(named_pcm)).to be_kind_of Bioinform::MotifModel::NamedModel }
     specify { expect(converter.convert(named_pcm).model).to be_kind_of Bioinform::MotifModel::PWM }

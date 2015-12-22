@@ -12,16 +12,16 @@ module Bioinform
         @pseudocount = options.fetch(:pseudocount, :log)
       end
 
-      def calculate_pseudocount(pcm)
+      def calculate_pseudocount(pos)
         case @pseudocount
         when Numeric
           @pseudocount
         when :log
-          Math.log(pcm.count)
+          Math.log(pos.inject(0.0, &:+))
         when :sqrt
-          Math.sqrt(pcm.count)
+          Math.sqrt(pcm.inject(0.0, &:+))
         when Proc
-          @pseudocount.call(pcm)
+          @pseudocount.call(pos)
         else
           raise Error, 'Unknown pseudocount type use numeric or :log or :sqrt or Proc with taking pcm parameter'
         end
@@ -29,8 +29,8 @@ module Bioinform
 
       def convert(pcm)
         raise Error, "#{self.class}#convert accepts only models acting as PCM"  unless MotifModel.acts_as_pcm?(pcm)
-        actual_pseudocount = calculate_pseudocount(pcm)
         matrix = pcm.each_position.map do |pos|
+          actual_pseudocount = calculate_pseudocount(pos)
           count = pos.inject(0.0, &:+)
           pos.each_index.map do |index|
             Math.log((pos[index] + @background.frequencies[index] * actual_pseudocount).to_f / (@background.frequencies[index]*(count + actual_pseudocount)) )
