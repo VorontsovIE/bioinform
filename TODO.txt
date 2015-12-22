@@ -33,3 +33,7 @@ Specs
 -- PWM#probabilities, #score_variance, #gauss_estimation
 
 background#to_s and WordwiseBackground#to_s
+
+SNP should be indexed both by sequence start and relative to snp position
+
+Интеграция PCM/PWM с iRuby: вывод лого в форме svg/png, печать матриц в tex-формате
