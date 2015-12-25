@@ -19,10 +19,13 @@ module Bioinform
         end.inject(0.0, &:+)
       end
 
-      def discreted(rate, options = {})
-        rounding_method = options.fetch(:rounding_method, :ceil)
-        discreted_matrix = matrix.map{|position| position.map{|element| (element * rate).send(rounding_method) } }
-        self.class.new(discreted_matrix, alphabet: alphabet)
+      def discreted(rate, rounding_method: :ceil)
+        discreted_matrix = matrix.map{|position|
+          position.map{|element|
+            (element * rate).send(rounding_method)
+          }
+        }
+        self.class.new(discreted_matrix, alphabet: alphabet, validator: TRIVIAL_VALIDATOR)
       end
 
       def zero_column

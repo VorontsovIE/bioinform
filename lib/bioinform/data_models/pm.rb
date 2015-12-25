@@ -7,6 +7,8 @@ require_relative 'named_model'
 module Bioinform
   module MotifModel
     class PM
+      DEFAULT_PARSER = MatrixParser.new
+      TRIVIAL_VALIDATOR = Validator.new{|matrix, alphabet| ValidationResult.all_ok }
       VALIDATOR = Validator.new{|matrix, alphabet|
         errors = []
         errors << "Matrix should be an Array."  unless matrix.is_a? Array
@@ -27,7 +29,6 @@ module Bioinform
         @alphabet = alphabet
       end
 
-      DEFAULT_PARSER = MatrixParser.new
       def self.from_string(input, alphabet: NucleotideAlphabet, parser: DEFAULT_PARSER)
         info = parser.parse!(input)
         self.new(info[:matrix], alphabet: alphabet).named( info[:name] )
@@ -60,15 +61,15 @@ module Bioinform
       end
 
       def reversed
-        self.class.new(matrix.reverse, alphabet: alphabet)
+        self.class.new(matrix.reverse, alphabet: alphabet, validator: TRIVIAL_VALIDATOR)
       end
 
       def complemented
-        self.class.new(complement_matrix, alphabet: alphabet)
+        self.class.new(complement_matrix, alphabet: alphabet, validator: TRIVIAL_VALIDATOR)
       end
 
       def reverse_complemented
-        self.class.new(complement_matrix.reverse, alphabet: alphabet)
+        self.class.new(complement_matrix.reverse, alphabet: alphabet, validator: TRIVIAL_VALIDATOR)
       end
 
       alias_method :revcomp, :reverse_complemented
@@ -79,6 +80,16 @@ module Bioinform
         }
       end
       private :complement_matrix
+
+      def rounded(precision: 0)
+        return self  if !precision
+        rounded_matrix = matrix.map{|pos|
+          pos.map{|el|
+            el.round(precision)
+          }
+        }
+        self.class.new(rounded_matrix, alphabet: alphabet, validator: TRIVIAL_VALIDATOR)
+      end
 
       # def consensus
       #   ConsensusFormatter.by_maximal_elements.format_string(self)
