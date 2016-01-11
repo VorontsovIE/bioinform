@@ -17,19 +17,15 @@ module Bioinform
     def to_s
       msg = ""
 
-      if errors
+      if errors && !errors.empty?
         msg += "Errors:\n" + errors.join("\n") + "\n"
-      else
-        msg += "No errors."
       end
 
-      if warnings
+      if warnings && !warnings.empty?
         msg += "Warnings:\n" + warnings.join("\n")
-      else
-        msg += "No warnings."
       end
 
-      "{#{msg}}"
+      msg.empty? ? "{No errors, no warnings}" : "{#{msg}}"
     end
 
     def with_errors(additional_errors)
