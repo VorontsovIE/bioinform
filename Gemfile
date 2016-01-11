@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in bioinform.gemspec
 gemspec
 
+gem 'rake', '~>10.4'
 
 group :development do
 #  gem 'win32console'
