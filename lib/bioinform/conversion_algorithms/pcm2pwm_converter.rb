@@ -17,7 +17,8 @@ module Bioinform
         when Numeric
           @pseudocount
         when :log
-          Math.log(pos.inject(0.0, &:+))
+          count = pos.inject(0.0, &:+)
+          Math.log([count, 2].max)
         when :sqrt
           Math.sqrt(pcm.inject(0.0, &:+))
         when Proc
