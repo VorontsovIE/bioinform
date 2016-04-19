@@ -50,6 +50,8 @@ module Bioinform
     include Bioinform::Background
     def initialize(frequencies)
       @frequencies = frequencies
+      raise Error, 'Frequencies should have 4 components' unless frequencies.length == 4
+      raise Error, 'Frequencies should be in [0;1]' unless frequencies.all?{|el| (0..1).include?(el) }
       raise Error, 'Sum of Background frequencies should be equal to 1' unless (frequencies.inject(0.0, &:+) - 1.0).abs < 1e-4
     end
 
