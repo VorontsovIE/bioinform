@@ -7,6 +7,10 @@ module Bioinform
     end
 
     class PPM < PM
+      def self.default_validator
+        PPM::VALIDATOR
+      end
+
       def self.probability_validator(eps: 1.0e-4)
         Validator.new{|matrix, alphabet|
           errors = []
@@ -26,10 +30,6 @@ module Bioinform
       end
 
       VALIDATOR = PM::VALIDATOR * PPM.probability_validator(eps: 1.0e-4).make_strict
-
-      def initialize(matrix, alphabet: NucleotideAlphabet, validator: PPM::VALIDATOR)
-        super  # default validator redefined
-      end
     end
   end
 end

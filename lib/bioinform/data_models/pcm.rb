@@ -29,7 +29,12 @@ module Bioinform
       VALIDATOR = PM::VALIDATOR * PCM.count_validator(eps: 1.0e-4).make_strict
       DIFFERENT_COUNTS_VALIDATOR = PM::VALIDATOR * PCM.count_validator(eps: nil).make_strict
 
-      def initialize(matrix, alphabet: NucleotideAlphabet, validator: PCM::VALIDATOR)
+
+      def self.default_validator
+        PCM::VALIDATOR
+      end
+
+      def initialize(matrix, alphabet: NucleotideAlphabet, validator: default_validator)
         super
         # validator already checked count discrepancy. We store median count.
         @count = matrix.map{|pos| pos.inject(0.0, &:+) }.sort[matrix.length / 2]

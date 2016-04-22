@@ -20,7 +20,7 @@ module Bioinform
       }
 
       attr_reader :matrix, :alphabet
-      def initialize(matrix, alphabet: NucleotideAlphabet, validator: PM::VALIDATOR)
+      def initialize(matrix, alphabet: NucleotideAlphabet, validator: default_validator)
         validation_results = validator.validate_params(matrix, alphabet)
         unless validation_results.valid?
           raise ValidationError.new('Invalid matrix.', validation_errors: validation_results)
@@ -29,15 +29,23 @@ module Bioinform
         @alphabet = alphabet
       end
 
-      def self.from_string(input, alphabet: NucleotideAlphabet, parser: DEFAULT_PARSER)
-        info = parser.parse!(input)
-        self.new(info[:matrix], alphabet: alphabet).named( info[:name] )
+      def self.default_validator
+        PM::VALIDATOR
       end
 
-      def self.from_file(filename, alphabet: NucleotideAlphabet, parser: DEFAULT_PARSER)
+      def default_validator
+        self.class.default_validator
+      end
+
+      def self.from_string(input, alphabet: NucleotideAlphabet, parser: DEFAULT_PARSER, validator: default_validator)
+        info = parser.parse!(input)
+        self.new(info[:matrix], alphabet: alphabet, validator: validator).named( info[:name] )
+      end
+
+      def self.from_file(filename, alphabet: NucleotideAlphabet, parser: DEFAULT_PARSER, validator: default_validator)
         info = parser.parse!(File.read(filename))
         name = (info[:name] && !info[:name].strip.empty?) ? info[:name] : File.basename(filename, File.extname(filename))
-        self.new(info[:matrix], alphabet: alphabet).named( name )
+        self.new(info[:matrix], alphabet: alphabet, validator: validator).named( name )
       end
 
       def length

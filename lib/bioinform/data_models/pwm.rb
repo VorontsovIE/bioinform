@@ -8,8 +8,9 @@ module Bioinform
 
     class PWM < PM
       VALIDATOR = PM::VALIDATOR
-      def initialize(matrix, alphabet: NucleotideAlphabet, validator: PWM::VALIDATOR)
-        super  # default validator redefined
+
+      def self.default_validator
+        PWM::VALIDATOR
       end
 
       def score(word)

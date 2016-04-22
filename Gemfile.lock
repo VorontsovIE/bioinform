@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bioinform (0.3.0)
+    bioinform (0.3.1)
 
 GEM
   remote: https://rubygems.org/
