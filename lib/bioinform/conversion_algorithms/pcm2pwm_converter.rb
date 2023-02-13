@@ -17,7 +17,7 @@ module Bioinform
         when Numeric
           @pseudocount
         when :log
-          Math.log(pcm.count)
+          Math.log([pcm.count, 2].max)
         when :sqrt
           Math.sqrt(pcm.count)
         when Proc
