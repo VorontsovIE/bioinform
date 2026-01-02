@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bioinform (0.3.1)
+    bioinform (0.3.2)
 
 GEM
   remote: https://rubygems.org/
@@ -81,4 +81,4 @@ DEPENDENCIES
   wdm
 
 BUNDLED WITH
-   1.11.2
+   2.2.33
