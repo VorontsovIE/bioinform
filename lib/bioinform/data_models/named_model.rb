@@ -16,8 +16,8 @@ module Bioinform
 
       private :motif_klasses, :motif?
 
-      def method_missing(meth, *args, &block)
-        result = model.public_send(meth, *args, &block)
+      def method_missing(meth, *args, **kwargs, &block)
+        result = model.public_send(meth, *args, **kwargs, &block)
         if motif?(result) && ! result.is_a?(self.class)
           self.class.new(result, name)
         else
